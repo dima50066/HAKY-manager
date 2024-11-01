@@ -34,4 +34,4 @@ UserSchema.methods.toJSON = function () {
 };
 
 // Експортуємо модель користувача
-export const User = mongoose.model<IUser>('User', UserSchema);
+export const UsersCollection = mongoose.model<IUser>('users', UserSchema);
