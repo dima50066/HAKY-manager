@@ -8,17 +8,30 @@ export interface IUser extends Document {
   role: string;
   avatar?: string; // URL або шлях до аватарки
   createdAt: Date;
+  updatedAt: Date;
 }
 
 // Схема користувача
-const UserSchema: Schema = new Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, default: 'user' },
-  avatar: { type: String, default: '' },
-  createdAt: { type: Date, default: Date.now }
-});
+const UserSchema: Schema<IUser> = new Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: { type: String, default: 'user' },
+    avatar: { type: String, default: '' },
+  },
+  {
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }, // Відстеження створення та оновлення
+    versionKey: false,
+  }
+);
+
+// Функція toJSON для приховування пароля при відправці користувача
+UserSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
 
 // Експортуємо модель користувача
 export const User = mongoose.model<IUser>('User', UserSchema);
