@@ -38,10 +38,18 @@ const Navigation: React.FC = () => {
         </li>
         <li>
           <Link
-            to="/send-reset"
+            to="/dashboard"
             className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
           >
-            Reset password
+            Dashboard
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/profile"
+            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
+          >
+            Profile
           </Link>
         </li>
       </ul>

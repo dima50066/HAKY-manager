@@ -3,9 +3,14 @@ import {
   getUserProfileService,
   updateUserProfileService,
 } from '../services/profile';
+import { IUser } from '../db/models/user';
+
+interface AuthenticatedRequest extends Request {
+  user?: IUser;
+}
 
 // Контролер для отримання профілю користувача
-export const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const getUserProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -22,7 +27,7 @@ export const getUserProfile = async (req: Request, res: Response, next: NextFunc
 };
 
 // Контролер для оновлення профілю користувача
-export const updateUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUserProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });

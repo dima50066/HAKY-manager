@@ -7,7 +7,7 @@ import multer from 'multer';
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
-router.get('/profile', authenticate, ctrlWrapper(getUserProfile));
-router.patch('/profile', authenticate, upload.single('avatar'), ctrlWrapper(updateUserProfile));
+router.get('/', authenticate, ctrlWrapper(getUserProfile));
+router.patch('/', authenticate, upload.single('avatar'), ctrlWrapper(updateUserProfile));
 
 export default router;

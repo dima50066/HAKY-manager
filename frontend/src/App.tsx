@@ -7,16 +7,14 @@ import RegisterPage from './pages/register/Register';
 import ResetPassword from './components/auth/SendReset';
 import AppBar from './components/appBar/AppBar';
 import HomePage from './pages/home/Home';
-// import ChangePasswordPage from './pages/change-password/ChangePasswordPage';
-// import NotFound from './pages/not-found/NotFound';
 import { AppDispatch } from './redux/store';
-import PrivateRoute from './components/routers/PrivateRoute';
 import RestrictedRoute from './components/routers/RestrictedRoute';
 import { refreshUser } from './redux/auth/operations';
 import { ToastContainer } from 'react-toastify';
-// import Footer from './components/footer/Footer';
 import LoadingSpinner from './components/loader/LoadingSpinner';
 import 'react-toastify/dist/ReactToastify.css';
+import ProfilePage from './pages/profile/ProfilePage';
+import PrivateRoute from './components/routers/PrivateRoute';
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -69,10 +67,11 @@ const App: React.FC = () => {
           element={<RestrictedRoute component={<RegisterPage />} redirectTo="/" />}
         />
         <Route path="/send-reset" element={<ResetPassword />} />
-        {/* <Route path="/reset-password" element={<ChangePasswordPage />} /> */}
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route
+          path="/profile"
+          element={<PrivateRoute component={<ProfilePage />} redirectTo="/login" />}
+        />
       </Routes>
-      {/* <Footer /> */}
     </Router>
   );
 };
