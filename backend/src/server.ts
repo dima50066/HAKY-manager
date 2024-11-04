@@ -29,8 +29,11 @@ export const setupServer = () => {
 
   app.use(express.json());
 
+  // Налаштування CORS
   const corsOptions = {
-    origin: 'https://extraordinary-stillness-production.up.railway.app',
+    origin: process.env.NODE_ENV === 'production'
+      ? 'https://extraordinary-stillness-production.up.railway.app' // Ваш продакшн-домен
+      : 'http://localhost:3000', // Домен для розробницького середовища
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Authorization', 'Content-Type'],
     credentials: true,
@@ -54,7 +57,6 @@ export const setupServer = () => {
     next();
   });
 
-  
   app.use(notFoundHandler);
 
   app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {

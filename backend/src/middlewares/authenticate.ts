@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import createHttpError from 'http-errors';
 import { SessionsCollection } from '../db/models/session';
-import { User, IUser } from '../db/models/user';
+import { UsersCollection, IUser } from '../db/models/user';
 
 interface AuthenticatedRequest extends Request {
   user?: IUser; // Додаємо користувача в типізований req
@@ -22,22 +22,25 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
   }
 
   try {
+    // Знаходимо сесію на основі токена
     const session = await SessionsCollection.findOne({ accessToken: token });
     if (!session) {
       return next(createHttpError(401, 'Session not found'));
     }
 
+    // Перевіряємо, чи не закінчився термін дії accessToken
     const isAccessTokenExpired = new Date() > new Date(session.accessTokenValidUntil);
     if (isAccessTokenExpired) {
       return next(createHttpError(401, 'Access token expired'));
     }
 
-    const user = await User.findById(session.userId);
+    // Знаходимо користувача за ID, використовуючи UsersCollection
+    const user = await UsersCollection.findById(session.userId);
     if (!user) {
       return next(createHttpError(401, 'User not found'));
     }
 
-    req.user = user;
+    req.user = user; // Додаємо користувача до запиту
     console.log('Authenticated User:', req.user); // Логування автентифікованого користувача
     next();
   } catch (error) {

@@ -1,21 +1,20 @@
 import cloudinary from 'cloudinary';
-import fs from 'node:fs/promises';
-import { env } from './env';
-import { CLOUDINARY } from '../constants/constants';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 cloudinary.v2.config({
-  secure: true,
-  cloud_name: env(CLOUDINARY.CLOUD_NAME),
-  api_key: env(CLOUDINARY.API_KEY),
-  api_secret: env(CLOUDINARY.API_SECRET),
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const saveFileToCloudinary = async (file: { path: string }): Promise<string> => {
-  try {
-    const response = await cloudinary.v2.uploader.upload(file.path);
-    await fs.unlink(file.path); // видаляємо локальний файл після завантаження
-    return response.secure_url;
-  } catch (error: any) {
-    throw new Error(`Cloudinary upload failed: ${error.message}`);
-  }
+interface CloudinaryUploadResult {
+  secure_url: string;
+}
+
+export const saveFileToCloudinary = (filePath: string): Promise<CloudinaryUploadResult> => {
+  return cloudinary.v2.uploader.upload(filePath, {
+    folder: 'avatars', // Вкажіть потрібну папку в Cloudinary
+  }) as Promise<CloudinaryUploadResult>; // Додаємо тип для поверненого значення
 };

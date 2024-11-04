@@ -24,6 +24,7 @@
     "@types/node": "^22.8.6",
     "@types/nodemailer": "^6.4.16",
     "@types/pino-http": "^5.8.4",
+    "@types/pino-pretty": "^5.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   },
@@ -40,6 +41,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "pino": "^9.5.0",
-    "pino-http": "^10.3.0"
+    "pino-http": "^10.3.0",
+    "pino-pretty": "^11.3.0"
   }
 }

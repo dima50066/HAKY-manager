@@ -7,6 +7,8 @@ export interface IUser extends Document {
   password: string;
   role: string;
   avatar?: string; // URL або шлях до аватарки
+  bio: string;
+  isStudent: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +21,8 @@ const UserSchema: Schema<IUser> = new Schema(
     password: { type: String, required: true },
     role: { type: String, default: 'user' },
     avatar: { type: String, default: '' },
+    bio: { type: String, default: '' },
+    isStudent: { type: Boolean, default: false },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }, // Відстеження створення та оновлення
