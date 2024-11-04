@@ -24,7 +24,6 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
   console.log(`Rate for 125% for student: ${department.rate125Student}`);
 
   const nominalUnitsPerHour = 100;
-  const nominalTime = unitsCompleted / nominalUnitsPerHour;
   let appliedRate;
 
   // Діагностика для продуктивності та ставки
@@ -53,7 +52,6 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
     departmentId,
     date,
     unitsCompleted,
-    nominalTime,
     productivity: productivityLevel,
     appliedRate,
     totalEarnings,
