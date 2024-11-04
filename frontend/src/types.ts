@@ -1,5 +1,5 @@
 export interface User {
-    id: string;
+    _id: string;
     name: string;
     email: string;
     subscription: string;
@@ -11,4 +11,17 @@ export interface IUser {
   bio: string;
   isStudent: boolean;
   avatar?: string;
+}
+
+
+export interface IProductivityRecord {
+  id: string;
+  userId: string;
+  departmentId: string;
+  date: string;
+  unitsCompleted: number;
+  nominalTime: number;
+  productivity: number;
+  appliedRate: number;
+  totalEarnings: number;
 }

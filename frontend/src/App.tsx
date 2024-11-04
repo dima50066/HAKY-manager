@@ -15,6 +15,7 @@ import LoadingSpinner from './components/loader/LoadingSpinner';
 import 'react-toastify/dist/ReactToastify.css';
 import ProfilePage from './pages/profile/ProfilePage';
 import PrivateRoute from './components/routers/PrivateRoute';
+import ProductivityPage from './pages/productivity/ProductivityPage';
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -70,6 +71,10 @@ const App: React.FC = () => {
         <Route
           path="/profile"
           element={<PrivateRoute component={<ProfilePage />} redirectTo="/login" />}
+        />
+        <Route
+          path="/productivity"
+          element={<PrivateRoute component={<ProductivityPage />} redirectTo="/login" />}
         />
       </Routes>
     </Router>

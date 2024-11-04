@@ -52,6 +52,14 @@ const Navigation: React.FC = () => {
             Profile
           </Link>
         </li>
+        <li>
+          <Link
+            to="/productivity"
+            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
+          >
+            Productivity
+          </Link>
+        </li>
       </ul>
     </nav>
   );
