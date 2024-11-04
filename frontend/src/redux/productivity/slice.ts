@@ -31,8 +31,16 @@ const productivitySlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Error fetching records';
       })
+      .addCase(addProductivityRecord.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addProductivityRecord.fulfilled, (state, action) => {
+        state.loading = false;
         state.records.push(action.payload);
+      })
+      .addCase(addProductivityRecord.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Error adding productivity record';
       });
   },
 });

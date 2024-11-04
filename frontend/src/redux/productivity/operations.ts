@@ -14,6 +14,7 @@ export const fetchProductivityRecords = createAsyncThunk<IProductivityRecord[]>(
   }
 );
 
+// Оновлення операції додавання запису продуктивності з додаванням `productivityLevel`
 export const addProductivityRecord = createAsyncThunk<IProductivityRecord, any>(
   'productivity/addProductivityRecord',
   async (data, { rejectWithValue }) => {

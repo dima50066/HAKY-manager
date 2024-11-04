@@ -6,6 +6,7 @@ interface ProfileState {
   user: IUser | null;
   loading: boolean;
   error: string | null;
+
 }
 
 const initialState: ProfileState = {

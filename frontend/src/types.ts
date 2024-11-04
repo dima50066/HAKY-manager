@@ -2,7 +2,8 @@ export interface User {
     _id: string;
     name: string;
     email: string;
-    subscription: string;
+  subscription: string;
+  isStudent: boolean;
 }
 
 export interface IUser {
@@ -15,9 +16,11 @@ export interface IUser {
 
 
 export interface IProductivityRecord {
-  id: string;
+  _id: string;
   userId: string;
-  departmentId: string;
+  departmentId:{
+    _id: string;
+    name: string;};
   date: string;
   unitsCompleted: number;
   nominalTime: number;
