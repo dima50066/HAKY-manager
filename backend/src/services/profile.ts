@@ -13,6 +13,7 @@ export const updateUserProfileService = async (
   name: string,
   bio: string,
   isStudent: boolean,
+  productivity: number,
   file?: Express.Multer.File
 ): Promise<IUser | null> => {
   let avatar;
@@ -29,6 +30,7 @@ export const updateUserProfileService = async (
       name,
       bio,
       isStudent,
+      productivity,
       ...(avatar && { avatar }), // Оновлюємо `avatar`, якщо зображення завантажено
     },
     { new: true, runValidators: true }

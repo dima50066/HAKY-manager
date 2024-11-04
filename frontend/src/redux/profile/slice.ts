@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchUserProfile, updateUserProfile } from './operations';
-import { IUser } from '../../types';
+import { User } from '../../types';
 
 interface ProfileState {
-  user: IUser | null;
+  user: User | null;
   loading: boolean;
   error: string | null;
 
@@ -25,7 +25,7 @@ const profileSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchUserProfile.fulfilled, (state, action: PayloadAction<IUser>) => {
+      .addCase(fetchUserProfile.fulfilled, (state, action: PayloadAction<User>) => {
         state.loading = false;
         state.user = action.payload;
       })
@@ -33,7 +33,7 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Failed to load user profile';
       })
-      .addCase(updateUserProfile.fulfilled, (state, action: PayloadAction<IUser>) => {
+      .addCase(updateUserProfile.fulfilled, (state, action: PayloadAction<User>) => {
         state.user = action.payload;
       });
   },

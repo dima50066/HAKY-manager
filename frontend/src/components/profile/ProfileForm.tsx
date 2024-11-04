@@ -2,10 +2,10 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { updateUserProfile } from '../../redux/profile/operations';
-import { IUser } from '../../types';
+import { User } from '../../types';
 
 interface ProfileFormProps {
-  user: IUser;
+  user: User;
 }
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
@@ -13,14 +13,15 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
     name: user.name || '',
     bio: user.bio || '',
     isStudent: user.isStudent || false,
+    productivity: user.productivity || 100, // нове поле для продуктивності
     avatar: null as File | null,
   });
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
-    
+
     setFormData({
       ...formData,
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
@@ -39,6 +40,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
     updatedData.append('name', formData.name);
     updatedData.append('bio', formData.bio);
     updatedData.append('isStudent', String(formData.isStudent));
+    updatedData.append('productivity', String(formData.productivity));
     if (formData.avatar) updatedData.append('avatar', formData.avatar);
 
     dispatch(updateUserProfile(updatedData));
@@ -83,6 +85,21 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
         />
         <label htmlFor="isStudent" className="text-sm text-gray-600">Student</label>
+      </div>
+
+      <div className="space-y-2">
+        <label htmlFor="productivity" className="text-sm font-medium text-gray-600">Productivity Level</label>
+        <select
+          id="productivity"
+          name="productivity"
+          value={formData.productivity}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value={100}>100%</option>
+          <option value={115}>115%</option>
+          <option value={125}>125%</option>
+        </select>
       </div>
 
       <div className="space-y-2">

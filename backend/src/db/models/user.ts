@@ -9,6 +9,7 @@ export interface IUser extends Document {
   avatar?: string; // URL або шлях до аватарки
   bio: string;
   isStudent: boolean;
+  productivity: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,6 +24,7 @@ const UserSchema: Schema<IUser> = new Schema(
     avatar: { type: String, default: '' },
     bio: { type: String, default: '' },
     isStudent: { type: Boolean, default: false },
+    productivity: { type: Number, default: 100 },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }, // Відстеження створення та оновлення

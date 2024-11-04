@@ -33,13 +33,14 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
       return res.status(401).json({ message: 'Unauthorized' });
     }
     const userId = req.user.id;
-    const { name, bio, isStudent } = req.body;
+    const { name, bio, isStudent, productivity } = req.body;
 
     const updatedUser = await updateUserProfileService(
       userId,
       name,
       bio,
       isStudent,
+      productivity,
       req.file // Передаємо файл, якщо є
     );
 

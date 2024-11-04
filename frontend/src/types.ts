@@ -1,17 +1,11 @@
 export interface User {
-    _id: string;
-    name: string;
-    email: string;
-  subscription: string;
-  isStudent: boolean;
-}
-
-export interface IUser {
-  id: string;
+  _id: string;
   name: string;
   bio: string;
   isStudent: boolean;
   avatar?: string;
+  productivity: number;
+  email: string;
 }
 
 

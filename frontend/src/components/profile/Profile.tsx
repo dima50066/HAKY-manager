@@ -1,8 +1,8 @@
 import React from 'react';
-import { IUser } from '../../types';
+import { User } from '../../types';
 
 interface ProfileProps {
-  user: IUser;
+  user: User;
 }
 
 const Profile: React.FC<ProfileProps> = ({ user }) => {
@@ -19,10 +19,21 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
           <p className="text-gray-500">{user.isStudent ? 'Student' : 'Not a Student'}</p>
         </div>
       </div>
-      <div className="p-6">
+
+      <article className="p-6">
         <h3 className="text-lg font-semibold text-gray-700">Bio</h3>
         <p className="text-gray-600 mt-2">{user.bio || 'No bio available'}</p>
-      </div>
+      </article>
+
+      <article className="p-6 bg-gray-100">
+        <h3 className="text-lg font-semibold text-gray-700">Email</h3>
+        <p className="text-gray-600 mt-2">{user.email}</p>
+      </article>
+
+      <article className="p-6">
+        <h3 className="text-lg font-semibold text-gray-700">Productivity</h3>
+        <p className="text-gray-600 mt-2">{user.productivity || 'No productivity information available'}</p>
+      </article>
     </div>
   );
 };

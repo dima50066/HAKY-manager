@@ -13,6 +13,8 @@ const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
