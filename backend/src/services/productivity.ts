@@ -18,10 +18,8 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
     throw new Error('Department not found');
   }
 
-  const nominalUnitsPerHour = 100;
   let appliedRate;
-  
-  // Вибір ставки залежно від продуктивності та статусу студента
+
   if (productivityLevel === 125) {
     appliedRate = isStudent ? department.rate125Student : department.rate125;
     console.log(`Applying 125% rate: ${appliedRate}`);
@@ -33,7 +31,6 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
     console.log(`Applying base rate: ${appliedRate}`);
   }
 
-  // Загальний дохід, обчислений на основі обраної ставки
   const totalEarnings = unitsCompleted * appliedRate;
   console.log(`Total Earnings: ${totalEarnings}`);
 
@@ -42,16 +39,13 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
     departmentId,
     date,
     unitsCompleted,
-    productivity: productivityLevel,
-    appliedRate,
+    productivityLevel,
+    isStudent,
     totalEarnings,
   });
 
   return record;
 };
-
-
-
 
 
 export const getAllProductivityRecords = async () => {

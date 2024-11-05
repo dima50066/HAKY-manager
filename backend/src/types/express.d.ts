@@ -1,4 +1,4 @@
-import { IUser } from '../../db/models/user'; // Переконайтеся, що шлях до IUser правильний
+import { IUser } from '../../db/models/user';
 
 declare global {
   namespace Express {
@@ -8,4 +8,4 @@ declare global {
   }
 }
 
-export {}; // Додаємо порожній export, щоб TypeScript розпізнав це як модуль
+export {};

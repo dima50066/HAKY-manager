@@ -11,6 +11,3 @@ export function env(name: string, defaultValue?: string): string {
 
   throw new Error(`Missing: process.env['${name}'].`);
 }
-
-// Приклад використання:
-// env('PORT', '5000');

@@ -1,13 +1,11 @@
 import { User, UsersCollection } from '../db/models/user';
 import { saveFileToCloudinary } from '../utils/cloudinary';
 
-// Сервіс для отримання даних профілю
 export const getUserProfileService = async (userId: string): Promise<User | null> => {
   const user = await UsersCollection.findById(userId).select('-password');
   return user;
 };
 
-// Сервіс для оновлення профілю користувача
 export const updateUserProfileService = async (
   userId: string,
   name: string,
@@ -18,10 +16,9 @@ export const updateUserProfileService = async (
 ): Promise<User | null> => {
   let avatar;
 
-  // Завантаження аватара в Cloudinary, якщо файл є
   if (file) {
     const result = await saveFileToCloudinary(file.path);
-    avatar = result.secure_url; // Зберігаємо URL Cloudinary у полі `avatar`
+    avatar = result.secure_url; 
   }
 
   const updatedUser = await UsersCollection.findByIdAndUpdate(
@@ -31,7 +28,7 @@ export const updateUserProfileService = async (
       bio,
       isStudent,
       productivity,
-      ...(avatar && { avatar }), // Оновлюємо `avatar`, якщо зображення завантажено
+      ...(avatar && { avatar }),
     },
     { new: true, runValidators: true }
   ).select('-password');

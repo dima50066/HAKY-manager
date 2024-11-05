@@ -15,6 +15,6 @@ interface CloudinaryUploadResult {
 
 export const saveFileToCloudinary = (filePath: string): Promise<CloudinaryUploadResult> => {
   return cloudinary.v2.uploader.upload(filePath, {
-    folder: 'avatars', // Вкажіть потрібну папку в Cloudinary
-  }) as Promise<CloudinaryUploadResult>; // Додаємо тип для поверненого значення
+    folder: 'avatars',
+  }) as Promise<CloudinaryUploadResult>;
 };

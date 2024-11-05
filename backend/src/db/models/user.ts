@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-// Інтерфейс для типізації користувача
 export interface User extends Document {
   name: string;
   email: string;
@@ -14,7 +13,6 @@ export interface User extends Document {
   updatedAt: Date;
 }
 
-// Схема користувача
 const UserSchema: Schema<User> = new Schema(
   {
     name: { type: String, required: true },
@@ -27,17 +25,15 @@ const UserSchema: Schema<User> = new Schema(
     productivity: { type: Number, default: 100 },
   },
   {
-    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }, // Відстеження створення та оновлення
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
     versionKey: false,
   }
 );
 
-// Функція toJSON для приховування пароля при відправці користувача
 UserSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   return obj;
 };
 
-// Експортуємо модель користувача
 export const UsersCollection = mongoose.model<User>('users', UserSchema);

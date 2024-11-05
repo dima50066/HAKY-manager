@@ -4,12 +4,12 @@ import { SessionsCollection } from '../db/models/session';
 import { UsersCollection, User } from '../db/models/user';
 
 interface AuthenticatedRequest extends Request {
-  user?: User; // Додаємо користувача в типізований req
+  user?: User; 
 }
 
 export const authenticate = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const authHeader = req.get('Authorization');
-  console.log('Authorization Header:', authHeader); // Логування заголовка авторизації
+  console.log('Authorization Header:', authHeader);
 
   if (!authHeader) {
     return next(createHttpError(401, 'Please provide Authorization header'));
@@ -22,26 +22,23 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
   }
 
   try {
-    // Знаходимо сесію на основі токена
     const session = await SessionsCollection.findOne({ accessToken: token });
     if (!session) {
       return next(createHttpError(401, 'Session not found'));
     }
 
-    // Перевіряємо, чи не закінчився термін дії accessToken
     const isAccessTokenExpired = new Date() > new Date(session.accessTokenValidUntil);
     if (isAccessTokenExpired) {
       return next(createHttpError(401, 'Access token expired'));
     }
 
-    // Знаходимо користувача за ID, використовуючи UsersCollection
     const user = await UsersCollection.findById(session.userId);
     if (!user) {
       return next(createHttpError(401, 'User not found'));
     }
 
-    req.user = user; // Додаємо користувача до запиту
-    console.log('Authenticated User:', req.user); // Логування автентифікованого користувача
+    req.user = user;
+    console.log('Authenticated User:', req.user);
     next();
   } catch (error) {
     console.error('Authentication error:', error);

@@ -9,7 +9,6 @@ interface AuthenticatedRequest extends Request {
   user?: User;
 }
 
-// Контролер для отримання профілю користувача
 export const getUserProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
@@ -26,7 +25,6 @@ export const getUserProfile = async (req: AuthenticatedRequest, res: Response, n
   }
 };
 
-// Контролер для оновлення профілю користувача
 export const updateUserProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
@@ -41,7 +39,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
       bio,
       isStudent,
       productivity,
-      req.file // Передаємо файл, якщо є
+      req.file
     );
 
     if (!updatedUser) return res.status(404).json({ message: 'User not found' });

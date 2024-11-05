@@ -10,7 +10,7 @@ export const errorHandler = (err: Error | HttpError, req: Request, res: Response
     });
   }
 
-  console.error('Unhandled error:', err); // Логування для відстеження помилок
+  console.error('Unhandled error:', err); 
 
   res.status(500).json({
     message: 'Something went wrong',
