@@ -1,12 +1,12 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 // Інтерфейс для типізації користувача
-export interface IUser extends Document {
+export interface User extends Document {
   name: string;
   email: string;
   password: string;
   role: string;
-  avatar?: string; // URL або шлях до аватарки
+  avatar?: string;
   bio: string;
   isStudent: boolean;
   productivity: number;
@@ -15,7 +15,7 @@ export interface IUser extends Document {
 }
 
 // Схема користувача
-const UserSchema: Schema<IUser> = new Schema(
+const UserSchema: Schema<User> = new Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -40,4 +40,4 @@ UserSchema.methods.toJSON = function () {
 };
 
 // Експортуємо модель користувача
-export const UsersCollection = mongoose.model<IUser>('users', UserSchema);
+export const UsersCollection = mongoose.model<User>('users', UserSchema);

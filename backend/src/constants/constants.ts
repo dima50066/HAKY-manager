@@ -8,17 +8,6 @@ export const SORT_ORDER: { ASC: 'asc'; DESC: 'desc' } = {
 export const FIFTEEN_MINUTES: number = 15 * 60 * 1000;
 export const THIRTY_DAYS: number = 30 * 24 * 60 * 60 * 1000;
 
-export const DEPARTMENT_RATES: { [key: string]: number } = {
-  p01: 0.184,
-  p02: 0.13,
-  p03: 0.111,
-};
-
-export const DATE_FORMATS = {
-  STANDARD: 'YYYY-MM-DD',
-  FULL_DATE_TIME: 'YYYY-MM-DD HH:mm:ss',
-};
-
 
 export const SMTP = {
   SMTP_HOST: 'SMTP_HOST',

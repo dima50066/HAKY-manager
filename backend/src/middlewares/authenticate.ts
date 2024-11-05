@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import createHttpError from 'http-errors';
 import { SessionsCollection } from '../db/models/session';
-import { UsersCollection, IUser } from '../db/models/user';
+import { UsersCollection, User } from '../db/models/user';
 
 interface AuthenticatedRequest extends Request {
-  user?: IUser; // Додаємо користувача в типізований req
+  user?: User; // Додаємо користувача в типізований req
 }
 
 export const authenticate = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {

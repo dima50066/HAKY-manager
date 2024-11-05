@@ -22,7 +22,7 @@ const LoginForm: React.FC = () => {
       const resultAction = await dispatch(loginUser({ email: emailInput, password: passwordInput }));
       if (loginUser.fulfilled.match(resultAction)) {
         toast.success('Login successful!');
-        navigate('/profile');
+        navigate('/dashboard');
       } else {
         toast.error('Login failed: ' + (resultAction.payload as string || 'Unknown error'));
       }
@@ -33,7 +33,7 @@ const LoginForm: React.FC = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/profile');
+      navigate('/dashboard');
     }
   }, [isLoggedIn, navigate]);
 

@@ -1,8 +1,8 @@
-import { IUser, UsersCollection } from '../db/models/user';
+import { User, UsersCollection } from '../db/models/user';
 import { saveFileToCloudinary } from '../utils/cloudinary';
 
 // Сервіс для отримання даних профілю
-export const getUserProfileService = async (userId: string): Promise<IUser | null> => {
+export const getUserProfileService = async (userId: string): Promise<User | null> => {
   const user = await UsersCollection.findById(userId).select('-password');
   return user;
 };
@@ -15,7 +15,7 @@ export const updateUserProfileService = async (
   isStudent: boolean,
   productivity: number,
   file?: Express.Multer.File
-): Promise<IUser | null> => {
+): Promise<User | null> => {
   let avatar;
 
   // Завантаження аватара в Cloudinary, якщо файл є

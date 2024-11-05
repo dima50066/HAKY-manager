@@ -18,18 +18,8 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
     throw new Error('Department not found');
   }
 
-  // Лог ставок, щоб підтвердити їх існування
-  console.log(`Base rate for student: ${department.baseRateStudent}`);
-  console.log(`Rate for 115% for student: ${department.rate115Student}`);
-  console.log(`Rate for 125% for student: ${department.rate125Student}`);
-
   const nominalUnitsPerHour = 100;
   let appliedRate;
-
-  // Діагностика для продуктивності та ставки
-  console.log(`Calculating for user: ${userId}`);
-  console.log(`Productivity Level: ${productivityLevel}`);
-  console.log(`Student Status: ${isStudent}`);
   
   // Вибір ставки залежно від продуктивності та статусу студента
   if (productivityLevel === 125) {

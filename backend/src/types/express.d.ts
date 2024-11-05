@@ -3,7 +3,7 @@ import { IUser } from '../../db/models/user'; // Переконайтеся, щ�
 declare global {
   namespace Express {
     interface Request {
-      user?: IUser;
+      user?: User;
     }
   }
 }

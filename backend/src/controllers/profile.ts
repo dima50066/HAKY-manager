@@ -3,10 +3,10 @@ import {
   getUserProfileService,
   updateUserProfileService,
 } from '../services/profile';
-import { IUser } from '../db/models/user';
+import { User } from '../db/models/user';
 
 interface AuthenticatedRequest extends Request {
-  user?: IUser;
+  user?: User;
 }
 
 // Контролер для отримання профілю користувача
