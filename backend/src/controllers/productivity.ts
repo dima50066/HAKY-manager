@@ -11,7 +11,6 @@ export const addProductivityRecord = async (req: Request, res: Response, next: N
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Конвертація значень у числа, якщо вони передаються як рядки
     const parsedUnitsCompleted = typeof unitsCompleted === 'string' ? parseFloat(unitsCompleted) : unitsCompleted;
     const parsedProductivityLevel = typeof productivityLevel === 'string' ? parseInt(productivityLevel, 10) : productivityLevel;
 
@@ -30,9 +29,6 @@ export const addProductivityRecord = async (req: Request, res: Response, next: N
     next(error);
   }
 };
-
-
-
 
 export const getProductivityRecords = async (req: Request, res: Response, next: NextFunction) => {
   try {

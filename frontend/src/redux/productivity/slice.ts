@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchProductivityRecords, addProductivityRecord } from './operations';
-import { IProductivityRecord } from '../../types';
+import { ProductivityRecord } from '../../types';
 
 interface ProductivityState {
-  records: IProductivityRecord[];
+  records: ProductivityRecord[];
   loading: boolean;
   error: string | null;
 }

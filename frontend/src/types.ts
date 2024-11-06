@@ -9,7 +9,7 @@ export interface User {
 }
 
 
-export interface IProductivityRecord {
+export interface ProductivityRecord {
   _id: string;
   userId: string;
   departmentId:{
@@ -17,7 +17,6 @@ export interface IProductivityRecord {
     name: string;};
   date: string;
   unitsCompleted: number;
-  nominalTime: number;
   productivity: number;
   appliedRate: number;
   totalEarnings: number;

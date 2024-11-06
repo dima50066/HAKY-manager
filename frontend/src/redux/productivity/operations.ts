@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../hooks/axiosConfig';
-import { IProductivityRecord } from '../../types';
+import { ProductivityRecord } from '../../types';
 
-export const fetchProductivityRecords = createAsyncThunk<IProductivityRecord[]>(
+export const fetchProductivityRecords = createAsyncThunk<ProductivityRecord[]>(
   'productivity/fetchProductivityRecords',
   async (_, { rejectWithValue }) => {
     try {
@@ -15,7 +15,7 @@ export const fetchProductivityRecords = createAsyncThunk<IProductivityRecord[]>(
 );
 
 // Оновлення операції додавання запису продуктивності з додаванням `productivityLevel`
-export const addProductivityRecord = createAsyncThunk<IProductivityRecord, any>(
+export const addProductivityRecord = createAsyncThunk<ProductivityRecord, any>(
   'productivity/addProductivityRecord',
   async (data, { rejectWithValue }) => {
     try {

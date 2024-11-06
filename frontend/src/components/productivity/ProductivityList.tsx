@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectProductivityRecords } from '../../redux/productivity/selectors';
-import { IProductivityRecord } from '../../types';
+import { ProductivityRecord } from '../../types';
 
 const ProductivityList: React.FC = () => {
   const records = useSelector(selectProductivityRecords);
@@ -18,7 +18,7 @@ const ProductivityList: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold mb-4">Productivity Records</h2>
-      {records.map((record: IProductivityRecord) => (
+      {records.map((record: ProductivityRecord) => (
         <div key={record._id} className="mb-4 p-4 border rounded">
           <p>Department: {record.departmentId.name}</p>
           <p>Date: {formatDate(record.date)}</p>

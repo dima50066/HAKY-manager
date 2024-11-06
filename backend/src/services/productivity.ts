@@ -22,17 +22,13 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
 
   if (productivityLevel === 125) {
     appliedRate = isStudent ? department.rate125Student : department.rate125;
-    console.log(`Applying 125% rate: ${appliedRate}`);
   } else if (productivityLevel === 115) {
     appliedRate = isStudent ? department.rate115Student : department.rate115;
-    console.log(`Applying 115% rate: ${appliedRate}`);
   } else {
     appliedRate = isStudent ? department.baseRateStudent : department.baseRate;
-    console.log(`Applying base rate: ${appliedRate}`);
   }
 
   const totalEarnings = unitsCompleted * appliedRate;
-  console.log(`Total Earnings: ${totalEarnings}`);
 
   const record = await ProductivityRecord.create({
     userId,
@@ -47,8 +43,9 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
   return record;
 };
 
-
 export const getAllProductivityRecords = async () => {
-  const records = await ProductivityRecord.find().populate('departmentId', 'name');
+  const records = await ProductivityRecord.find()
+    .populate('departmentId', 'name')
+    .populate('userId', 'name isStudent'); 
   return records;
 };
