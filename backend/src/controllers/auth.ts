@@ -10,7 +10,6 @@ import createHttpError from 'http-errors';
 import { THIRTY_DAYS } from '../constants/constants';
 import { Request, Response, NextFunction } from 'express';
 
-// Функція для налаштування сесії
 const setupSession = (res: Response, session: any) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,

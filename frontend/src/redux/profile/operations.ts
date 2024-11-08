@@ -1,32 +1,31 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance from '../../hooks/axiosConfig';
-import { User } from '../../types';
+import axiosInstance, { setAuthHeader } from '../../hooks/axiosConfig';
 
-export const fetchUserProfile = createAsyncThunk<User>(
-  'profile/fetchUserProfile',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.get('/profile');
-      return response.data.data;
-      
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
+export const createProfile = createAsyncThunk(
+  'profile/createProfile',
+  async (profileData: FormData | any, { getState }) => {
+    const token = (getState() as any).auth.token;
+    setAuthHeader(token);
+
+    const headers = profileData instanceof FormData ? {} : { 'Content-Type': 'application/json' };
+
+    const response = await axiosInstance.post('/profile/create', profileData, { headers });
+    return response.data.data;
   }
 );
 
-export const updateUserProfile = createAsyncThunk<User, FormData>(
-  'profile/updateUserProfile',
-  async (profileData, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.patch('/profile', profileData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+export const getProfile = createAsyncThunk('profile/getProfile', async (_, { getState }) => {
+  const token = (getState() as any).auth.token;
+  setAuthHeader(token);
+
+  const response = await axiosInstance.get('/profile');
+  return response.data.data;
+});
+
+export const updateProfile = createAsyncThunk('profile/updateProfile', async (profileData: any, { getState }) => {
+  const token = (getState() as any).auth.token;
+  setAuthHeader(token);
+
+  const response = await axiosInstance.put('/profile/update', profileData);
+  return response.data.data;
+});

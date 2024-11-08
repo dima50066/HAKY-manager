@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { setCredentials } from './redux/auth/slice';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import LoginPage from './pages/login/Login';
 import RegisterPage from './pages/register/Register';
 import ResetPassword from './components/auth/SendReset';
@@ -15,7 +15,12 @@ import LoadingSpinner from './components/loader/LoadingSpinner';
 import 'react-toastify/dist/ReactToastify.css';
 import ProfilePage from './pages/profile/ProfilePage';
 import PrivateRoute from './components/routers/PrivateRoute';
-import ProductivityPage from './pages/productivity/ProductivityPage';
+import CreateProfile from './components/profile/createProfile';
+import { getProfile } from './redux/profile/operations';
+import Productivity from './pages/productivity/ProductivityPage';
+import ProductivityForm from './components/productivity/ProductivityForm';
+import ProductivityList from './components/productivity/ProductivityList';
+
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,6 +45,8 @@ const App: React.FC = () => {
       if (result.meta.requestStatus === 'fulfilled') {
         const { accessToken } = result.payload;
         localStorage.setItem('token', accessToken);
+
+        await dispatch(getProfile());
       } else {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
@@ -48,6 +55,7 @@ const App: React.FC = () => {
       setIsRefreshingUser(false);
     }
   };
+
 
   if (isRefreshingUser) {
     return <LoadingSpinner loading={true} size={60} color="#3498db" />;
@@ -59,23 +67,12 @@ const App: React.FC = () => {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route
-          path="/login"
-          element={<RestrictedRoute component={<LoginPage />} redirectTo="/" />}
-        />
-        <Route
-          path="/register"
-          element={<RestrictedRoute component={<RegisterPage />} redirectTo="/" />}
-        />
+        <Route path="/login" element={<RestrictedRoute component={<LoginPage />} redirectTo="/" />} />
+        <Route path="/register" element={<RestrictedRoute component={<RegisterPage />} redirectTo="/" />} />
         <Route path="/send-reset" element={<ResetPassword />} />
-        <Route
-          path="/profile"
-          element={<PrivateRoute component={<ProfilePage />} redirectTo="/login" />}
-        />
-        <Route
-          path="/productivity"
-          element={<PrivateRoute component={<ProductivityPage />} redirectTo="/login" />}
-        />
+        <Route path="/profile" element={<PrivateRoute component={<ProfilePage />} redirectTo="/login" />} />
+        <Route path="/profile/create" element={<PrivateRoute component={<CreateProfile />} redirectTo="/login" />} />
+        <Route path="/productivity" element={<PrivateRoute component={<Productivity />} redirectTo="/login" />} />
       </Routes>
     </Router>
   );

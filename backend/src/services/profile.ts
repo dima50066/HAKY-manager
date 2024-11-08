@@ -1,37 +1,37 @@
-import { User, UsersCollection } from '../db/models/user';
-import { saveFileToCloudinary } from '../utils/cloudinary';
+import { ProfilesCollection } from '../db/models/profile';
+import createHttpError from 'http-errors';
 
-export const getUserProfileService = async (userId: string): Promise<User | null> => {
-  const user = await UsersCollection.findById(userId).select('-password');
-  return user;
+interface ProfilePayload {
+  avatar?: string;
+  bio?: string;
+  isStudent: boolean;
+  productivity: number;
+  location?: string;
+  birthDate?: Date;
+}
+
+export const createProfile = async (userId: string, data: ProfilePayload) => {
+  const existingProfile = await ProfilesCollection.findOne({ user: userId });
+  if (existingProfile) throw createHttpError(409, 'Profile already exists');
+
+  return await ProfilesCollection.create({ ...data, user: userId });
 };
 
-export const updateUserProfileService = async (
-  userId: string,
-  name: string,
-  bio: string,
-  isStudent: boolean,
-  productivity: number,
-  file?: Express.Multer.File
-): Promise<User | null> => {
-  let avatar;
+export const getProfile = async (userId: string) => {
+  const profile = await ProfilesCollection.findOne({ user: userId });
+  if (!profile) throw createHttpError(404, 'Profile not found');
 
-  if (file) {
-    const result = await saveFileToCloudinary(file.path);
-    avatar = result.secure_url; 
-  }
+  return profile;
+};
 
-  const updatedUser = await UsersCollection.findByIdAndUpdate(
-    userId,
-    {
-      name,
-      bio,
-      isStudent,
-      productivity,
-      ...(avatar && { avatar }),
-    },
-    { new: true, runValidators: true }
-  ).select('-password');
+export const updateProfile = async (userId: string, data: ProfilePayload) => {
+  const profile = await ProfilesCollection.findOneAndUpdate(
+    { user: userId },
+    data,
+    { new: true }
+  );
 
-  return updatedUser;
+  if (!profile) throw createHttpError(404, 'Profile not found for update');
+
+  return profile;
 };

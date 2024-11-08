@@ -1,8 +1,8 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 
 interface ProductivityRecord extends Document {
-  userId: Schema.Types.ObjectId;
-  departmentId: Schema.Types.ObjectId;
+  userId: Types.ObjectId;
+  departmentId: Types.ObjectId;
   date: Date;
   unitsCompleted: number;
   productivityLevel: number; 

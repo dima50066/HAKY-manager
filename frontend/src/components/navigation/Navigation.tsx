@@ -10,7 +10,6 @@ const Navigation: React.FC = () => {
 
   return (
     <nav className="relative">
-      {/*Button for menu */}
       <button
         className="flex items-center px-3 py-2 text-white bg-blue-500 rounded lg:hidden hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
         onClick={toggleMenu}
@@ -25,8 +24,6 @@ const Navigation: React.FC = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
         </svg>
       </button>
-
-      {/* Menu */}
       <ul className={`flex-col lg:flex-row space-x-0 mt-2 lg:space-x-4 lg:space-y-0 space-y-2 lg:space-y-0 ${isOpen ? 'block' : 'hidden'} lg:flex`}>
         <li>
           <Link

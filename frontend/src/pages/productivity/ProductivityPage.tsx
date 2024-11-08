@@ -1,24 +1,15 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductivityRecords } from '../../redux/productivity/operations';
+import React from 'react';
 import ProductivityForm from '../../components/productivity/ProductivityForm';
 import ProductivityList from '../../components/productivity/ProductivityList';
-import { AppDispatch } from '../../redux/store';
 
-const ProductivityPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchProductivityRecords());
-  }, [dispatch]);
-
+const Productivity: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <h1 className="text-4xl font-bold text-center mb-8">Productivity Management</h1>
+    <div className="max-w-4xl mx-auto p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Productivity Management</h1>
       <ProductivityForm />
       <ProductivityList />
     </div>
   );
 };
 
-export default ProductivityPage;
+export default Productivity;

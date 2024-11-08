@@ -1,51 +1,88 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  getUserProfileService,
-  updateUserProfileService,
-} from '../services/profile';
+import createHttpError from 'http-errors';
+import { createProfile, getProfile, updateProfile } from '../services/profile';
+import { saveFileToCloudinary } from '../utils/cloudinary';
 import { User } from '../db/models/user';
+import fs from 'fs';
+import path from 'path';
+import { TEMP_UPLOAD_DIR } from '../constants/constants';
 
 interface AuthenticatedRequest extends Request {
   user?: User;
 }
 
-export const getUserProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const createProfileController = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized' });
+    const profileData = req.body;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return next(createHttpError(401, 'User is not authenticated'));
     }
-    const userId = req.user.id;
-    const user = await getUserProfileService(userId);
 
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (req.file) {
+      const tempFilePath = path.join(TEMP_UPLOAD_DIR, req.file.filename); 
 
-    res.json({ data: user });
-  } catch (error) {
-    next(error);
+      const cloudinaryResult = await saveFileToCloudinary(tempFilePath);
+      profileData.avatar = cloudinaryResult.secure_url;
+      
+      fs.unlinkSync(tempFilePath);
+    }
+
+    const profile = await createProfile(userId, profileData);
+    
+    res.status(201).json({
+      status: 201,
+      message: 'Profile successfully created!',
+      data: profile,
+    });
+  } catch (error: any) {
+    console.error('Profile creation error:', error);
+    next(createHttpError(400, error.message));
   }
 };
 
-export const updateUserProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+
+
+export const getProfileController = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized' });
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return next(createHttpError(401, 'User is not authenticated'));
     }
-    const userId = req.user.id;
-    const { name, bio, isStudent, productivity } = req.body;
 
-    const updatedUser = await updateUserProfileService(
-      userId,
-      name,
-      bio,
-      isStudent,
-      productivity,
-      req.file
-    );
+    const profile = await getProfile(userId);
 
-    if (!updatedUser) return res.status(404).json({ message: 'User not found' });
+    res.status(200).json({
+      status: 200,
+      message: 'Profile retrieved successfully!',
+      data: profile,
+    });
+  } catch (error: any) {
+    console.error('Error retrieving profile:', error);
+    next(createHttpError(500, 'Could not retrieve profile'));
+  }
+};
 
-    res.json({ data: updatedUser });
-  } catch (error) {
-    next(error);
+export const updateProfileController = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.id;
+    const updatedData = req.body;
+
+    if (!userId) {
+      return next(createHttpError(401, 'User is not authenticated'));
+    }
+
+    const updatedProfile = await updateProfile(userId, updatedData);
+
+    res.status(200).json({
+      status: 200,
+      message: 'Profile updated successfully!',
+      data: updatedProfile,
+    });
+  } catch (error: any) {
+    console.error('Profile update error:', error);
+    next(createHttpError(400, error.message));
   }
 };

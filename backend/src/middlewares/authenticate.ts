@@ -4,7 +4,7 @@ import { SessionsCollection } from '../db/models/session';
 import { UsersCollection, User } from '../db/models/user';
 
 interface AuthenticatedRequest extends Request {
-  user?: User; 
+  user?: User;
 }
 
 export const authenticate = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {

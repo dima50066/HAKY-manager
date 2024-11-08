@@ -8,3 +8,12 @@ export const productivitySchema = Joi.object({
   productivityLevel: Joi.number().min(100).max(125).required(),
   isStudent: Joi.boolean().required(),
 });
+
+export const productivityUpdateSchema = Joi.object({
+  userId: Joi.string(),
+  departmentId: Joi.string(),
+  date: Joi.date(),
+  unitsCompleted: Joi.number().min(0),
+  productivityLevel: Joi.number().min(100).max(125),
+  isStudent: Joi.boolean(),
+}).min(1);

@@ -1,13 +1,17 @@
 import express from 'express';
-import { getUserProfile, updateUserProfile } from '../controllers/profile';
+import { createProfileController, getProfileController, updateProfileController } from '../controllers/profile';
 import { authenticate } from '../middlewares/authenticate';
+import { profileSchema } from '../validation/profile';
+import { validateBody } from '../middlewares/validateBody';
 import { ctrlWrapper } from '../utils/ctrlWrapper';
-import multer from 'multer';
+import { upload } from '../middlewares/multer';
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
 
-router.get('/', authenticate, ctrlWrapper(getUserProfile));
-router.patch('/', authenticate, upload.single('avatar'), ctrlWrapper(updateUserProfile));
+router.post('/create', authenticate, upload.single('avatar'),  validateBody(profileSchema), ctrlWrapper(createProfileController));
+
+router.get('/', authenticate, ctrlWrapper(getProfileController));
+
+router.put('/update', authenticate, validateBody(profileSchema), ctrlWrapper(updateProfileController));
 
 export default router;

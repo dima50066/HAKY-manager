@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProductivityRecord } from '../../redux/productivity/operations';
+import { updateProductivityRecord } from '../../redux/productivity/operations';
 import { fetchDepartments } from '../../redux/departments/operations';
-import { RootState, AppDispatch } from '../../redux/store';
+import { AppDispatch, RootState } from '../../redux/store';
+import { ProductivityRecord } from '../../types';
 
-const ProductivityForm: React.FC = () => {
+interface ProductivityUpdateFormProps {
+  record: ProductivityRecord;
+  onClose: () => void; 
+}
+
+const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({ record, onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [departmentId, setDepartmentId] = useState('');
-  const [date, setDate] = useState('');
-  const [unitsCompleted, setUnitsCompleted] = useState(0);
+  const [departmentId, setDepartmentId] = useState(record.departmentId as string);
+  const [date, setDate] = useState(record.date);
+  const [unitsCompleted, setUnitsCompleted] = useState(record.unitsCompleted);
 
-  const user = useSelector((state: RootState) => state.auth.user);
   const departments = useSelector((state: RootState) => state.departments.departments);
   const loadingDepartments = useSelector((state: RootState) => state.departments.loading);
 
@@ -21,23 +26,13 @@ const ProductivityForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!user) return;
-
-    dispatch(
-      addProductivityRecord({
-        departmentId,
-        date,
-        unitsCompleted,
-      })
-    );
-
-    setDepartmentId('');
-    setDate('');
-    setUnitsCompleted(0);
+    dispatch(updateProductivityRecord({ id: record._id, data: { departmentId, date, unitsCompleted } }));
+    onClose(); 
   };
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg space-y-4">
+      <h2 className="text-lg font-semibold text-gray-700">Update Productivity Record</h2>
       <div>
         <label className="block text-gray-700 font-medium mb-2">Department:</label>
         <select
@@ -64,7 +59,6 @@ const ProductivityForm: React.FC = () => {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          required
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
       </div>
@@ -82,10 +76,10 @@ const ProductivityForm: React.FC = () => {
         type="submit"
         className="w-full p-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
       >
-        Add Productivity Record
+        Save Changes
       </button>
     </form>
   );
 };
 
-export default ProductivityForm;
+export default ProductivityUpdateForm;

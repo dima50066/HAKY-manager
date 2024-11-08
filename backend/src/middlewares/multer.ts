@@ -1,5 +1,11 @@
 import multer, { StorageEngine } from 'multer';
+import fs from 'fs';
+import path from 'path';
 import { TEMP_UPLOAD_DIR } from '../constants/constants';
+
+if (!fs.existsSync(TEMP_UPLOAD_DIR)) {
+  fs.mkdirSync(TEMP_UPLOAD_DIR, { recursive: true });
+}
 
 const storage: StorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {

@@ -1,39 +1,51 @@
 import React from 'react';
-import { User } from '../../types';
+import { useSelector } from 'react-redux';
+import { selectProfile, selectProfileLoading } from '../../redux/profile/selectors';
+import LoadingSpinner from '../loader/LoadingSpinner';
 
-interface ProfileProps {
-  user: User;
-}
+const Profile: React.FC = () => {
+  const profile = useSelector(selectProfile);
+  const loading = useSelector(selectProfileLoading);
 
-const Profile: React.FC<ProfileProps> = ({ user }) => {
+  if (loading) return <LoadingSpinner loading={loading} />;
+
+  if (!profile) return <p className="text-center text-gray-500">No profile data available.</p>;
+
   return (
-    <div className="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-      <div className="flex items-center p-6 bg-gray-100">
-        <img
-          src={user.avatar || '/placeholder-avatar.png'}
-          alt="User Avatar"
-          className="w-24 h-24 rounded-full object-cover mr-4"
-        />
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800">{user.name}</h2>
-          <p className="text-gray-500">{user.isStudent ? 'Student' : 'Not a Student'}</p>
+    <div className="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-8">
+      <div className="px-6 py-6">
+        <div className="flex justify-center relative">
+          <div className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-200">
+            <img
+              className="object-cover w-full h-full"
+              src={profile.avatar}
+              alt="Avatar"
+            />
+          </div>
+        </div>
+        <div className="text-center mt-8">
+          <p className="text-gray-700 text-lg font-semibold">
+            {profile.isStudent ? 'Student' : 'Not a Student'}
+          </p>
+        </div>
+        <div className="text-center mt-2">
+          <p className="text-gray-500">Productivity: {profile.productivity}%</p>
+        </div>
+        <div className="text-center mt-4">
+          <p className="text-gray-700 font-semibold">Bio</p>
+          <p className="text-gray-500 mt-1">{profile.bio || 'No bio provided'}</p>
+        </div>
+        <div className="text-center mt-4">
+          <p className="text-gray-700 font-semibold">Location</p>
+          <p className="text-gray-500 mt-1">{profile.location || 'No location provided'}</p>
+        </div>
+        <div className="text-center mt-4">
+          <p className="text-gray-700 font-semibold">Birth Date</p>
+          <p className="text-gray-500 mt-1">
+            {profile.birthDate ? new Date(profile.birthDate).toLocaleDateString() : 'Not provided'}
+          </p>
         </div>
       </div>
-
-      <article className="p-6">
-        <h3 className="text-lg font-semibold text-gray-700">Bio</h3>
-        <p className="text-gray-600 mt-2">{user.bio || 'No bio available'}</p>
-      </article>
-
-      <article className="p-6 bg-gray-100">
-        <h3 className="text-lg font-semibold text-gray-700">Email</h3>
-        <p className="text-gray-600 mt-2">{user.email}</p>
-      </article>
-
-      <article className="p-6">
-        <h3 className="text-lg font-semibold text-gray-700">Productivity</h3>
-        <p className="text-gray-600 mt-2">{user.productivity || 'No productivity information available'}</p>
-      </article>
     </div>
   );
 };

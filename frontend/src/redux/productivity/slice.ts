@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchProductivityRecords, addProductivityRecord } from './operations';
+import { fetchProductivityRecords, addProductivityRecord, updateProductivityRecord, deleteProductivityRecord } from './operations';
 import { ProductivityRecord } from '../../types';
 
 interface ProductivityState {
@@ -29,20 +29,19 @@ const productivitySlice = createSlice({
       })
       .addCase(fetchProductivityRecords.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Error fetching records';
-      })
-      .addCase(addProductivityRecord.pending, (state) => {
-        state.loading = true;
+        state.error = action.error.message || 'Failed to fetch records';
       })
       .addCase(addProductivityRecord.fulfilled, (state, action) => {
-        state.loading = false;
         state.records.push(action.payload);
       })
-      .addCase(addProductivityRecord.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Error adding productivity record';
+      .addCase(updateProductivityRecord.fulfilled, (state, action) => {
+        const index = state.records.findIndex(record => record._id === action.payload._id);
+        if (index !== -1) state.records[index] = action.payload;
+      })
+      .addCase(deleteProductivityRecord.fulfilled, (state, action) => {
+        state.records = state.records.filter(record => record._id !== action.payload);
       });
-  },
+  }
 });
 
 export default productivitySlice.reducer;

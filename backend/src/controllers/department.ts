@@ -3,7 +3,7 @@ import { getDepartmentsService } from '../services/department';
 
 export const getAllDepartments = async (req: Request, res: Response) => {
   try {
-    const departments = await getDepartmentsService(); // Викликаємо сервіс
+    const departments = await getDepartmentsService();
     res.status(200).json(departments);
   } catch (error) {
     console.error("Error in getAllDepartments controller:", error);
