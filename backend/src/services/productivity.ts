@@ -32,12 +32,26 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
   }
 
   let appliedRate;
-  if (productivityLevel === 125) {
-    appliedRate = isStudent ? department.rate125Student : department.rate125;
-  } else if (productivityLevel === 115) {
-    appliedRate = isStudent ? department.rate115Student : department.rate115;
+
+  // Якщо департамент має тільки базові ставки
+  const hasAdvancedRates = department.rate115 !== undefined && department.rate125 !== undefined;
+
+  if (hasAdvancedRates) {
+    if (productivityLevel === 125) {
+      appliedRate = isStudent ? department.rate125Student : department.rate125;
+    } else if (productivityLevel === 115) {
+      appliedRate = isStudent ? department.rate115Student : department.rate115;
+    } else {
+      appliedRate = isStudent ? department.baseRateStudent : department.baseRate;
+    }
   } else {
+    // Використовуємо тільки базову ставку, якщо немає рівнів 115 і 125
     appliedRate = isStudent ? department.baseRateStudent : department.baseRate;
+  }
+
+  // Додаткова перевірка для уникнення NaN
+  if (appliedRate === undefined) {
+    throw new Error(`Rate not defined for department: ${department.name}`);
   }
 
   const totalEarnings = unitsCompleted * appliedRate;
@@ -54,6 +68,7 @@ export const calculateProductivityAndEarnings = async (data: ProductivityData) =
 
   return record;
 };
+
 
 export const updateProductivityRecord = async (id: string, updateData: Partial<ProductivityData>) => {
   const existingRecord = await ProductivityRecord.findById(id);
