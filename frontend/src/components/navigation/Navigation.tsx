@@ -35,14 +35,6 @@ const Navigation: React.FC = () => {
         </li>
         <li>
           <Link
-            to="/dashboard"
-            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
-          >
-            Dashboard
-          </Link>
-        </li>
-        <li>
-          <Link
             to="/profile"
             className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
           >
@@ -55,6 +47,14 @@ const Navigation: React.FC = () => {
             className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
           >
             Productivity
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/salary"
+            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
+          >
+            Salary
           </Link>
         </li>
       </ul>

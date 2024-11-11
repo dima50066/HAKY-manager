@@ -9,10 +9,10 @@ const HomePage = () => {
       </p>
       <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
         <a
-          href="/dashboard"
+          href="/salary"
           className="px-4 py-2 md:px-6 md:py-3 text-white bg-green-500 hover:bg-green-600 rounded-lg transition duration-200 w-full md:w-auto text-center"
         >
-          Go to Dashboard
+          Go to Salary
         </a>
         <a
           href="/profile"

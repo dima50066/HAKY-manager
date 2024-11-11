@@ -45,3 +45,11 @@ export interface Profile {
   location?: string;
   birthDate?: string;
 }
+
+export interface Salary {
+  _id: string;
+  userId: string;
+  totalEarnings: number;
+  hoursWorked: number;
+  period: string;
+}

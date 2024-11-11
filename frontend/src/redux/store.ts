@@ -4,13 +4,15 @@ import authReducer from './auth/slice';
 import profileReducer from './profile/slice';
 import productivityReducer from './productivity/slice';
 import departmentsReducer from './departments/slice';
+import salaryReducer from './salary/slice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     profile: profileReducer,
     productivity: productivityReducer,
-    departments: departmentsReducer
+    departments: departmentsReducer,
+    salary: salaryReducer
   },
 });
 

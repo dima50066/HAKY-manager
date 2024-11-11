@@ -18,8 +18,7 @@ import PrivateRoute from './components/routers/PrivateRoute';
 import CreateProfile from './components/profile/createProfile';
 import { getProfile } from './redux/profile/operations';
 import Productivity from './pages/productivity/ProductivityPage';
-import ProductivityForm from './components/productivity/ProductivityForm';
-import ProductivityList from './components/productivity/ProductivityList';
+import Salary from './pages/salary/Salary';
 
 
 const App: React.FC = () => {
@@ -73,6 +72,7 @@ const App: React.FC = () => {
         <Route path="/profile" element={<PrivateRoute component={<ProfilePage />} redirectTo="/login" />} />
         <Route path="/profile/create" element={<PrivateRoute component={<CreateProfile />} redirectTo="/login" />} />
         <Route path="/productivity" element={<PrivateRoute component={<Productivity />} redirectTo="/login" />} />
+        <Route path="/salary" element={<PrivateRoute component={<Salary />} redirectTo="/login" />} />
       </Routes>
     </Router>
   );
