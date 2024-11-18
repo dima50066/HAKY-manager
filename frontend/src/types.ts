@@ -44,6 +44,7 @@ export interface Profile {
   productivity?: number;
   location?: string;
   birthDate?: string;
+  livesIndependently: boolean;
 }
 
 export interface Salary {
@@ -52,4 +53,15 @@ export interface Salary {
   totalEarnings: number;
   hoursWorked: number;
   period: string;
+}
+
+export interface ProfileForm {
+  avatar: File | string | null;
+  isStudent: boolean;
+  productivity: number;
+  bio: string;
+  location: string;
+  birthDate: string;
+  livesIndependently: boolean;
+  user?: string;
 }

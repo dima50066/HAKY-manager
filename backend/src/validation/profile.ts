@@ -15,4 +15,7 @@ export const profileSchema = Joi.object({
   birthDate: Joi.date().optional().messages({
     'date.base': 'Birth date must be a valid date',
   }),
+  livesIndependently: Joi.boolean().optional().messages({
+    'boolean.base': 'Lives independently must be a boolean',
+  })
 });

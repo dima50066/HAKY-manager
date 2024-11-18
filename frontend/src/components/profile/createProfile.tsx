@@ -3,15 +3,7 @@ import { useDispatch } from 'react-redux';
 import { createProfile } from '../../redux/profile/operations';
 import { AppDispatch } from '../../redux/store';
 import { useNavigate } from 'react-router-dom';
-
-interface ProfileForm {
-  avatar: File | null;
-  isStudent: boolean;
-  productivity: number;
-  bio: string;
-  location: string;
-  birthDate: string;
-}
+import { ProfileForm } from '../../types';
 
 const CreateProfile: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,6 +15,7 @@ const CreateProfile: React.FC = () => {
     bio: '',
     location: 'Gorzow',
     birthDate: '',
+    livesIndependently: false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -42,7 +35,8 @@ const CreateProfile: React.FC = () => {
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prevForm) => ({ ...prevForm, isStudent: e.target.checked }));
+    const { name, checked } = e.target;
+    setForm((prevForm) => ({ ...prevForm, [name]: checked }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,12 +50,13 @@ const CreateProfile: React.FC = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    if (form.avatar) formData.append('avatar', form.avatar);
+    if (form.avatar instanceof File) formData.append('avatar', form.avatar);
     formData.append('isStudent', String(form.isStudent));
     formData.append('productivity', String(form.productivity));
     formData.append('bio', form.bio);
     formData.append('location', form.location);
     formData.append('birthDate', form.birthDate);
+    formData.append('livesIndependently', String(form.livesIndependently));
 
     try {
       await dispatch(createProfile(formData)).unwrap();
@@ -88,6 +83,16 @@ const CreateProfile: React.FC = () => {
           className="form-checkbox text-blue-600"
         />
         <span>Student</span>
+      </label>
+      <label className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          name="livesIndependently"
+          checked={form.livesIndependently}
+          onChange={handleCheckboxChange}
+          className="form-checkbox text-blue-600"
+        />
+        <span>Lives Independently</span>
       </label>
       <select
         name="productivity"

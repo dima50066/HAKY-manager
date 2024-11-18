@@ -8,6 +8,7 @@ export interface Profile extends Document {
   bio?: string;
   location?: string;
   birthDate?: Date;
+  livesIndependently: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,15 +22,12 @@ const ProfileSchema: Schema<Profile> = new Schema(
     bio: { type: String },
     location: { type: String },
     birthDate: { type: Date },
+    livesIndependently: { type: Boolean, required: true, default: false },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
     versionKey: false,
   }
 );
-
-ProfileSchema.statics.getProfile = async function (userId: string): Promise<Profile | null> {
-  return this.findOne({ user: userId });
-};
 
 export const ProfilesCollection = mongoose.model<Profile>('profiles', ProfileSchema);

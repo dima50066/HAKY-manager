@@ -1,7 +1,6 @@
-// ProfilePage.tsx
 import React from 'react';
 import Profile from '../../components/profile/Profile';
-import ProfileForm from '../../components/profile/ProfileForm';
+import ProfileUpdateForm from '../../components/profile/ProfileForm';
 
 const ProfilePage: React.FC = () => (
   <div className="min-h-screen bg-gray-100 py-12">
@@ -13,7 +12,7 @@ const ProfilePage: React.FC = () => (
       </div>
       
       <div className="border-t pt-10">
-        <ProfileForm />
+        <ProfileUpdateForm />
       </div>
     </div>
   </div>

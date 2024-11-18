@@ -3,32 +3,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../../redux/profile/operations';
 import { selectProfile } from '../../redux/profile/selectors';
 import { AppDispatch } from '../../redux/store';
-import { Profile } from '../../types';
+import type { ProfileForm } from '../../types';
 
-const ProfileForm: React.FC = () => {
+const ProfileUpdateForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const profile = useSelector(selectProfile);
 
-  const [form, setForm] = useState<Profile>({
-    user: profile?.user || '',
+  const [form, setForm] = useState<ProfileForm>({
     avatar: profile?.avatar || '',
     isStudent: profile?.isStudent || false,
-    productivity: profile?.productivity || 100,
+    productivity: profile?.productivity ?? 100, 
     bio: profile?.bio || '',
     location: profile?.location || 'Gorzow',
     birthDate: profile?.birthDate || '',
+    livesIndependently: profile?.livesIndependently || false,
   });
 
   useEffect(() => {
     if (profile) {
       setForm({
-        user: profile.user,
         avatar: profile.avatar || '',
         isStudent: profile.isStudent,
-        productivity: profile.productivity,
+        productivity: profile.productivity ?? 100, 
         bio: profile.bio || '',
         location: profile.location || 'Gorzow',
         birthDate: profile.birthDate || '',
+        livesIndependently: profile.livesIndependently,
       });
     }
   }, [profile]);
@@ -39,19 +39,18 @@ const ProfileForm: React.FC = () => {
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, isStudent: e.target.checked });
+    const { name, checked } = e.target;
+    setForm({ ...form, [name]: checked });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const updatedData = { ...form };
+    const updatedData: Partial<ProfileForm> = { ...form };
     if (!updatedData.avatar) delete updatedData.avatar;
 
-    dispatch(updateProfile(updatedData));
+    dispatch(updateProfile(updatedData as ProfileForm));
   };
-
-  if (!form) return null;
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md space-y-4">
@@ -62,7 +61,7 @@ const ProfileForm: React.FC = () => {
           name="avatar"
           id="avatar"
           placeholder="https://example.com/avatar.jpg"
-          value={form.avatar}
+          value={typeof form.avatar === 'string' ? form.avatar : ''}
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
@@ -78,6 +77,18 @@ const ProfileForm: React.FC = () => {
           className="form-checkbox text-blue-600"
         />
         <label htmlFor="isStudent" className="text-gray-700">Student</label>
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          name="livesIndependently"
+          id="livesIndependently"
+          checked={form.livesIndependently}
+          onChange={handleCheckboxChange}
+          className="form-checkbox text-blue-600"
+        />
+        <label htmlFor="livesIndependently" className="text-gray-700">Lives Independently</label>
       </div>
 
       <div>
@@ -144,4 +155,4 @@ const ProfileForm: React.FC = () => {
   );
 };
 
-export default ProfileForm;
+export default ProfileUpdateForm;

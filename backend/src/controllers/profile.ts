@@ -21,16 +21,14 @@ export const createProfileController = async (req: AuthenticatedRequest, res: Re
     }
 
     if (req.file) {
-      const tempFilePath = path.join(TEMP_UPLOAD_DIR, req.file.filename); 
-
+      const tempFilePath = path.join(TEMP_UPLOAD_DIR, req.file.filename);
       const cloudinaryResult = await saveFileToCloudinary(tempFilePath);
       profileData.avatar = cloudinaryResult.secure_url;
-      
       fs.unlinkSync(tempFilePath);
     }
 
-    const profile = await createProfile(userId, profileData);
-    
+    const profile = await createProfile(userId, { ...profileData, livesIndependently: profileData.livesIndependently });
+
     res.status(201).json({
       status: 201,
       message: 'Profile successfully created!',
@@ -41,8 +39,6 @@ export const createProfileController = async (req: AuthenticatedRequest, res: Re
     next(createHttpError(400, error.message));
   }
 };
-
-
 
 export const getProfileController = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {

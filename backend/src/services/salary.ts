@@ -1,6 +1,7 @@
 import { Salary } from '../db/models/salary';
 import { ProductivityRecord } from '../db/models/productivity';
 import mongoose from 'mongoose';
+import { ProfilesCollection } from '../db/models/profile';
 
 interface CalculateSalaryInput {
   userId: string;
@@ -19,6 +20,9 @@ interface GetUserSalaryHistoryInput {
 export const calculateUserSalary = async ({ userId }: CalculateSalaryInput) => {
   const records = await ProductivityRecord.find({ userId: new mongoose.Types.ObjectId(userId) });
 
+  const profile = await ProfilesCollection.findOne({ user: new mongoose.Types.ObjectId(userId) });
+  if (!profile) throw new Error('Profile not found');
+
   const monthlyRecords: { [key: string]: number } = {};
 
   records.forEach(record => {
@@ -29,13 +33,15 @@ export const calculateUserSalary = async ({ userId }: CalculateSalaryInput) => {
   for (const [month, totalEarnings] of Object.entries(monthlyRecords)) {
     let salaryRecord = await Salary.findOne({ userId: new mongoose.Types.ObjectId(userId), period: month });
     
+    let totalSalary = totalEarnings + (salaryRecord ? (profile.livesIndependently ? salaryRecord.hoursWorked : 0) : 0);
+
     if (salaryRecord) {
-      salaryRecord.totalEarnings = totalEarnings + salaryRecord.hoursWorked;
+      salaryRecord.totalEarnings = totalSalary;
       await salaryRecord.save();
     } else {
       await Salary.create({
         userId: new mongoose.Types.ObjectId(userId),
-        totalEarnings,
+        totalEarnings: totalSalary,
         hoursWorked: 0, 
         period: month
       });
@@ -44,9 +50,6 @@ export const calculateUserSalary = async ({ userId }: CalculateSalaryInput) => {
 
   return { message: "Salaries calculated for all months" };
 };
-
-
-
 
 export const updateUserSalaryRecord = async ({ userId, recordId, additionalHours }: UpdateSalaryRecordInput) => {
   const salaryRecord = await Salary.findOne({ _id: recordId, userId: new mongoose.Types.ObjectId(userId) });
@@ -57,13 +60,11 @@ export const updateUserSalaryRecord = async ({ userId, recordId, additionalHours
 
   salaryRecord.hoursWorked = additionalHours;
   
-  salaryRecord.totalEarnings = salaryRecord.totalEarnings + additionalHours;
+  salaryRecord.totalEarnings += additionalHours;
   await salaryRecord.save();
 
   return salaryRecord;
 };
-
-
 
 export const getUserSalaryHistory = async ({ userId }: GetUserSalaryHistoryInput) => {
   const salaryHistory = await Salary.find({ userId: new mongoose.Types.ObjectId(userId) })
@@ -71,4 +72,3 @@ export const getUserSalaryHistory = async ({ userId }: GetUserSalaryHistoryInput
 
   return salaryHistory;
 };
-

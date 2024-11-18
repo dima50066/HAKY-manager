@@ -45,6 +45,12 @@ const Profile: React.FC = () => {
             {profile.birthDate ? new Date(profile.birthDate).toLocaleDateString() : 'Not provided'}
           </p>
         </div>
+        <div className="text-center mt-4">
+          <p className="text-gray-700 font-semibold">Living Arrangement</p>
+          <p className="text-gray-500 mt-1">
+            {profile.livesIndependently ? 'Lives Independently' : 'Company-Provided Housing'}
+          </p>
+        </div>
       </div>
     </div>
   );
