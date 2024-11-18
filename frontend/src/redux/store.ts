@@ -1,10 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import authReducer from './auth/slice';
-import profileReducer from './profile/slice';
-import productivityReducer from './productivity/slice';
-import departmentsReducer from './departments/slice';
-import salaryReducer from './salary/slice';
+import { configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import authReducer from "./auth/slice";
+import profileReducer from "./profile/slice";
+import productivityReducer from "./productivity/slice";
+import departmentsReducer from "./departments/slice";
+import salaryReducer from "./salary/slice";
+import calendarReducer from "./calendar/slice";
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
     profile: profileReducer,
     productivity: productivityReducer,
     departments: departmentsReducer,
-    salary: salaryReducer
+    salary: salaryReducer,
+    calendar: calendarReducer,
   },
 });
 

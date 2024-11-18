@@ -1,5 +1,4 @@
-import Joi from 'joi';
-import { totalmem } from 'node:os';
+import Joi from "joi";
 
 export const productivitySchema = Joi.object({
   userId: Joi.string().required(),
