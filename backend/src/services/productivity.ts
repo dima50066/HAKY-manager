@@ -24,20 +24,18 @@ export const deleteProductivityRecord = async (id: string) => {
 };
 
 export const calculateProductivityAndEarnings = async (
-  data: ProductivityData
+  data: ProductivityData & { departmentName?: string }
 ) => {
   const {
     userId,
     departmentId,
+    departmentName,
     date,
     unitsCompleted,
     isStudent,
     productivityLevel,
   } = data;
-
-  const department = await Department.findById(
-    new mongoose.Types.ObjectId(departmentId)
-  );
+  const department = await Department.findById(departmentId);
   if (!department) {
     throw new Error("Department not found");
   }
@@ -70,6 +68,7 @@ export const calculateProductivityAndEarnings = async (
   const record = await ProductivityRecord.create({
     userId: new mongoose.Types.ObjectId(userId),
     departmentId: new mongoose.Types.ObjectId(departmentId),
+    departmentName: departmentName || department.name,
     date,
     unitsCompleted,
     productivityLevel,
@@ -82,47 +81,48 @@ export const calculateProductivityAndEarnings = async (
 
 export const updateProductivityRecord = async (
   id: string,
-  updateData: Partial<ProductivityData>
+  updateData: Partial<
+    ProductivityData & { department: { id: string; name?: string } }
+  >
 ) => {
   const existingRecord = await ProductivityRecord.findById(id);
   if (!existingRecord) {
     throw new Error("Productivity record not found");
   }
 
-  if (updateData.unitsCompleted !== undefined)
-    existingRecord.unitsCompleted = updateData.unitsCompleted;
-  if (updateData.productivityLevel !== undefined)
-    existingRecord.productivityLevel = updateData.productivityLevel;
-  if (updateData.isStudent !== undefined)
-    existingRecord.isStudent = updateData.isStudent;
-  if (updateData.date !== undefined)
-    existingRecord.date = new Date(updateData.date);
-  if (updateData.departmentId !== undefined)
-    existingRecord.departmentId = new mongoose.Types.ObjectId(
-      updateData.departmentId
-    );
+  if (updateData.department) {
+    const { id: departmentId, name: departmentName } = updateData.department;
 
-  const department = await Department.findById(existingRecord.departmentId);
-  if (!department) {
+    if (departmentId) {
+      existingRecord.departmentId = new mongoose.Types.ObjectId(departmentId);
+    }
+
+    if (departmentName) {
+      existingRecord.departmentName = departmentName;
+    }
+  }
+
+  if (updateData.unitsCompleted !== undefined) {
+    existingRecord.unitsCompleted = updateData.unitsCompleted;
+  }
+
+  if (updateData.date !== undefined) {
+    existingRecord.date = new Date(updateData.date);
+  }
+
+  const currentDepartment = await Department.findById(
+    existingRecord.departmentId
+  );
+
+  if (!currentDepartment) {
     throw new Error("Department not found");
   }
 
-  let appliedRate;
-  if (existingRecord.productivityLevel === 125) {
-    appliedRate = existingRecord.isStudent
-      ? department.rate125Student
-      : department.rate125;
-  } else if (existingRecord.productivityLevel === 115) {
-    appliedRate = existingRecord.isStudent
-      ? department.rate115Student
-      : department.rate115;
-  } else {
-    appliedRate = existingRecord.isStudent
-      ? department.baseRateStudent
-      : department.baseRate;
-  }
-
-  existingRecord.totalEarnings = existingRecord.unitsCompleted * appliedRate;
+  existingRecord.totalEarnings =
+    existingRecord.unitsCompleted *
+    (existingRecord.isStudent
+      ? currentDepartment.baseRateStudent
+      : currentDepartment.baseRate);
 
   const updatedRecord = await existingRecord.save();
   return updatedRecord;

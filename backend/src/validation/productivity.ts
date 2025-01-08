@@ -2,7 +2,10 @@ import Joi from "joi";
 
 export const productivitySchema = Joi.object({
   userId: Joi.string().required(),
-  departmentId: Joi.string().required(),
+  department: Joi.object({
+    id: Joi.string().required(),
+    name: Joi.string().optional(),
+  }).required(),
   date: Joi.date().required(),
   unitsCompleted: Joi.number().min(0).required(),
   productivityLevel: Joi.number().min(100).max(125).required(),
@@ -11,7 +14,10 @@ export const productivitySchema = Joi.object({
 
 export const productivityUpdateSchema = Joi.object({
   userId: Joi.string(),
-  departmentId: Joi.string(),
+  department: Joi.object({
+    id: Joi.string(),
+    name: Joi.string().allow("", null),
+  }),
   date: Joi.date(),
   unitsCompleted: Joi.number().min(0),
   productivityLevel: Joi.number().min(100).max(125),

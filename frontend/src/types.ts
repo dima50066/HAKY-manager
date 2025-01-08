@@ -1,12 +1,12 @@
 export interface DepartmentData {
-  _id: string; 
+  _id: string;
   name: string;
   baseRate: number;
-  baseRateStudent: number; 
+  baseRateStudent: number;
   rate115: number;
   rate115Student: number;
-  rate125: number; 
-  rate125Student: number; 
+  rate125: number;
+  rate125Student: number;
   description?: string;
 }
 
@@ -18,6 +18,7 @@ export interface User {
 
 export interface ProductivityData {
   departmentId: Department | string;
+  department: { name: string };
   date: string;
   unitsCompleted: number;
 }
@@ -30,6 +31,7 @@ export interface Department extends DepartmentData {
 export interface ProductivityRecord extends ProductivityData {
   _id: string;
   departmentId: Department | string;
+  departmentName: string;
   userId: User | null;
   productivityLevel: number;
   totalEarnings: number;
