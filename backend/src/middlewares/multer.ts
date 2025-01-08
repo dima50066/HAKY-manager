@@ -1,7 +1,6 @@
-import multer, { StorageEngine } from 'multer';
-import fs from 'fs';
-import path from 'path';
-import { TEMP_UPLOAD_DIR } from '../constants/constants';
+import multer, { StorageEngine } from "multer";
+import fs from "fs";
+import { TEMP_UPLOAD_DIR } from "../constants/constants";
 
 if (!fs.existsSync(TEMP_UPLOAD_DIR)) {
   fs.mkdirSync(TEMP_UPLOAD_DIR, { recursive: true });
@@ -13,9 +12,16 @@ const storage: StorageEngine = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now();
-    console.log('Uploading file:', file.originalname);
     cb(null, `${uniqueSuffix}_${file.originalname}`);
   },
 });
 
-export const upload = multer({ storage });
+const fileFilter = (req: any, file: any, cb: any) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files are allowed!"), false);
+  }
+};
+
+export const upload = multer({ storage, fileFilter });
