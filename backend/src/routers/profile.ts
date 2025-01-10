@@ -3,9 +3,12 @@ import {
   createProfileController,
   getProfileController,
   updateProfileController,
+  uploadDocumentController,
+  getDocumentsController,
+  deleteDocumentController,
 } from "../controllers/profile";
 import { authenticate } from "../middlewares/authenticate";
-import { profileSchema } from "../validation/profile";
+import { profileSchema, documentSchema } from "../validation/profile";
 import { validateBody } from "../middlewares/validateBody";
 import { ctrlWrapper } from "../utils/ctrlWrapper";
 import { upload } from "../middlewares/multer";
@@ -28,6 +31,21 @@ router.put(
   upload.single("avatar"),
   validateBody(profileSchema),
   ctrlWrapper(updateProfileController)
+);
+
+router.post(
+  "/documents/upload",
+  authenticate,
+  upload.single("document"),
+  ctrlWrapper(uploadDocumentController)
+);
+
+router.get("/documents", authenticate, ctrlWrapper(getDocumentsController));
+
+router.delete(
+  "/documents",
+  authenticate,
+  ctrlWrapper(deleteDocumentController)
 );
 
 export default router;

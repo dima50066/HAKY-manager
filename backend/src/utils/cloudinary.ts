@@ -16,13 +16,15 @@ interface CloudinaryUploadResult {
 }
 
 export const saveFileToCloudinary = async (
-  filePath: string
+  filePath: string,
+  p0: { resource_type: string }
 ): Promise<CloudinaryUploadResult> => {
   try {
     const result = (await cloudinary.v2.uploader.upload(
       path.resolve(filePath),
       {
-        folder: "avatars",
+        resource_type: "auto",
+        folder: "HAKY-Manager",
       }
     )) as CloudinaryUploadResult;
 
