@@ -1,5 +1,6 @@
 import multer, { StorageEngine } from "multer";
 import fs from "fs";
+import path from "path";
 import { TEMP_UPLOAD_DIR } from "../constants/constants";
 
 if (!fs.existsSync(TEMP_UPLOAD_DIR)) {
@@ -11,17 +12,24 @@ const storage: StorageEngine = multer.diskStorage({
     cb(null, TEMP_UPLOAD_DIR);
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now();
-    cb(null, `${uniqueSuffix}_${file.originalname}`);
+    const uniqueSuffix = `${Date.now()}_${path
+      .basename(file.originalname)
+      .replace(/\s/g, "_")}`;
+    cb(null, uniqueSuffix);
   },
 });
 
 const fileFilter = (req: any, file: any, cb: any) => {
-  if (file.mimetype) {
+  const allowedMimeTypes = ["image/jpeg", "image/png", "application/pdf"];
+  if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Invalid file type!"), false);
+    cb(new Error("Invalid file type! Only JPEG, PNG, and PDF are allowed."));
   }
 };
 
-export const upload = multer({ storage, fileFilter });
+export const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+});

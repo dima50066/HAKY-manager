@@ -7,11 +7,7 @@ import {
   uploadDocument,
   deleteDocument,
 } from "../services/profile";
-import { User } from "../db/models/user";
-
-interface AuthenticatedRequest extends Request {
-  user?: User;
-}
+import { AuthenticatedRequest } from "../types";
 
 export const createProfileController = async (
   req: AuthenticatedRequest,
@@ -19,19 +15,42 @@ export const createProfileController = async (
   next: NextFunction
 ) => {
   try {
-    const profileData = req.body;
     const userId = req.user?.id;
 
     if (!userId) {
       return next(createHttpError(401, "User is not authenticated"));
     }
 
-    const profile = await createProfile(userId, profileData);
+    const profile = await createProfile(userId, req);
 
     res.status(201).json({
       status: 201,
       message: "Profile successfully created!",
       data: profile,
+    });
+  } catch (error: any) {
+    next(createHttpError(400, error.message));
+  }
+};
+
+export const updateProfileController = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return next(createHttpError(401, "User is not authenticated"));
+    }
+
+    const updatedProfile = await updateProfile(userId, req);
+
+    res.status(200).json({
+      status: 200,
+      message: "Profile updated successfully!",
+      data: updatedProfile,
     });
   } catch (error: any) {
     next(createHttpError(400, error.message));
@@ -62,30 +81,6 @@ export const getProfileController = async (
   }
 };
 
-export const updateProfileController = async (
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const userId = req.user?.id;
-
-    if (!userId) {
-      return next(createHttpError(401, "User is not authenticated"));
-    }
-
-    const updatedProfile = await updateProfile(userId, req.body);
-
-    res.status(200).json({
-      status: 200,
-      message: "Profile updated successfully!",
-      data: updatedProfile,
-    });
-  } catch (error: any) {
-    next(createHttpError(400, error.message));
-  }
-};
-
 export const uploadDocumentController = async (
   req: AuthenticatedRequest,
   res: Response,
@@ -102,7 +97,9 @@ export const uploadDocumentController = async (
       return next(createHttpError(400, "No file uploaded"));
     }
 
-    const document = await uploadDocument(userId, req.file);
+    const newDocumentName = req.body.newDocumentName?.trim();
+
+    const document = await uploadDocument(userId, req.file, newDocumentName);
 
     res.status(201).json({
       status: 201,
@@ -110,13 +107,7 @@ export const uploadDocumentController = async (
       data: document,
     });
   } catch (error: any) {
-    console.error("Error in uploadDocumentController:", error);
-    next(
-      createHttpError(
-        error.status || 500,
-        error.message || "Failed to upload document"
-      )
-    );
+    next(createHttpError(500, "Failed to upload document"));
   }
 };
 

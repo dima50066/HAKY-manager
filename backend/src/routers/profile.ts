@@ -37,6 +37,7 @@ router.post(
   "/documents/upload",
   authenticate,
   upload.single("document"),
+  validateBody(documentSchema),
   ctrlWrapper(uploadDocumentController)
 );
 

@@ -6,7 +6,7 @@ export const validateBody =
   (schema: Schema) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (req.file) {
+      if (req.file && schema.describe().keys.avatar) {
         req.body.avatar = req.file.path;
       }
 
