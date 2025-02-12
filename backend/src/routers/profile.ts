@@ -6,6 +6,7 @@ import {
   uploadDocumentController,
   getDocumentsController,
   deleteDocumentController,
+  getDocumentPreviewController,
 } from "../controllers/profile";
 import { authenticate } from "../middlewares/authenticate";
 import { profileSchema, documentSchema } from "../validation/profile";
@@ -47,6 +48,12 @@ router.delete(
   "/documents",
   authenticate,
   ctrlWrapper(deleteDocumentController)
+);
+
+router.get(
+  "/documents/preview/:documentName",
+  authenticate,
+  ctrlWrapper(getDocumentPreviewController)
 );
 
 export default router;

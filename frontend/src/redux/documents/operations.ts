@@ -38,3 +38,16 @@ export const deleteDocument = createAsyncThunk(
     return documentName;
   }
 );
+
+export const getDocumentPreview = createAsyncThunk(
+  "documents/getDocumentPreview",
+  async (documentName: string, { getState }) => {
+    const token = (getState() as any).auth.token;
+    setAuthHeader(token);
+
+    const response = await axiosInstance.get(
+      `/profile/documents/preview/${documentName}`
+    );
+    return response.data.data.previewLink;
+  }
+);

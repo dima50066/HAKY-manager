@@ -30,7 +30,6 @@ const DocumentsManager: React.FC = () => {
 
     try {
       await dispatch(uploadDocument(formData));
-      console.log(`Uploaded: ${newDocumentName}`);
     } catch (error) {
       console.error(`Failed to upload ${newDocumentName}:`, error);
     }

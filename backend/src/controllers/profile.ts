@@ -6,6 +6,7 @@ import {
   updateProfile,
   uploadDocument,
   deleteDocument,
+  getDocumentPreviewLink,
 } from "../services/profile";
 import { AuthenticatedRequest } from "../types";
 
@@ -160,5 +161,38 @@ export const deleteDocumentController = async (
     });
   } catch (error: any) {
     next(createHttpError(500, "Failed to delete document"));
+  }
+};
+
+export const getDocumentPreviewController = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(createHttpError(401, "User is not authenticated"));
+    }
+
+    const { documentName } = req.params;
+    if (!documentName) {
+      return next(createHttpError(400, "Document name is required"));
+    }
+
+    const previewLink = await getDocumentPreviewLink(userId, documentName);
+
+    res.status(200).json({
+      status: 200,
+      message: "Document preview link generated successfully!",
+      data: { previewLink },
+    });
+  } catch (error: any) {
+    next(
+      createHttpError(
+        500,
+        error.message || "Failed to get document preview link"
+      )
+    );
   }
 };

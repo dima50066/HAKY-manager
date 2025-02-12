@@ -4,10 +4,15 @@ import {
   saveFileToCloudinary,
   deleteFileFromCloudinary,
 } from "../utils/cloudinary";
-import fs from "fs";
 import path from "path";
 import { TEMP_UPLOAD_DIR } from "../constants/constants";
 import { AuthenticatedRequest } from "../types";
+import {
+  uploadFileToDropbox,
+  deleteFileFromDropbox,
+  createDropboxFilename,
+} from "../utils/dropbox";
+import { dbx } from "../utils/dropbox";
 
 interface ProfilePayload {
   avatar?: string;
@@ -106,12 +111,19 @@ export const uploadDocument = async (
 ) => {
   const tempFilePath = path.join(TEMP_UPLOAD_DIR, file.filename);
 
-  const cloudinaryResult = await saveFileToCloudinary(tempFilePath);
+  const finalFilename = createDropboxFilename(
+    file.originalname,
+    newDocumentName
+  );
+  const dropboxPath = `/HakyManager/${userId}/${finalFilename}`;
+
+  const dropboxResult = await uploadFileToDropbox(tempFilePath, dropboxPath);
 
   const profile = await getProfile(userId);
   if (!profile) {
     throw createHttpError(404, "Profile not found");
   }
+
   const fileType: "pdf" | "image" | "other" = file.mimetype.includes("pdf")
     ? "pdf"
     : file.mimetype.startsWith("image")
@@ -119,11 +131,15 @@ export const uploadDocument = async (
     : "other";
 
   const document = {
-    url: cloudinaryResult.secure_url,
+    url: dropboxResult.path_display ?? "",
     type: fileType,
-    name: newDocumentName || file.originalname,
+    name: finalFilename,
     uploadedAt: new Date(),
   };
+
+  if (!document.url) {
+    throw createHttpError(500, "Failed to get file URL from Dropbox.");
+  }
 
   const existingDocumentIndex = profile.documents.findIndex(
     (doc) => doc.name === document.name
@@ -157,13 +173,51 @@ export const deleteDocument = async (userId: string, documentName: string) => {
   const document = profile.documents[documentIndex];
 
   try {
-    await deleteFileFromCloudinary(document.url);
+    await deleteFileFromDropbox(document.url);
+    console.log(`[Dropbox] Document deleted: ${document.url}`);
   } catch (error) {
     console.warn(
-      "[CLOUDINARY] Proceeding with document deletion in DB despite Cloudinary error."
+      "[Dropbox] Proceeding with document deletion in DB despite Dropbox error.",
+      error
     );
   }
 
   profile.documents.splice(documentIndex, 1);
   await profile.save();
+};
+
+export const getDocumentPreviewLink = async (
+  userId: string,
+  documentName: string
+) => {
+  const profile = await getProfile(userId);
+  if (!profile) {
+    throw createHttpError(404, "Profile not found");
+  }
+
+  const document = profile.documents.find((doc) => doc.name === documentName);
+  if (!document) {
+    throw createHttpError(404, "Document not found");
+  }
+
+  try {
+    const sharedLinksResponse = await dbx.sharingListSharedLinks({
+      path: document.url,
+    });
+
+    if (
+      sharedLinksResponse.result.links &&
+      sharedLinksResponse.result.links.length > 0
+    ) {
+      return sharedLinksResponse.result.links[0].url.replace("?dl=0", "?raw=1");
+    }
+
+    const response = await dbx.sharingCreateSharedLinkWithSettings({
+      path: document.url,
+    });
+    return response.result.url.replace("?dl=0", "?raw=1");
+  } catch (error) {
+    console.error("[Dropbox] Failed to generate preview link:", error);
+    throw createHttpError(500, "Failed to generate document preview link.");
+  }
 };
