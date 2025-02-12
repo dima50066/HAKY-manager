@@ -5,18 +5,23 @@ import { selectProfile } from "../../redux/profile/selectors";
 import { AppDispatch } from "../../redux/store";
 import type { ProfileForm } from "../../types";
 
-const ProfileUpdateForm: React.FC = () => {
+interface ProfileUpdateFormProps {
+  onClose: () => void;
+}
+const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
   const profile = useSelector(selectProfile);
 
   const [form, setForm] = useState<ProfileForm>({
-    avatar: null, // Для зберігання файлу
+    avatar: null,
     isStudent: profile?.isStudent || false,
     productivity: profile?.productivity ?? 100,
     bio: profile?.bio || "",
-    location: profile?.location || "Gorzow",
+    location: profile?.location || "",
     birthDate: profile?.birthDate || "",
     livesIndependently: profile?.livesIndependently || false,
+    address: profile?.address || "",
+    emergencyContactNumber: profile?.emergencyContactNumber || "",
   });
 
   useEffect(() => {
@@ -26,9 +31,11 @@ const ProfileUpdateForm: React.FC = () => {
         isStudent: profile.isStudent,
         productivity: profile.productivity ?? 100,
         bio: profile.bio || "",
-        location: profile.location || "Gorzow",
+        location: profile.location || "",
         birthDate: profile.birthDate || "",
         livesIndependently: profile.livesIndependently,
+        address: profile.address || "",
+        emergencyContactNumber: profile.emergencyContactNumber || "",
       });
     }
   }, [profile]);
@@ -78,6 +85,11 @@ const ProfileUpdateForm: React.FC = () => {
     formData.append("location", form.location);
     formData.append("birthDate", form.birthDate);
     formData.append("livesIndependently", String(form.livesIndependently));
+    formData.append("address", String(form.address));
+    formData.append(
+      "emergencyContactNumber",
+      String(form.emergencyContactNumber)
+    );
 
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
@@ -87,6 +99,7 @@ const ProfileUpdateForm: React.FC = () => {
       const result = await dispatch(updateProfile(formData)).unwrap();
       console.log("Profile updated successfully!", result);
       alert("Profile updated successfully!");
+      onClose(); // Закриваємо форму після успішного оновлення
     } catch (error) {
       console.error("Failed to update profile:", error);
     }
@@ -186,6 +199,39 @@ const ProfileUpdateForm: React.FC = () => {
           <option value="Gorzow">Gorzow</option>
           <option value="Gdansk">Gdansk</option>
         </select>
+      </div>
+
+      <div>
+        <label htmlFor="address" className="block font-medium text-gray-700">
+          Address
+        </label>
+        <input
+          type="text"
+          name="address"
+          id="address"
+          placeholder="Enter your address"
+          value={form.address}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label
+          htmlFor="emergencyContactNumber"
+          className="block font-medium text-gray-700"
+        >
+          Emergency Contact Number
+        </label>
+        <input
+          type="text"
+          name="emergencyContactNumber"
+          id="emergencyContactNumber"
+          placeholder="Enter emergency contact number"
+          value={form.emergencyContactNumber}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
       </div>
 
       <div>

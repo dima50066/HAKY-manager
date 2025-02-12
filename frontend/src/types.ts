@@ -47,6 +47,8 @@ export interface Profile {
   location?: string;
   birthDate?: string;
   livesIndependently: boolean;
+  address?: string;
+  emergencyContactNumber?: string;
 }
 
 export interface Salary {
@@ -66,4 +68,13 @@ export interface ProfileForm {
   birthDate: string;
   livesIndependently: boolean;
   user?: string;
+  address?: string;
+  emergencyContactNumber?: string;
+}
+
+export interface Document {
+  name: string;
+  url: string;
+  type: "pdf" | "image" | "other";
+  uploadedAt: string;
 }

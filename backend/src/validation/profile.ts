@@ -3,23 +3,18 @@ import Joi from "joi";
 export const profileSchema = Joi.object({
   avatar: Joi.alternatives()
     .try(Joi.string().uri().optional(), Joi.string().optional())
-    .allow(null)
-    .messages({
-      "string.uri": "Avatar must be a valid URL",
-    }),
+    .allow(null),
   isStudent: Joi.boolean().optional(),
   productivity: Joi.number().min(100).max(125).optional(),
-  bio: Joi.string().max(500).optional().messages({
-    "string.max": "Bio cannot exceed 500 characters",
+  bio: Joi.string().max(500).optional(),
+  location: Joi.string().max(100).optional(),
+  birthDate: Joi.date().optional(),
+  livesIndependently: Joi.boolean().optional(),
+  address: Joi.string().max(200).optional().messages({
+    "string.max": "Address cannot exceed 200 characters",
   }),
-  location: Joi.string().max(100).optional().messages({
-    "string.max": "Location cannot exceed 100 characters",
-  }),
-  birthDate: Joi.date().optional().messages({
-    "date.base": "Birth date must be a valid date",
-  }),
-  livesIndependently: Joi.boolean().optional().messages({
-    "boolean.base": "Lives independently must be a boolean",
+  emergencyContactNumber: Joi.string().max(15).optional().messages({
+    "string.max": "Emergency contact number cannot exceed 15 characters",
   }),
 });
 

@@ -9,6 +9,8 @@ export interface Profile extends Document {
   location?: string;
   birthDate?: Date;
   livesIndependently: boolean;
+  address?: string;
+  emergencyContactNumber?: string;
   documents: {
     url: string;
     type: "image" | "pdf" | "other";
@@ -34,6 +36,8 @@ const ProfileSchema: Schema<Profile> = new Schema(
     location: { type: String },
     birthDate: { type: Date },
     livesIndependently: { type: Boolean, required: true, default: false },
+    address: { type: String, maxlength: 200 },
+    emergencyContactNumber: { type: String, maxlength: 30 },
     documents: [
       {
         url: { type: String, required: true },

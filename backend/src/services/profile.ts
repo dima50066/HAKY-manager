@@ -17,6 +17,8 @@ interface ProfilePayload {
   location?: string;
   birthDate?: Date;
   livesIndependently?: boolean;
+  address?: string;
+  emergencyContactNumber?: string;
 }
 
 export const createProfile = async (
@@ -71,6 +73,9 @@ export const updateProfile = async (
       ? new Date(req.body.birthDate)
       : profile.birthDate,
     livesIndependently: req.body?.livesIndependently === "true",
+    address: req.body?.address || profile.address,
+    emergencyContactNumber:
+      req.body?.emergencyContactNumber || profile.emergencyContactNumber,
   };
 
   if (req.file) {

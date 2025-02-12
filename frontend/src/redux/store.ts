@@ -6,6 +6,7 @@ import productivityReducer from "./productivity/slice";
 import departmentsReducer from "./departments/slice";
 import salaryReducer from "./salary/slice";
 import calendarReducer from "./calendar/slice";
+import documentsReducer from "./documents/slice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     departments: departmentsReducer,
     salary: salaryReducer,
     calendar: calendarReducer,
+    documents: documentsReducer,
   },
 });
 
