@@ -22,6 +22,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     livesIndependently: profile?.livesIndependently || false,
     address: profile?.address || "",
     emergencyContactNumber: profile?.emergencyContactNumber || "",
+    peselNumber: profile?.peselNumber || "",
   });
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
         livesIndependently: profile.livesIndependently,
         address: profile.address || "",
         emergencyContactNumber: profile.emergencyContactNumber || "",
+        peselNumber: profile.peselNumber || "",
       });
     }
   }, [profile]);
@@ -90,7 +92,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
       "emergencyContactNumber",
       String(form.emergencyContactNumber)
     );
-
+    formData.append("peselNumber", String(form.peselNumber));
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
@@ -229,6 +231,23 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
           id="emergencyContactNumber"
           placeholder="Enter emergency contact number"
           value={form.emergencyContactNumber}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="peselNumber"
+          className="block font-medium text-gray-700"
+        >
+          Pesel Number
+        </label>
+        <input
+          type="text"
+          name="peselNumber"
+          id="peselNumber"
+          placeholder="Enter your pesel number"
+          value={form.peselNumber}
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />

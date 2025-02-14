@@ -11,6 +11,7 @@ export interface Profile extends Document {
   livesIndependently: boolean;
   address?: string;
   emergencyContactNumber?: string;
+  peselNumber?: string;
   documents: {
     url: string;
     type: "image" | "pdf" | "other";
@@ -38,6 +39,7 @@ const ProfileSchema: Schema<Profile> = new Schema(
     livesIndependently: { type: Boolean, required: true, default: false },
     address: { type: String, maxlength: 200 },
     emergencyContactNumber: { type: String, maxlength: 30 },
+    peselNumber: { type: String },
     documents: [
       {
         url: { type: String, required: true },

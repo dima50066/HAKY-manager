@@ -10,6 +10,9 @@ export const profileSchema = Joi.object({
   location: Joi.string().max(100).optional(),
   birthDate: Joi.date().optional(),
   livesIndependently: Joi.boolean().optional(),
+  peselNumber: Joi.string().max(11).optional().messages({
+    "string.max": "PESEL number cannot exceed 11 characters",
+  }),
   address: Joi.string().max(200).optional().messages({
     "string.max": "Address cannot exceed 200 characters",
   }),

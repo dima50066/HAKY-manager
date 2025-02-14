@@ -24,6 +24,7 @@ interface ProfilePayload {
   livesIndependently?: boolean;
   address?: string;
   emergencyContactNumber?: string;
+  peselNumber?: string;
 }
 
 export const createProfile = async (
@@ -81,6 +82,7 @@ export const updateProfile = async (
     address: req.body?.address || profile.address,
     emergencyContactNumber:
       req.body?.emergencyContactNumber || profile.emergencyContactNumber,
+    peselNumber: req.body?.peselNumber || profile.peselNumber,
   };
 
   if (req.file) {

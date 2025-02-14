@@ -49,6 +49,7 @@ export interface Profile {
   livesIndependently: boolean;
   address?: string;
   emergencyContactNumber?: string;
+  peselNumber?: string;
 }
 
 export interface Salary {
@@ -70,6 +71,7 @@ export interface ProfileForm {
   user?: string;
   address?: string;
   emergencyContactNumber?: string;
+  peselNumber?: string;
 }
 
 export interface Document {

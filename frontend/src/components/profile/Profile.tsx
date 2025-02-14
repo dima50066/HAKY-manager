@@ -86,6 +86,12 @@ const Profile: React.FC = () => {
             {profile.emergencyContactNumber || "No contact number provided"}
           </p>
         </div>
+        <div className="text-center mt-4">
+          <p className="text-gray-700 font-semibold">Pesel number</p>
+          <p className="text-gray-500 mt-1">
+            {profile.peselNumber || "No pesel number provided"}
+          </p>
+        </div>
       </div>
     </div>
   );
