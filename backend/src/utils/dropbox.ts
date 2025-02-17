@@ -1,6 +1,7 @@
 import { Dropbox } from "dropbox";
 import fs from "fs";
 import path from "path";
+import createHttpError from "http-errors";
 
 const DROPBOX_ACCESS_TOKEN = process.env.DROPBOX_ACCESS_TOKEN;
 
@@ -21,7 +22,6 @@ export const uploadFileToDropbox = async (
       contents: fileContent,
       mode: { ".tag": "overwrite" },
     });
-    console.log(`[Dropbox] File uploaded: ${dropboxPath}`);
 
     removeTempFile(filePath);
 
@@ -35,7 +35,6 @@ export const uploadFileToDropbox = async (
 export const deleteFileFromDropbox = async (dropboxPath: string) => {
   try {
     await dbx.filesDeleteV2({ path: dropboxPath });
-    console.log(`[Dropbox] File deleted: ${dropboxPath}`);
   } catch (error) {
     console.error("[Dropbox] File deletion failed:", error);
     throw error;
@@ -55,10 +54,25 @@ const removeTempFile = (filePath: string) => {
 export const getFileFromDropbox = async (dropboxPath: string) => {
   try {
     const response = await dbx.filesDownload({ path: dropboxPath });
-    return response.result;
+
+    if (!response.result || !("fileBinary" in response.result)) {
+      console.error("[getFileFromDropbox] Invalid response format:", response);
+      throw createHttpError(500, "Invalid file format in Dropbox response");
+    }
+
+    const fileBuffer = Buffer.from(
+      (response.result as any).fileBinary as ArrayBuffer
+    );
+
+    return {
+      fileBuffer,
+      mimeType:
+        (response.result as any).mime_type || "application/octet-stream",
+      name: response.result.name,
+    };
   } catch (error) {
-    console.error("[Dropbox] File retrieval failed:", error);
-    throw error;
+    console.error("[getFileFromDropbox] File retrieval failed:", error);
+    throw createHttpError(500, "Failed to retrieve file from Dropbox");
   }
 };
 

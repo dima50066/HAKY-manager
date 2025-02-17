@@ -1,13 +1,15 @@
-import { Request, Response, NextFunction } from 'express';
-import { isValidObjectId } from 'mongoose';
-import createHttpError from 'http-errors';
+import { Request, Response, NextFunction } from "express";
+import { isValidObjectId } from "mongoose";
+import createHttpError from "http-errors";
 
-export const isValidId = (req: Request, res: Response, next: NextFunction) => {
-  const { contactId } = req.params;
-  
-  if (!isValidObjectId(contactId)) {
-    return next(createHttpError(400, `Invalid contact ID: '${contactId}'`));
-  }
+export const isValidId = (paramName: string) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params[paramName];
 
-  next();
+    if (!isValidObjectId(id)) {
+      return next(createHttpError(400, `Invalid ${paramName}: '${id}'`));
+    }
+
+    next();
+  };
 };
