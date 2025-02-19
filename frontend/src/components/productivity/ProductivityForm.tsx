@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addProductivityRecord } from "../../redux/productivity/operations";
+import { addMyProductivityRecord } from "../../redux/productivity/operations";
 import { fetchDepartments } from "../../redux/departments/operations";
 import { RootState, AppDispatch } from "../../redux/store";
 
@@ -34,7 +34,7 @@ const ProductivityForm: React.FC = () => {
     }
 
     dispatch(
-      addProductivityRecord({
+      addMyProductivityRecord({
         department: {
           id: department._id,
           name: department.name,

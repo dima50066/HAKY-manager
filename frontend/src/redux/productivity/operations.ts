@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../hooks/axiosConfig";
 import { RootState } from "../store";
-import { ProductivityData } from "../../types";
+import { ProductivityRecord, ProductivityData } from "../../types";
 import { selectProfile } from "../profile/selectors";
 
-export const fetchProductivityRecords = createAsyncThunk(
+export const fetchMyProductivityRecords = createAsyncThunk(
   "productivity/fetchAll",
   async () => {
     const response = await axiosInstance.get("/productivity");
@@ -12,7 +12,18 @@ export const fetchProductivityRecords = createAsyncThunk(
   }
 );
 
-export const addProductivityRecord = createAsyncThunk(
+export const fetchProductivityById = createAsyncThunk<
+  ProductivityRecord[],
+  { profileId: string; startDate?: string; endDate?: string }
+>("productivity/fetchById", async ({ profileId, startDate, endDate }) => {
+  const response = await axiosInstance.get(
+    `/employees/${profileId}/productivity`,
+    { params: { startDate, endDate } }
+  );
+  return response.data.data;
+});
+
+export const addMyProductivityRecord = createAsyncThunk(
   "productivity/add",
   async (
     recordData: {
@@ -23,7 +34,6 @@ export const addProductivityRecord = createAsyncThunk(
     { getState, rejectWithValue }
   ) => {
     const state = getState() as RootState;
-
     const profile = selectProfile(state);
 
     if (!profile) {
@@ -46,7 +56,7 @@ export const addProductivityRecord = createAsyncThunk(
   }
 );
 
-export const updateProductivityRecord = createAsyncThunk(
+export const updateMyProductivityRecord = createAsyncThunk(
   "productivity/update",
   async (
     {
@@ -73,7 +83,7 @@ export const updateProductivityRecord = createAsyncThunk(
   }
 );
 
-export const deleteProductivityRecord = createAsyncThunk(
+export const deleteMyProductivityRecord = createAsyncThunk(
   "productivity/delete",
   async (id: string, { getState, rejectWithValue }) => {
     const state = getState() as RootState;

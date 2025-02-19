@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchProductivityRecords,
-  deleteProductivityRecord,
+  fetchMyProductivityRecords,
+  deleteMyProductivityRecord,
 } from "../../redux/productivity/operations";
-import { selectProductivityRecords } from "../../redux/productivity/selectors";
+import { selectMyProductivityRecords } from "../../redux/productivity/selectors";
 import { AppDispatch } from "../../redux/store";
 import ProductivityUpdateForm from "./ProductivityUpdateForm";
 import { ProductivityRecord } from "../../types";
 
 const ProductivityList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const records = useSelector(selectProductivityRecords);
+  const records = useSelector(selectMyProductivityRecords);
   const [editingRecord, setEditingRecord] = useState<ProductivityRecord | null>(
     null
   );
 
   useEffect(() => {
-    dispatch(fetchProductivityRecords());
+    dispatch(fetchMyProductivityRecords());
   }, [dispatch]);
 
   const handleDelete = (id: string) => {
-    dispatch(deleteProductivityRecord(id));
+    dispatch(deleteMyProductivityRecord(id));
   };
 
   const handleEdit = (record: ProductivityRecord) => {

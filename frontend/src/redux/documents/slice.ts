@@ -1,17 +1,46 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchDocuments, uploadDocument, deleteDocument } from "./operations";
+import {
+  fetchMyDocuments,
+  fetchDocumentsById,
+  uploadMyDocument,
+  uploadDocumentById,
+  deleteMyDocument,
+  deleteDocumentById,
+} from "./operations";
 import { Document } from "../../types";
 
 interface DocumentsState {
-  documents: Document[];
-  loading: boolean;
-  error: string | null;
+  myDocuments: Document[];
+  documentsById: Record<string, Document[]>;
+  loading: {
+    myDocuments: boolean;
+    documentsById: Record<string, boolean>;
+    upload: boolean;
+    delete: boolean;
+  };
+  error: {
+    myDocuments: string | null;
+    documentsById: Record<string, string | null>;
+    upload: string | null;
+    delete: string | null;
+  };
 }
 
 const initialState: DocumentsState = {
-  documents: [],
-  loading: false,
-  error: null,
+  myDocuments: [],
+  documentsById: {},
+  loading: {
+    myDocuments: false,
+    documentsById: {},
+    upload: false,
+    delete: false,
+  },
+  error: {
+    myDocuments: null,
+    documentsById: {},
+    upload: null,
+    delete: null,
+  },
 };
 
 const documentsSlice = createSlice({
@@ -20,45 +49,98 @@ const documentsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDocuments.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+      .addCase(fetchMyDocuments.pending, (state) => {
+        state.loading.myDocuments = true;
+        state.error.myDocuments = null;
       })
-      .addCase(fetchDocuments.fulfilled, (state, action) => {
-        state.documents = action.payload;
-        state.loading = false;
+      .addCase(fetchMyDocuments.fulfilled, (state, action) => {
+        state.loading.myDocuments = false;
+        state.myDocuments = action.payload;
       })
-      .addCase(fetchDocuments.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to fetch documents.";
-      })
-
-      .addCase(uploadDocument.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(uploadDocument.fulfilled, (state, action) => {
-        state.documents.push(action.payload);
-        state.loading = false;
-      })
-      .addCase(uploadDocument.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to upload document.";
+      .addCase(fetchMyDocuments.rejected, (state, action) => {
+        state.loading.myDocuments = false;
+        state.error.myDocuments =
+          action.error.message || "Error fetching documents";
       })
 
-      .addCase(deleteDocument.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+      .addCase(fetchDocumentsById.pending, (state, action) => {
+        const profileId = action.meta.arg;
+        state.loading.documentsById[profileId] = true;
+        state.error.documentsById[profileId] = null;
       })
-      .addCase(deleteDocument.fulfilled, (state, action) => {
-        state.documents = state.documents.filter(
+      .addCase(fetchDocumentsById.fulfilled, (state, action) => {
+        const profileId = action.meta.arg;
+        state.loading.documentsById[profileId] = false;
+        state.documentsById[profileId] = action.payload;
+      })
+      .addCase(fetchDocumentsById.rejected, (state, action) => {
+        const profileId = action.meta.arg;
+        state.loading.documentsById[profileId] = false;
+        state.error.documentsById[profileId] =
+          action.error.message || "Error fetching documents";
+      })
+
+      .addCase(uploadMyDocument.pending, (state) => {
+        state.loading.upload = true;
+        state.error.upload = null;
+      })
+      .addCase(uploadMyDocument.fulfilled, (state, action) => {
+        state.loading.upload = false;
+        state.myDocuments.push(action.payload);
+      })
+      .addCase(uploadMyDocument.rejected, (state, action) => {
+        state.loading.upload = false;
+        state.error.upload = action.error.message || "Error uploading document";
+      })
+
+      .addCase(uploadDocumentById.pending, (state) => {
+        state.loading.upload = true;
+        state.error.upload = null;
+      })
+      .addCase(uploadDocumentById.fulfilled, (state, action) => {
+        state.loading.upload = false;
+        const profileId = action.meta.arg.profileId;
+        if (!state.documentsById[profileId]) {
+          state.documentsById[profileId] = [];
+        }
+        state.documentsById[profileId].push(action.payload);
+      })
+      .addCase(uploadDocumentById.rejected, (state, action) => {
+        state.loading.upload = false;
+        state.error.upload = action.error.message || "Error uploading document";
+      })
+
+      .addCase(deleteMyDocument.pending, (state) => {
+        state.loading.delete = true;
+        state.error.delete = null;
+      })
+      .addCase(deleteMyDocument.fulfilled, (state, action) => {
+        state.loading.delete = false;
+        state.myDocuments = state.myDocuments.filter(
           (doc) => doc.name !== action.payload
         );
-        state.loading = false;
       })
-      .addCase(deleteDocument.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to delete document.";
+      .addCase(deleteMyDocument.rejected, (state, action) => {
+        state.loading.delete = false;
+        state.error.delete = action.error.message || "Error deleting document";
+      })
+
+      .addCase(deleteDocumentById.pending, (state) => {
+        state.loading.delete = true;
+        state.error.delete = null;
+      })
+      .addCase(deleteDocumentById.fulfilled, (state, action) => {
+        state.loading.delete = false;
+        const profileId = action.meta.arg.profileId;
+        if (state.documentsById[profileId]) {
+          state.documentsById[profileId] = state.documentsById[
+            profileId
+          ].filter((doc) => doc.name !== action.payload);
+        }
+      })
+      .addCase(deleteDocumentById.rejected, (state, action) => {
+        state.loading.delete = false;
+        state.error.delete = action.error.message || "Error deleting document";
       });
   },
 });

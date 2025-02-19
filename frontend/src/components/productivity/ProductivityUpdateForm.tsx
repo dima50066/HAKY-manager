@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProductivityRecord } from "../../redux/productivity/operations";
+import { updateMyProductivityRecord } from "../../redux/productivity/operations";
 import { fetchDepartments } from "../../redux/departments/operations";
 import { AppDispatch, RootState } from "../../redux/store";
 import { ProductivityRecord } from "../../types";
@@ -37,7 +37,7 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
     e.preventDefault();
 
     dispatch(
-      updateProductivityRecord({
+      updateMyProductivityRecord({
         id: record._id,
         data: {
           department: {

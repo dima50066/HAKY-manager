@@ -1,26 +1,26 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
-  fetchDocuments,
-  uploadDocument,
-  deleteDocument,
+  fetchMyDocuments,
+  uploadMyDocument,
+  deleteMyDocument,
 } from "../../redux/documents/operations";
 import {
-  selectDocuments,
-  selectDocumentsLoading,
-  selectDocumentsError,
+  selectMyDocuments,
+  selectMyDocumentsLoading,
+  selectMyDocumentsError,
 } from "../../redux/documents/selectors";
 import DocumentItem from "./DocumentItem";
 import DocumentUploadForm from "./DocumentUploadForm";
 
 const DocumentsManager: React.FC = () => {
   const dispatch = useAppDispatch();
-  const documents = useAppSelector(selectDocuments);
-  const loading = useAppSelector(selectDocumentsLoading);
-  const error = useAppSelector(selectDocumentsError);
+  const documents = useAppSelector(selectMyDocuments);
+  const loading = useAppSelector(selectMyDocumentsLoading);
+  const error = useAppSelector(selectMyDocumentsError);
 
   useEffect(() => {
-    dispatch(fetchDocuments());
+    dispatch(fetchMyDocuments());
   }, [dispatch]);
 
   const handleUpload = async (file: File, newDocumentName: string) => {
@@ -29,14 +29,14 @@ const DocumentsManager: React.FC = () => {
     formData.append("newDocumentName", newDocumentName);
 
     try {
-      await dispatch(uploadDocument(formData));
+      await dispatch(uploadMyDocument(formData));
     } catch (error) {
       console.error(`Failed to upload ${newDocumentName}:`, error);
     }
   };
 
   const handleDelete = async (documentName: string) => {
-    await dispatch(deleteDocument(documentName));
+    await dispatch(deleteMyDocument(documentName));
   };
 
   return (

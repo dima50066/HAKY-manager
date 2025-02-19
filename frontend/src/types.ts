@@ -14,6 +14,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  role: string;
 }
 
 export interface ProductivityData {
@@ -79,4 +80,19 @@ export interface Document {
   url: string;
   type: "pdf" | "image" | "other";
   uploadedAt: string;
+}
+
+export interface Employee {
+  _id: string;
+  user: User;
+  avatar?: string;
+  isStudent: boolean;
+  productivity: number;
+  bio?: string;
+  location?: string;
+  birthDate?: string;
+  livesIndependently: boolean;
+  documents: Document[];
+  createdAt: string;
+  updatedAt: string;
 }
