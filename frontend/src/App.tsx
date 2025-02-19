@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "./redux/auth/slice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/login/Login";
 import RegisterPage from "./pages/register/Register";
@@ -16,46 +15,35 @@ import "react-toastify/dist/ReactToastify.css";
 import ProfilePage from "./pages/profile/ProfilePage";
 import PrivateRoute from "./components/routers/PrivateRoute";
 import CreateProfile from "./components/profile/createProfile";
-import { getProfile } from "./redux/profile/operations";
 import Productivity from "./pages/productivity/ProductivityPage";
 import Salary from "./pages/salary/Salary";
 import Calendar from "./pages/calendar/CalendarPage";
+import {
+  selectIsAuthenticated,
+  selectAuthLoading,
+} from "./redux/auth/selectors";
+import { selectProfile } from "./redux/profile/selectors";
+import { getProfile } from "./redux/profile/operations";
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [isRefreshingUser, setIsRefreshingUser] = useState(true);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isLoading = useSelector(selectAuthLoading);
+  const profile = useSelector(selectProfile);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-    const storedToken = localStorage.getItem("token");
-
-    if (storedUser && storedToken) {
-      dispatch(setCredentials({ user: storedUser, accessToken: storedToken }));
-      refreshUserData();
-    } else {
-      setIsRefreshingUser(false);
+    if (!isAuthenticated) {
+      dispatch(refreshUser());
     }
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated]);
 
-  const refreshUserData = async () => {
-    try {
-      const result = await dispatch(refreshUser());
-
-      if (result.meta.requestStatus === "fulfilled") {
-        const { accessToken } = result.payload;
-        localStorage.setItem("token", accessToken);
-
-        await dispatch(getProfile());
-      } else {
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-      }
-    } finally {
-      setIsRefreshingUser(false);
+  useEffect(() => {
+    if (isAuthenticated && profile === null) {
+      dispatch(getProfile());
     }
-  };
+  }, [dispatch, isAuthenticated, profile]);
 
-  if (isRefreshingUser) {
+  if (isLoading || (isAuthenticated && profile === undefined)) {
     return <LoadingSpinner loading={true} size={60} color="#3498db" />;
   }
 

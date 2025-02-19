@@ -1,53 +1,96 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance, { setAuthHeader, clearAuthHeader, axiosWithToken } from '../../hooks/axiosConfig';
-import { RootState } from '../store';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance, {
+  setAuthHeader,
+  clearAuthHeader,
+} from "../../hooks/axiosConfig";
+import { RootState } from "../store";
+import { User } from "../../types";
 
-export const registerUser = createAsyncThunk('auth/register', async (userData: { email: string; password: string; }) => {
-    const response = await axiosInstance.post('/auth/register', userData);
-    const { token } = response.data.data;
-    setAuthHeader(token);
-    return response.data.data;
+interface AuthResponse {
+  accessToken: string;
+  user: User;
+}
+
+export const registerUser = createAsyncThunk<
+  AuthResponse,
+  { email: string; password: string }
+>("auth/register", async (userData, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post("/auth/register", userData);
+    const { accessToken, user } = response.data.data;
+    setAuthHeader(accessToken);
+    return { accessToken, user };
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response?.data.message || "Registration failed"
+    );
+  }
 });
 
-export const loginUser = createAsyncThunk('auth/login', async (userData: { email: string; password: string; }) => {
-    const response = await axiosInstance.post('/auth/login', userData, { withCredentials: true });
-    const { token } = response.data.data;
-    setAuthHeader(token);
-    return response.data.data;
+export const loginUser = createAsyncThunk<
+  AuthResponse,
+  { email: string; password: string }
+>("auth/login", async (userData, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post("/auth/login", userData, {
+      withCredentials: true,
+    });
+    const { accessToken, user } = response.data.data;
+    setAuthHeader(accessToken);
+    return { accessToken, user };
+  } catch (error: any) {
+    return rejectWithValue(error.response?.data.message || "Login failed");
+  }
 });
 
-export const logOut = createAsyncThunk('auth/logout', async () => {
-    await axiosInstance.post('/auth/logout');
-    clearAuthHeader();
-});
-
-export const refreshUser = createAsyncThunk('auth/refresh', async (_, thunkAPI) => {
-    const persistedToken = (thunkAPI.getState() as RootState).auth.token;
-    if (!persistedToken) return thunkAPI.rejectWithValue('Unable to fetch user');
-
+export const logOut = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
     try {
-        const axios = axiosWithToken(persistedToken);
-        const response = await axios.post('/auth/refresh', {}, { withCredentials: true });
-        const { accessToken } = response.data.data;
-
-        // Оновлюємо токен в заголовках для наступних запитів
-        setAuthHeader(accessToken);
-
-        return response.data.data;
+      await axiosInstance.post("/auth/logout");
+      clearAuthHeader();
     } catch (error: any) {
-        clearAuthHeader();
-        return thunkAPI.rejectWithValue(error.response?.data.message || error.message);
+      return rejectWithValue(error.response?.data.message || "Logout failed");
     }
+  }
+);
+
+export const refreshUser = createAsyncThunk<
+  AuthResponse,
+  void,
+  { state: RootState }
+>("auth/refresh", async (_, { getState, rejectWithValue }) => {
+  const token = getState().auth.token;
+  if (!token) return rejectWithValue("No token available");
+
+  try {
+    const response = await axiosInstance.post(
+      "/auth/refresh",
+      {},
+      { withCredentials: true }
+    );
+    const { accessToken, user } = response.data.data;
+    setAuthHeader(accessToken);
+    return { accessToken, user };
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response?.data.message || "Session refresh failed"
+    );
+  }
 });
 
 export const requestResetToken = createAsyncThunk(
-  'auth/requestResetToken',
+  "auth/requestResetToken",
   async (email: string, thunkAPI) => {
     try {
-      const response = await axiosInstance.post('/auth/send-reset-email', { email });
+      const response = await axiosInstance.post("/auth/send-reset-email", {
+        email,
+      });
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data.message || 'Failed to send reset email');
+      return thunkAPI.rejectWithValue(
+        error.response?.data.message || "Failed to send reset email"
+      );
     }
   }
 );

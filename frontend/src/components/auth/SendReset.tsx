@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { requestResetToken } from '../../redux/auth/operations';
-import { RootState } from '../../redux/store';
-import { toast } from 'react-toastify';
-import { AppDispatch } from '../../redux/store';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { requestResetToken } from "../../redux/auth/operations";
+import { toast } from "react-toastify";
+import { AppDispatch } from "../../redux/store";
+import { selectAuthLoading } from "../../redux/auth/selectors";
 
 const ResetPassword: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
-  const loading = useSelector((state: RootState) => state.auth.loading);
+  const isLoading = useSelector(selectAuthLoading);
 
-  const handleResetPasswordSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleResetPasswordSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
     const resultAction = await dispatch(requestResetToken(email.trim()));
     if (requestResetToken.fulfilled.match(resultAction)) {
-      toast.success('A reset password email has been sent.');
+      toast.success("A reset password email has been sent.");
     } else {
       toast.error(resultAction.payload as string);
     }
@@ -36,10 +38,14 @@ const ResetPassword: React.FC = () => {
           />
           <button
             type="submit"
-            disabled={loading}
-            className={`w-full p-2 rounded ${loading ? 'bg-gray-400' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
+            disabled={isLoading}
+            className={`w-full p-2 rounded ${
+              isLoading
+                ? "bg-gray-400"
+                : "bg-blue-600 text-white hover:bg-blue-500"
+            }`}
           >
-            {loading ? 'Sending...' : 'Send Reset Email'}
+            {isLoading ? "Sending..." : "Send Reset Email"}
           </button>
         </form>
       </div>

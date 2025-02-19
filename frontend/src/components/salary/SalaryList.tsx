@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMySalaryHistory } from "../../redux/salary/operations";
+import {
+  fetchMySalaryHistory,
+  calculateUserSalary,
+} from "../../redux/salary/operations";
 import {
   selectMySalaryHistory,
   selectMySalaryHistoryLoading,
@@ -17,6 +20,7 @@ const SalaryList: React.FC = () => {
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
 
   useEffect(() => {
+    dispatch(calculateUserSalary({ userId: "" }));
     dispatch(fetchMySalaryHistory());
   }, [dispatch]);
 

@@ -1,66 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../redux/auth/operations';
-import { AppDispatch } from '../../redux/store';
-import { useNavigate } from 'react-router-dom';
-import { selectIsLoggedIn, selectError } from '../../redux/auth/selectors';
-import { getProfile } from '../../redux/profile/operations';
-import { selectProfile } from '../../redux/profile/selectors';
-import { toast } from 'react-toastify';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../redux/auth/operations";
+import { AppDispatch } from "../../redux/store";
+import { selectAuthLoading, selectAuthError } from "../../redux/auth/selectors";
+import { toast } from "react-toastify";
+import { getProfile } from "../../redux/profile/operations";
 
 const LoginForm: React.FC = () => {
-  const [emailInput, setEmailInput] = useState('');
-  const [passwordInput, setPasswordInput] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [hasLoggedIn] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const errorFromRedux = useSelector(selectError);
-  const profile = useSelector(selectProfile);
+  const isLoading = useSelector(selectAuthLoading);
+  const authError = useSelector(selectAuthError);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const resultAction = await dispatch(loginUser({ email: emailInput, password: passwordInput }));
-      if (loginUser.fulfilled.match(resultAction)) {
-        toast.success('Login successful!');
+      const result = await dispatch(loginUser({ email, password }));
 
-        const profileResult = await dispatch(getProfile());
+      if (loginUser.fulfilled.match(result)) {
+        toast.success("Login successful!");
 
-        if (getProfile.fulfilled.match(profileResult) && profileResult.payload) {
-          navigate('/');
-        } else {
-          navigate('/profile/create');
-        }
+        await dispatch(getProfile());
       } else {
-        toast.error('Login failed: ' + (resultAction.payload as string || 'Unknown error'));
+        toast.error(
+          "Login failed: " + ((result.payload as string) || "Unknown error")
+        );
       }
     } catch (err: any) {
-      toast.error(err.message || 'Login failed');
+      toast.error(err.message || "Login failed");
     }
   };
 
   useEffect(() => {
-    if (isLoggedIn && !profile) {
-      navigate('/profile/create');
-    } else if (isLoggedIn && profile) {
-      navigate('/');
+    if (hasLoggedIn && authError) {
+      toast.error("Login failed: " + authError);
     }
-  }, [isLoggedIn, profile, navigate]);
-
-  useEffect(() => {
-    if (errorFromRedux) {
-      toast.error(errorFromRedux);
-    }
-  }, [errorFromRedux]);
+  }, [authError, hasLoggedIn]);
 
   return (
     <form onSubmit={handleLogin} className="space-y-4">
       <input
         type="email"
-        value={emailInput}
-        onChange={(e) => setEmailInput(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
         required
         autoComplete="email"
@@ -68,15 +54,19 @@ const LoginForm: React.FC = () => {
       />
       <input
         type="password"
-        value={passwordInput}
-        onChange={(e) => setPasswordInput(e.target.value)}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
         required
         autoComplete="current-password"
         className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
       />
-      <button type="submit" className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-500">
-        Login
+      <button
+        type="submit"
+        className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-500 disabled:opacity-50"
+        disabled={isLoading}
+      >
+        {isLoading ? "Logging in..." : "Login"}
       </button>
     </form>
   );

@@ -1,25 +1,15 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import SalaryList from "../../components/salary/SalaryList";
-import {
-  calculateUserSalary,
-  fetchMySalaryHistory,
-} from "../../redux/salary/operations";
+
 import {
   selectMySalaryHistoryLoading,
   selectMySalaryHistoryError,
 } from "../../redux/salary/selectors";
-import { AppDispatch } from "../../redux/store";
 
 const SalaryPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector(selectMySalaryHistoryLoading);
   const error = useSelector(selectMySalaryHistoryError);
-
-  useEffect(() => {
-    dispatch(calculateUserSalary({ userId: "" }));
-    dispatch(fetchMySalaryHistory());
-  }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
