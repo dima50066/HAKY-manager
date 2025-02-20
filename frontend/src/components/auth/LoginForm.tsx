@@ -2,18 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/auth/operations";
 import { AppDispatch } from "../../redux/store";
-import { selectAuthLoading, selectAuthError } from "../../redux/auth/selectors";
-import { toast } from "react-toastify";
+import {
+  selectAuthLoading,
+  selectIsAuthenticated,
+} from "../../redux/auth/selectors";
 import { getProfile } from "../../redux/profile/operations";
+import { selectProfile } from "../../redux/profile/selectors";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [hasLoggedIn] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const isLoading = useSelector(selectAuthLoading);
-  const authError = useSelector(selectAuthError);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const profile = useSelector(selectProfile);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated && !profile) {
+      dispatch(getProfile());
+    }
+  }, [isAuthenticated, dispatch, profile, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +35,6 @@ const LoginForm: React.FC = () => {
 
       if (loginUser.fulfilled.match(result)) {
         toast.success("Login successful!");
-
-        await dispatch(getProfile());
       } else {
         toast.error(
           "Login failed: " + ((result.payload as string) || "Unknown error")
@@ -34,12 +44,6 @@ const LoginForm: React.FC = () => {
       toast.error(err.message || "Login failed");
     }
   };
-
-  useEffect(() => {
-    if (hasLoggedIn && authError) {
-      toast.error("Login failed: " + authError);
-    }
-  }, [authError, hasLoggedIn]);
 
   return (
     <form onSubmit={handleLogin} className="space-y-4">

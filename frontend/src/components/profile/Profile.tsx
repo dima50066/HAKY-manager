@@ -5,6 +5,7 @@ import {
   selectProfileLoading,
 } from "../../redux/profile/selectors";
 import { selectUser } from "../../redux/auth/selectors";
+import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../loader/LoadingSpinner";
 import { User } from "../../types";
 
@@ -12,12 +13,21 @@ const Profile: React.FC = () => {
   const profile = useSelector(selectProfile);
   const loading = useSelector(selectProfileLoading);
   const currentUser = useSelector(selectUser) as User | null;
+  const navigate = useNavigate();
 
   if (loading) return <LoadingSpinner loading={loading} />;
 
   if (!profile)
     return (
-      <p className="text-center text-gray-500">No profile data available.</p>
+      <div className="text-center text-gray-500">
+        <p>No profile data available.</p>
+        <button
+          className="mt-4 p-2 bg-blue-600 text-white rounded hover:bg-blue-500"
+          onClick={() => navigate("/profile/create")}
+        >
+          Create Profile
+        </button>
+      </div>
     );
 
   return (
@@ -77,7 +87,6 @@ const Profile: React.FC = () => {
             {profile.address || "No address provided"}
           </p>
         </div>
-
         <div className="text-center mt-4">
           <p className="text-gray-700 font-semibold">
             Emergency Contact Number
