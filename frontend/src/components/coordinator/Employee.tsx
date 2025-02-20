@@ -1,0 +1,40 @@
+import React from "react";
+import { Employee as EmployeeType } from "../../types";
+import { Link } from "react-router-dom";
+
+interface EmployeeProps {
+  employee: EmployeeType;
+}
+
+const Employee: React.FC<EmployeeProps> = ({ employee }) => {
+  return (
+    <div className="border rounded-lg p-4 shadow-lg bg-white">
+      <div className="flex items-center space-x-4">
+        <img
+          src={employee.avatar || "/default-avatar.png"}
+          alt="Avatar"
+          className="w-16 h-16 rounded-full border"
+        />
+        <div>
+          <h3 className="text-lg font-semibold">{employee.user.name}</h3>
+          <p className="text-sm text-gray-500">
+            {employee.location || "Location not set"}
+          </p>
+        </div>
+      </div>
+      <p className="mt-2 text-sm">{employee.bio || "No bio available"}</p>
+      <p className="mt-2 text-sm">
+        <strong>Productivity:</strong> {employee.productivity}%
+      </p>
+
+      <Link
+        to={`/coordinator/employees/${employee._id}`}
+        className="block mt-2 text-blue-500 hover:underline"
+      >
+        View Details
+      </Link>
+    </div>
+  );
+};
+
+export default Employee;

@@ -67,19 +67,19 @@ const productivitySlice = createSlice({
       })
 
       .addCase(fetchProductivityById.pending, (state, action) => {
-        const profileId = action.meta.arg.profileId;
-        state.loading.recordsById[profileId] = true;
-        state.error.recordsById[profileId] = null;
+        const userId = action.meta.arg.userId;
+        state.loading.recordsById[userId] = true;
+        state.error.recordsById[userId] = null;
       })
       .addCase(fetchProductivityById.fulfilled, (state, action) => {
-        const profileId = action.meta.arg.profileId;
-        state.loading.recordsById[profileId] = false;
-        state.recordsById[profileId] = action.payload;
+        const userId = action.meta.arg.userId;
+        state.loading.recordsById[userId] = false;
+        state.recordsById[userId] = action.payload;
       })
       .addCase(fetchProductivityById.rejected, (state, action) => {
-        const profileId = action.meta.arg.profileId;
-        state.loading.recordsById[profileId] = false;
-        state.error.recordsById[profileId] =
+        const userId = action.meta.arg.userId;
+        state.loading.recordsById[userId] = false;
+        state.error.recordsById[userId] =
           action.error.message || "Error fetching records";
       })
 

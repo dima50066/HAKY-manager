@@ -24,6 +24,9 @@ import {
 } from "./redux/auth/selectors";
 import { selectProfile } from "./redux/profile/selectors";
 import { getProfile } from "./redux/profile/operations";
+import CoordinatorPage from "./pages/coordinator/CoordinatorPage";
+import CoordinatorRoute from "./components/routers/CoordinatorRoute";
+import EmployeeDetails from "./components/coordinator/EmployeeDetails";
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,10 +35,8 @@ const App: React.FC = () => {
   const profile = useSelector(selectProfile);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      dispatch(refreshUser());
-    }
-  }, [dispatch, isAuthenticated]);
+    dispatch(refreshUser());
+  }, [dispatch]);
 
   useEffect(() => {
     if (isAuthenticated && profile === null) {
@@ -90,6 +91,19 @@ const App: React.FC = () => {
           path="/calendar"
           element={
             <PrivateRoute component={<Calendar />} redirectTo="/login" />
+          }
+        />
+        <Route
+          path="/coordinator"
+          element={
+            <CoordinatorRoute component={<CoordinatorPage />} redirectTo="/" />
+          }
+        />
+
+        <Route
+          path="/coordinator/employees/:id"
+          element={
+            <CoordinatorRoute component={<EmployeeDetails />} redirectTo="/" />
           }
         />
       </Routes>

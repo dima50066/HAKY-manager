@@ -14,10 +14,10 @@ export const fetchMyProductivityRecords = createAsyncThunk(
 
 export const fetchProductivityById = createAsyncThunk<
   ProductivityRecord[],
-  { profileId: string; startDate?: string; endDate?: string }
->("productivity/fetchById", async ({ profileId, startDate, endDate }) => {
+  { userId: string; startDate?: string; endDate?: string }
+>("productivity/fetchById", async ({ userId, startDate, endDate }) => {
   const response = await axiosInstance.get(
-    `/employees/${profileId}/productivity`,
+    `/coordinator/employees/${userId}/productivity`,
     { params: { startDate, endDate } }
   );
   return response.data.data;

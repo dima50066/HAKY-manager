@@ -100,15 +100,18 @@ const authSlice = createSlice({
       })
       .addCase(
         refreshUser.fulfilled,
-        (state, action: PayloadAction<{ accessToken: string; user: User }>) => {
+        (
+          state,
+          action: PayloadAction<{ accessToken: string; user: User | null }>
+        ) => {
           state.isLoading = false;
           state.token = action.payload.accessToken;
           state.user = action.payload.user;
           state.isAuthenticated = true;
           localStorage.setItem("token", action.payload.accessToken);
-          localStorage.setItem("user", JSON.stringify(action.payload.user));
         }
       )
+
       .addCase(refreshUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || "Token refresh failed";

@@ -56,7 +56,7 @@ export const logOut = createAsyncThunk(
 );
 
 export const refreshUser = createAsyncThunk<
-  AuthResponse,
+  { accessToken: string; user: User | null },
   void,
   { state: RootState }
 >("auth/refresh", async (_, { getState, rejectWithValue }) => {
@@ -69,8 +69,11 @@ export const refreshUser = createAsyncThunk<
       {},
       { withCredentials: true }
     );
-    const { accessToken, user } = response.data.data;
+    const { accessToken } = response.data.data;
     setAuthHeader(accessToken);
+
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+
     return { accessToken, user };
   } catch (error: any) {
     return rejectWithValue(

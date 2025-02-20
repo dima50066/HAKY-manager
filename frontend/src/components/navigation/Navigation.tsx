@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUserRole } from "../../redux/auth/selectors";
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const role = useSelector(selectUserRole);
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -30,7 +33,7 @@ const Navigation: React.FC = () => {
         </svg>
       </button>
       <ul
-        className={`flex-col lg:flex-row space-x-0 mt-2 lg:space-x-4 lg:space-y-0 space-y-2 lg:space-y-0 ${
+        className={`flex-col lg:flex-row space-x-0 mt-2 lg:space-x-4 lg:space-y-0 space-y-2  ${
           isOpen ? "block" : "hidden"
         } lg:flex`}
       >
@@ -74,6 +77,16 @@ const Navigation: React.FC = () => {
             Calendar
           </Link>
         </li>
+        {role === "coordinator" && (
+          <li>
+            <Link
+              to="/coordinator"
+              className="text-white hover:bg-blue-500 hover:text-white px-4 py-2 rounded transition duration-200"
+            >
+              Coordinator
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );

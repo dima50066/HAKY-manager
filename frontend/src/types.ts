@@ -93,6 +93,9 @@ export interface Employee {
   birthDate?: string;
   livesIndependently: boolean;
   documents: Document[];
+  address?: string;
+  emergencyContactNumber?: string;
+  peselNumber?: string;
   createdAt: string;
   updatedAt: string;
 }

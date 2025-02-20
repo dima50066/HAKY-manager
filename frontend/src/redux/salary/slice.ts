@@ -10,7 +10,7 @@ import {
 
 interface SalaryState {
   mySalaryHistory: Salary[];
-  salaryHistoryById: Record<string, Salary[]>; // Історія зарплат інших юзерів (key = profileId)
+  salaryHistoryById: Record<string, Salary[]>;
   salaryRecord: Salary | null;
   loading: {
     mySalaryHistory: boolean;
@@ -50,7 +50,6 @@ const salarySlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // === МОЯ ІСТОРІЯ ЗАРПЛАТ ===
       .addCase(fetchMySalaryHistory.pending, (state) => {
         state.loading.mySalaryHistory = true;
         state.error.mySalaryHistory = null;
@@ -64,7 +63,6 @@ const salarySlice = createSlice({
         state.error.mySalaryHistory = action.payload as string;
       })
 
-      // === ІСТОРІЯ ЗАРПЛАТ ЮЗЕРА (ДЛЯ КООРДИНАТОРА) ===
       .addCase(fetchSalaryHistoryById.pending, (state, action) => {
         const profileId = action.meta.arg;
         state.loading.salaryHistoryById[profileId] = true;
@@ -81,7 +79,6 @@ const salarySlice = createSlice({
         state.error.salaryHistoryById[profileId] = action.payload as string;
       })
 
-      // === ОНОВЛЕННЯ ЗАРПЛАТИ ===
       .addCase(updateSalaryById.pending, (state) => {
         state.loading.update = true;
         state.error.update = null;
@@ -100,7 +97,6 @@ const salarySlice = createSlice({
         state.error.update = action.payload as string;
       })
 
-      // === ОНОВЛЕННЯ МОЄЇ ЗАРПЛАТИ ===
       .addCase(updateUserSalary.pending, (state) => {
         state.loading.update = true;
         state.error.update = null;
@@ -116,7 +112,6 @@ const salarySlice = createSlice({
         state.error.update = action.payload as string;
       })
 
-      // === РОЗРАХУНОК ЗАРПЛАТИ ===
       .addCase(calculateUserSalary.pending, (state) => {
         state.loading.calculate = true;
         state.error.calculate = null;
