@@ -42,7 +42,7 @@ export const uploadDocumentById = createAsyncThunk<
   { profileId: string; file: FormData }
 >("documents/uploadById", async ({ profileId, file }) => {
   const response = await axiosInstance.post(
-    `/employees/${profileId}/documents`,
+    `/coordinator/employees/${profileId}/documents`,
     file,
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -63,15 +63,17 @@ export const deleteMyDocument = createAsyncThunk(
     return documentName;
   }
 );
+
 export const deleteDocumentById = createAsyncThunk<
   string,
   { profileId: string; documentName: string }
 >("documents/deleteById", async ({ profileId, documentName }) => {
-  await axiosInstance.delete(`/employees/${profileId}/documents`, {
+  await axiosInstance.delete(`/coordinator/employees/${profileId}/documents`, {
     data: { documentName },
   });
   return documentName;
 });
+
 export const getDocumentPreview = createAsyncThunk(
   "documents/getDocumentPreview",
   async (documentName: string, { getState }) => {
@@ -84,3 +86,13 @@ export const getDocumentPreview = createAsyncThunk(
     return response.data.data.previewLink;
   }
 );
+
+export const getDocumentPreviewById = createAsyncThunk<
+  string,
+  { profileId: string; documentName: string }
+>("documents/getDocumentPreviewById", async ({ profileId, documentName }) => {
+  const response = await axiosInstance.get(
+    `/coordinator/employees/${profileId}/documents/preview/${documentName}`
+  );
+  return response.data.data.previewLink;
+});

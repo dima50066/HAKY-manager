@@ -7,7 +7,7 @@ import {
   selectEmployeesLoading,
   selectEmployeesError,
 } from "../../redux/coordinator/selectors";
-import Employee from "./Employee";
+import EmployeeCard from "./EmployeeCard";
 
 const EmployeesList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,7 +30,7 @@ const EmployeesList: React.FC = () => {
       <h2 className="text-xl font-bold mb-4">Employees</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {employees.map((employee) => (
-          <Employee key={employee._id} employee={employee} />
+          <EmployeeCard key={employee._id} employee={employee} />
         ))}
       </div>
     </div>

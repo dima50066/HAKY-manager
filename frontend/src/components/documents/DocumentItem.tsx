@@ -7,6 +7,7 @@ import { getDocumentPreview } from "../../redux/documents/operations";
 interface DocumentItemProps {
   document: Document;
   onDelete: (documentName: string) => void;
+  onPreview: (documentName: string) => void;
 }
 
 const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDelete }) => {

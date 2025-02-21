@@ -20,7 +20,7 @@ const SalaryForm: React.FC<SalaryFormProps> = ({ recordId }) => {
   const handleUpdateSalary = () => {
     dispatch(
       updateUserSalary({
-        userId: "Ваш_User_ID",
+        userId: "",
         recordId,
         additionalHours: hoursWorked,
       })

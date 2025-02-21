@@ -56,7 +56,7 @@ router.post(
   "/employees/:profileId/documents",
   authenticate,
   checkRole(UserRole.COORDINATOR),
-  upload.single("file"),
+  upload.single("document"),
   ctrlWrapper(uploadDocumentById)
 );
 

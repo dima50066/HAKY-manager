@@ -8,7 +8,7 @@ const ProductivityForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [departmentId, setDepartmentId] = useState("");
   const [date, setDate] = useState("");
-  const [unitsCompleted, setUnitsCompleted] = useState(0);
+  const [unitsCompleted, setUnitsCompleted] = useState<string>("");
 
   const user = useSelector((state: RootState) => state.auth.user);
   const departments = useSelector(
@@ -22,6 +22,26 @@ const ProductivityForm: React.FC = () => {
     dispatch(fetchDepartments());
   }, [dispatch]);
 
+  const handleUnitsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    value = value.replace(/[^0-9.]/g, "");
+
+    const dotCount = (value.match(/\./g) || []).length;
+    if (dotCount > 1) {
+      return;
+    }
+
+    if (value.includes(".")) {
+      const [integerPart, decimalPart] = value.split(".");
+      if (decimalPart.length > 3) {
+        value = `${integerPart}.${decimalPart.slice(0, 3)}`;
+      }
+    }
+
+    setUnitsCompleted(value);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -33,6 +53,12 @@ const ProductivityForm: React.FC = () => {
       return;
     }
 
+    const parsedUnits = parseFloat(unitsCompleted);
+    if (isNaN(parsedUnits) || parsedUnits <= 0) {
+      alert("Please enter a valid number for units completed.");
+      return;
+    }
+
     dispatch(
       addMyProductivityRecord({
         department: {
@@ -40,13 +66,13 @@ const ProductivityForm: React.FC = () => {
           name: department.name,
         },
         date,
-        unitsCompleted,
+        unitsCompleted: parsedUnits,
       })
     );
 
     setDepartmentId("");
     setDate("");
-    setUnitsCompleted(0);
+    setUnitsCompleted("");
   };
 
   return (
@@ -91,9 +117,12 @@ const ProductivityForm: React.FC = () => {
           Units Completed:
         </label>
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
+          pattern="^\d*\.?\d{0,3}$"
+          placeholder="Enter units (e.g. 3002.505)"
           value={unitsCompleted}
-          onChange={(e) => setUnitsCompleted(+e.target.value)}
+          onChange={handleUnitsChange}
           required
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />

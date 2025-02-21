@@ -54,6 +54,7 @@ const DocumentsManager: React.FC = () => {
               key={doc.name}
               document={doc}
               onDelete={handleDelete}
+              onPreview={() => {}}
             />
           ))
         ) : (

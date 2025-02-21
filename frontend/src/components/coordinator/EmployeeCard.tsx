@@ -2,11 +2,11 @@ import React from "react";
 import { Employee as EmployeeType } from "../../types";
 import { Link } from "react-router-dom";
 
-interface EmployeeProps {
+interface EmployeeCardProps {
   employee: EmployeeType;
 }
 
-const Employee: React.FC<EmployeeProps> = ({ employee }) => {
+const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
   return (
     <div className="border rounded-lg p-4 shadow-lg bg-white">
       <div className="flex items-center space-x-4">
@@ -37,4 +37,4 @@ const Employee: React.FC<EmployeeProps> = ({ employee }) => {
   );
 };
 
-export default Employee;
+export default EmployeeCard;
