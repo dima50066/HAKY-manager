@@ -11,8 +11,8 @@ import {
   uploadFileToDropbox,
   deleteFileFromDropbox,
   createDropboxFilename,
+  createDropboxInstance,
 } from "../utils/dropbox";
-import { dbx } from "../utils/dropbox";
 
 interface ProfilePayload {
   avatar?: string;
@@ -203,6 +203,8 @@ export const getDocumentPreviewLink = async (
   }
 
   try {
+    const dbx = await createDropboxInstance(); // Тепер створюємо Dropbox API-інстанс у функції
+
     const sharedLinksResponse = await dbx.sharingListSharedLinks({
       path: document.url,
     });
@@ -217,6 +219,7 @@ export const getDocumentPreviewLink = async (
     const response = await dbx.sharingCreateSharedLinkWithSettings({
       path: document.url,
     });
+
     return response.result.url.replace("?dl=0", "?raw=1");
   } catch (error) {
     console.error("[Dropbox] Failed to generate preview link:", error);

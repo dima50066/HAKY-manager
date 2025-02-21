@@ -35,7 +35,7 @@ const EmployeeDetails: React.FC = () => {
 
   const salaryHistory = useSelector(selectSalaryHistoryById(userId));
   const productivityRecords = useSelector(selectProductivityById(userId));
-  const documents = useSelector(selectDocumentsById(userId));
+  const documents = useSelector(selectDocumentsById(profileId));
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -51,9 +51,9 @@ const EmployeeDetails: React.FC = () => {
     if (userId) {
       dispatch(fetchSalaryHistoryById(userId));
       dispatch(fetchProductivityById({ userId }));
-      dispatch(fetchDocumentsById(userId));
+      dispatch(fetchDocumentsById(profileId));
     }
-  }, [dispatch, userId]);
+  }, [dispatch, userId, profileId]);
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this employee?")) {

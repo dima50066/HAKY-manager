@@ -17,7 +17,7 @@ export const fetchDocumentsById = createAsyncThunk<Document[], string>(
   "documents/fetchById",
   async (profileId) => {
     const response = await axiosInstance.get(
-      `/employees/${profileId}/documents`
+      `/coordinator/employees/${profileId}/documents`
     );
     return response.data.data;
   }
