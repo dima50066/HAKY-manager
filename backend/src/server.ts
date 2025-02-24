@@ -33,7 +33,7 @@ export const setupServer = () => {
   app.use(express.json());
 
   const corsOptions = {
-    origin: "FRONTEND_URL",
+    origin: FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
     credentials: true,
