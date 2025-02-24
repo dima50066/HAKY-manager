@@ -21,6 +21,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.12",
+    "@types/node": "^22.13.5",
     "@types/nodemailer": "^6.4.16",
     "@types/pino-http": "^5.8.4",
     "@types/pino-pretty": "^5.0.0",
@@ -30,7 +31,6 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@types/node": "^22.8.6",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
