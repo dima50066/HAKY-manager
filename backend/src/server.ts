@@ -10,6 +10,8 @@ import { UPLOAD_DIR } from "./constants/constants";
 
 dotenv.config();
 
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
 const pinoConfig =
   process.env.NODE_ENV !== "production"
     ? {
@@ -31,10 +33,7 @@ export const setupServer = () => {
   app.use(express.json());
 
   const corsOptions = {
-    origin:
-      process.env.NODE_ENV === "production"
-        ? "https://haky-manager.vercel.app/"
-        : "http://localhost:3000",
+    origin: "FRONTEND_URL",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
     credentials: true,
