@@ -3,11 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMyProductivityRecord } from "../../redux/productivity/operations";
 import { fetchDepartments } from "../../redux/departments/operations";
 import { RootState, AppDispatch } from "../../redux/store";
+import {
+  selectSelectedDepartment,
+  selectSelectedDate,
+} from "../../redux/productivity/selectors";
+import {
+  setSelectedDepartment,
+  setSelectedDate,
+} from "../../redux/productivity/slice";
 
 const ProductivityForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [departmentId, setDepartmentId] = useState("");
-  const [date, setDate] = useState("");
+  const selectedDepartment = useSelector(selectSelectedDepartment);
+  const selectedDate = useSelector(selectSelectedDate);
+
+  const [departmentId, setDepartmentId] = useState(selectedDepartment);
+  const [date, setDate] = useState(selectedDate);
   const [unitsCompleted, setUnitsCompleted] = useState<string>("");
 
   const user = useSelector((state: RootState) => state.auth.user);
@@ -22,24 +33,21 @@ const ProductivityForm: React.FC = () => {
     dispatch(fetchDepartments());
   }, [dispatch]);
 
-  const handleUnitsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
+  useEffect(() => {
+    setDepartmentId(selectedDepartment);
+    setDate(selectedDate);
+  }, [selectedDepartment, selectedDate]);
 
-    value = value.replace(/[^0-9.]/g, "");
+  const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setDepartmentId(value);
+    dispatch(setSelectedDepartment(value));
+  };
 
-    const dotCount = (value.match(/\./g) || []).length;
-    if (dotCount > 1) {
-      return;
-    }
-
-    if (value.includes(".")) {
-      const [integerPart, decimalPart] = value.split(".");
-      if (decimalPart.length > 3) {
-        value = `${integerPart}.${decimalPart.slice(0, 3)}`;
-      }
-    }
-
-    setUnitsCompleted(value);
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setDate(value);
+    dispatch(setSelectedDate(value));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -70,8 +78,6 @@ const ProductivityForm: React.FC = () => {
       })
     );
 
-    setDepartmentId("");
-    setDate("");
     setUnitsCompleted("");
   };
 
@@ -86,7 +92,7 @@ const ProductivityForm: React.FC = () => {
         </label>
         <select
           value={departmentId}
-          onChange={(e) => setDepartmentId(e.target.value)}
+          onChange={handleDepartmentChange}
           required
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         >
@@ -107,7 +113,7 @@ const ProductivityForm: React.FC = () => {
         <input
           type="date"
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={handleDateChange}
           required
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
@@ -122,7 +128,7 @@ const ProductivityForm: React.FC = () => {
           pattern="^\d*\.?\d{0,3}$"
           placeholder="Enter units (e.g. 3002.505)"
           value={unitsCompleted}
-          onChange={handleUnitsChange}
+          onChange={(e) => setUnitsCompleted(e.target.value)}
           required
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />

@@ -13,7 +13,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
         <img
           src={employee.avatar || "/default-avatar.png"}
           alt="Avatar"
-          className="w-16 h-16 rounded-full border"
+          className="w-16 h-16 rounded-full border object-cover"
         />
         <div>
           <h3 className="text-lg font-semibold">{employee.user.name}</h3>

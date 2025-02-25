@@ -12,7 +12,7 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
         <img
           src={employee.avatar || "/default-avatar.png"}
           alt="Avatar"
-          className="w-24 h-24 rounded-full border"
+          className="w-24 h-24 rounded-full border object-cover"
         />
         <div>
           <h2 className="text-2xl font-bold">{employee.user.name}</h2>

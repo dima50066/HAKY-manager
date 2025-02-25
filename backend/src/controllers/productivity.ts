@@ -4,8 +4,10 @@ import {
   getAllProductivityRecords,
   updateProductivityRecord,
   deleteProductivityRecord,
+  getUserProductivityRecords,
 } from "../services/productivity";
 import { UsersCollection } from "../db/models/user";
+import { AuthenticatedRequest } from "../types";
 
 export const addProductivityRecord = async (
   req: Request,
@@ -103,6 +105,28 @@ export const removeProductivityRecord = async (
     });
   } catch (error) {
     console.error("Error in removeProductivityRecord:", error);
+    next(error);
+  }
+};
+
+export const getUserProductivityRecordsById = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: No user data found" });
+    }
+
+    const userId = (req.user._id as string).toString();
+    const records = await getUserProductivityRecords(userId);
+
+    res.status(200).json({ status: "success", data: records });
+  } catch (error) {
+    console.error("Error in getUserProductivityRecordsById:", error);
     next(error);
   }
 };

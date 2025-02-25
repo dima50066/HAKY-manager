@@ -1,11 +1,11 @@
 import { RootState } from "../store";
 
-export const selectMyProductivityRecords = (state: RootState) =>
-  state.productivity.myRecords;
-export const selectMyProductivityLoading = (state: RootState) =>
-  state.productivity.loading.myRecords;
-export const selectMyProductivityError = (state: RootState) =>
-  state.productivity.error.myRecords;
+export const selectAllProductivityRecords = (state: RootState) =>
+  state.productivity.allRecords;
+export const selectAllProductivityLoading = (state: RootState) =>
+  state.productivity.loading.allRecords;
+export const selectAllProductivityError = (state: RootState) =>
+  state.productivity.error.allRecords;
 
 export const selectProductivityById =
   (profileId: string) => (state: RootState) =>
@@ -33,3 +33,18 @@ export const selectDeleteProductivityLoading = (state: RootState) =>
   state.productivity.loading.delete;
 export const selectDeleteProductivityError = (state: RootState) =>
   state.productivity.error.delete;
+
+export const selectSelectedDepartment = (state: RootState) =>
+  state.productivity.selectedDepartment;
+
+export const selectSelectedDate = (state: RootState) =>
+  state.productivity.selectedDate;
+
+export const selectMyProductivityRecords = (state: RootState) =>
+  state.productivity.myRecords;
+
+export const selectMyProductivityLoading = (state: RootState) =>
+  state.productivity.loading.myRecords;
+
+export const selectMyProductivityError = (state: RootState) =>
+  state.productivity.error.myRecords;

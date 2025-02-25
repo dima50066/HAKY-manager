@@ -4,7 +4,7 @@ import { RootState } from "../store";
 import { ProductivityRecord, ProductivityData } from "../../types";
 import { selectProfile } from "../profile/selectors";
 
-export const fetchMyProductivityRecords = createAsyncThunk(
+export const fetchAllProductivityRecords = createAsyncThunk(
   "productivity/fetchAll",
   async () => {
     const response = await axiosInstance.get("/productivity");
@@ -95,5 +95,17 @@ export const deleteMyProductivityRecord = createAsyncThunk(
 
     await axiosInstance.delete(`/productivity/${id}`);
     return id;
+  }
+);
+
+export const fetchMyProductivityRecords = createAsyncThunk(
+  "productivity/fetchMine",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/productivity/me");
+      return response.data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "Failed to fetch records");
+    }
   }
 );

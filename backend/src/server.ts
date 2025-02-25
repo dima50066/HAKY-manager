@@ -10,7 +10,7 @@ import { UPLOAD_DIR } from "./constants/constants";
 
 dotenv.config();
 
-const FRONTEND_URL = process.env.FRONTEND_URL;
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
 const pinoConfig =
   process.env.NODE_ENV !== "production"
@@ -25,6 +25,7 @@ const pinoConfig =
     : {};
 
 const PORT = process.env.PORT || 5000;
+
 console.log(`Running in ${process.env.NODE_ENV} mode`);
 
 export const setupServer = () => {

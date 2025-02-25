@@ -127,3 +127,11 @@ export const updateProductivityRecord = async (
   const updatedRecord = await existingRecord.save();
   return updatedRecord;
 };
+
+export const getUserProductivityRecords = async (userId: string) => {
+  const records = await ProductivityRecord.find({ userId })
+    .populate("departmentId", "name")
+    .populate("userId", "name isStudent");
+
+  return records;
+};
