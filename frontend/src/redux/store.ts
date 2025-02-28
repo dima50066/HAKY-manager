@@ -8,6 +8,7 @@ import salaryReducer from "./salary/slice";
 import calendarReducer from "./calendar/slice";
 import documentsReducer from "./documents/slice";
 import coordinatorReducer from "./coordinator/slice";
+import rankingReducer from "./ranking/slice";
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     calendar: calendarReducer,
     documents: documentsReducer,
     employees: coordinatorReducer,
+    ranking: rankingReducer,
   },
 });
 

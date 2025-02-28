@@ -27,6 +27,7 @@ import { getProfile } from "./redux/profile/operations";
 import CoordinatorPage from "./pages/coordinator/CoordinatorPage";
 import CoordinatorRoute from "./components/routers/CoordinatorRoute";
 import EmployeeDetails from "./components/coordinator/EmployeeDetails";
+import RankingPage from "./pages/ranking/RankingPage";
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -99,11 +100,18 @@ const App: React.FC = () => {
             <CoordinatorRoute component={<CoordinatorPage />} redirectTo="/" />
           }
         />
-
         <Route
           path="/coordinator/employees/:id"
           element={
             <CoordinatorRoute component={<EmployeeDetails />} redirectTo="/" />
+          }
+        />
+
+        {/* Додав маршрут для сторінки рейтингу */}
+        <Route
+          path="/ranking"
+          element={
+            <PrivateRoute component={<RankingPage />} redirectTo="/login" />
           }
         />
       </Routes>

@@ -77,6 +77,14 @@ const Navigation: React.FC = () => {
             Calendar
           </Link>
         </li>
+        <li>
+          <Link
+            to="/ranking"
+            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
+          >
+            Ranking
+          </Link>
+        </li>
         {role === "coordinator" && (
           <li>
             <Link

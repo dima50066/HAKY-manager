@@ -6,6 +6,7 @@ import departmentRouter from "./department";
 import salaryRouter from "./salary";
 import calendarRouter from "./calendar";
 import coordinatorRouter from "./coordinator";
+import rankingRouter from "./ranking";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/departments", departmentRouter);
 router.use("/salary", salaryRouter);
 router.use("/calendar", calendarRouter);
 router.use("/coordinator", coordinatorRouter);
+router.use("/ranking", rankingRouter);
 
 export default router;
