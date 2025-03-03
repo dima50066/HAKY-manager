@@ -10,7 +10,6 @@ import {
   getDocumentPreviewById,
   getEmployeeProductivityById,
   getEmployeeSalaryById,
-  updateEmployeeSalaryById,
   deleteEmployeeById,
 } from "../controllers/coordinator";
 import { authenticate } from "../middlewares/authenticate";
@@ -95,12 +94,6 @@ router.get(
   ctrlWrapper(getEmployeeSalaryById)
 );
 
-router.put(
-  "/employees/:profileId/salary",
-  authenticate,
-  checkRole(UserRole.COORDINATOR),
-  ctrlWrapper(updateEmployeeSalaryById)
-);
 router.delete(
   "/employees/:profileId",
   authenticate,

@@ -10,7 +10,6 @@ import {
   downloadDocumentByProfile,
   getEmployeeProductivity,
   getEmployeeSalaryHistory,
-  updateEmployeeSalary,
   deleteEmployeeProfile,
 } from "../services/coordinator";
 import createHttpError from "http-errors";
@@ -251,38 +250,6 @@ export const getEmployeeSalaryById = async (
       createHttpError(
         error.status || 500,
         error.message || "Failed to retrieve employee salary history"
-      )
-    );
-  }
-};
-
-export const updateEmployeeSalaryById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { profileId } = req.params;
-    const { recordId, additionalHours, bonus, penalty } = req.body;
-
-    const updatedSalary = await updateEmployeeSalary({
-      profileId,
-      recordId,
-      additionalHours,
-      bonus,
-      penalty,
-    });
-
-    res.status(200).json({
-      status: 200,
-      message: "Employee salary updated successfully!",
-      data: updatedSalary,
-    });
-  } catch (error: any) {
-    next(
-      createHttpError(
-        error.status || 500,
-        error.message || "Failed to update employee salary"
       )
     );
   }

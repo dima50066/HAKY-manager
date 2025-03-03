@@ -18,9 +18,10 @@ import { Calendar } from "../db/models/calendar";
 import { SessionsCollection } from "../db/models/session";
 import { UsersCollection } from "../db/models/user";
 import { deleteFileFromCloudinary } from "../utils/cloudinary";
+import mongoose from "mongoose";
 
 interface UpdateSalaryInput {
-  profileId: string;
+  userId: string;
   recordId: string;
   additionalHours?: number;
   bonus?: number;
@@ -231,30 +232,6 @@ export const getEmployeeSalaryHistory = async (profileId: string) => {
   }
 
   return salaryHistory;
-};
-
-export const updateEmployeeSalary = async ({
-  profileId,
-  recordId,
-  additionalHours = 0,
-  bonus = 0,
-  penalty = 0,
-}: UpdateSalaryInput) => {
-  const salaryRecord = await Salary.findOne({
-    _id: recordId,
-    userId: profileId,
-  });
-
-  if (!salaryRecord) {
-    throw createHttpError(404, "Salary record not found");
-  }
-
-  salaryRecord.hoursWorked += additionalHours;
-  salaryRecord.totalEarnings += bonus - penalty;
-
-  await salaryRecord.save();
-
-  return salaryRecord;
 };
 
 export const deleteEmployeeProfile = async (profileId: string) => {

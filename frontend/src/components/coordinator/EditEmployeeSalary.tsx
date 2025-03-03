@@ -24,6 +24,7 @@ const EditEmployeeSalary: React.FC<EditEmployeeSalaryProps> = ({
   onClose,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+
   const [formData, setFormData] = useState({
     additionalHours: salary.hoursWorked || 0,
     recordId: salary._id,
@@ -31,14 +32,19 @@ const EditEmployeeSalary: React.FC<EditEmployeeSalaryProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: Number(value),
-    }));
+
+    setFormData((prev) => {
+      const updatedFormData = {
+        ...prev,
+        [name]: Number(value),
+      };
+      return updatedFormData;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     await dispatch(updateUserSalary({ userId, ...formData }));
     onClose();
   };
