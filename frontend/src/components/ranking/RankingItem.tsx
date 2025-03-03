@@ -6,6 +6,7 @@ interface RankingItemProps {
     departmentName: string;
     unitsCompleted: number;
     position: number;
+    date: string;
   };
   onSelectDepartment: (departmentId: string) => void;
   onSelectDate: (date: string) => void;
@@ -32,7 +33,7 @@ const RankingItem: React.FC<RankingItemProps> = ({
         units | Position:{" "}
         <span
           className="text-red-500 font-semibold cursor-pointer hover:underline"
-          onClick={() => onSelectDate(new Date().toISOString().slice(0, 10))}
+          onClick={() => onSelectDate(department.date)}
         >
           {department.position}
         </span>

@@ -1,16 +1,10 @@
 import React from "react";
 import RankingItem from "./RankingItem";
-
-interface Department {
-  departmentId: string;
-  departmentName: string;
-  unitsCompleted: number;
-  position: number;
-}
+import { DepartmentCard } from "../../types";
 
 interface DayHistory {
   date: string;
-  departments: Department[];
+  departments: DepartmentCard[];
 }
 
 interface RankingListProps {
@@ -32,10 +26,10 @@ const RankingList: React.FC<RankingListProps> = ({
             {new Date(day.date).toLocaleDateString()}
           </h3>
           <div className="space-y-2">
-            {day.departments.map((dept: Department) => (
+            {day.departments.map((dept: DepartmentCard) => (
               <RankingItem
                 key={dept.departmentId}
-                department={dept}
+                department={{ ...dept, date: day.date }}
                 onSelectDepartment={onSelectDepartment}
                 onSelectDate={onSelectDate}
               />

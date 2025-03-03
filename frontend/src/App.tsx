@@ -107,7 +107,6 @@ const App: React.FC = () => {
           }
         />
 
-        {/* Додав маршрут для сторінки рейтингу */}
         <Route
           path="/ranking"
           element={

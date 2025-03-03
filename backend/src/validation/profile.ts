@@ -6,7 +6,6 @@ export const profileSchema = Joi.object({
     .allow(null),
   isStudent: Joi.boolean().optional(),
   productivity: Joi.number().min(100).max(125).optional(),
-  bio: Joi.string().max(500).optional(),
   location: Joi.string().max(100).optional(),
   birthDate: Joi.date().optional(),
   livesIndependently: Joi.boolean().optional(),

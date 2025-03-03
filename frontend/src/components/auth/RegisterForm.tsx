@@ -1,25 +1,36 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import  axiosInstance  from '../../hooks/axiosConfig';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { registerUser } from "../../redux/auth/operations";
+import { selectAuthLoading, selectAuthError } from "../../redux/auth/selectors";
 
 const RegisterForm: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const isLoading = useAppSelector(selectAuthLoading);
+  const error = useAppSelector(selectAuthError);
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    try {
-      await axiosInstance.post('/auth/register', { name, email, password });
+    const resultAction = await dispatch(
+      registerUser({ name, email, password })
+    );
 
-      toast.success('Registration successful!');
-      navigate('/login');
-    } catch (error) {
-      console.error('Registration error:', error);
-      toast.error('Registration failed');
+    if (registerUser.fulfilled.match(resultAction)) {
+      toast.success("Registration successful!");
+      navigate("/login");
+    } else {
+      const errorMessage =
+        typeof resultAction.payload === "string"
+          ? resultAction.payload
+          : "Registration failed";
+      toast.error(errorMessage);
     }
   };
 
@@ -55,9 +66,18 @@ const RegisterForm: React.FC = () => {
           className="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
       </label>
-      <button type="submit" className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-500">
-        Register
+      <button
+        type="submit"
+        disabled={isLoading}
+        className={`w-full p-2 text-white rounded ${
+          isLoading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-500"
+        }`}
+      >
+        {isLoading ? "Registering..." : "Register"}
       </button>
+      {error && <p className="text-red-500 text-center mt-2">{error}</p>}
     </form>
   );
 };

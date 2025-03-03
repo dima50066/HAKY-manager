@@ -11,11 +11,11 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: JSON.parse(localStorage.getItem("user") || "null"),
-  token: localStorage.getItem("token") || null,
+  user: null,
+  token: null,
   isLoading: false,
   error: null,
-  isAuthenticated: !!localStorage.getItem("token"),
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -38,17 +38,11 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(
-        registerUser.fulfilled,
-        (state, action: PayloadAction<{ accessToken: string; user: User }>) => {
-          state.isLoading = false;
-          state.user = action.payload.user;
-          state.token = action.payload.accessToken;
-          state.isAuthenticated = true;
-          localStorage.setItem("token", action.payload.accessToken);
-          localStorage.setItem("user", JSON.stringify(action.payload.user));
-        }
-      )
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || "Registration failed";
@@ -87,6 +81,7 @@ const authSlice = createSlice({
         state.error = null;
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("persist:root");
       })
       .addCase(logOut.rejected, (state, action) => {
         state.isLoading = false;

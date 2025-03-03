@@ -22,9 +22,6 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
       <div className="mt-4 space-y-2">
         <h3 className="text-xl font-semibold">Personal Information</h3>
         <p>
-          <strong>Bio:</strong> {employee.bio || "No bio available"}
-        </p>
-        <p>
           <strong>Birth Date:</strong>{" "}
           {employee.birthDate
             ? new Date(employee.birthDate).toLocaleDateString()

@@ -22,7 +22,6 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
           </p>
         </div>
       </div>
-      <p className="mt-2 text-sm">{employee.bio || "No bio available"}</p>
 
       <Link
         to={`/coordinator/employees/${employee._id}`}

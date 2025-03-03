@@ -23,8 +23,10 @@ const DailyRanking: React.FC<DailyRankingProps> = ({ date, onClose }) => {
   const users = useSelector(selectAllUsers);
 
   useEffect(() => {
-    dispatch(fetchDailyRanking(date));
-    dispatch(fetchAllUsers());
+    if (date) {
+      dispatch(fetchDailyRanking(date));
+      dispatch(fetchAllUsers());
+    }
   }, [dispatch, date]);
 
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;

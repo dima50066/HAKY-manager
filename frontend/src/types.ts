@@ -43,7 +43,6 @@ export interface Profile {
   user: string;
   avatar?: string;
   isStudent: boolean;
-  bio?: string;
   productivity?: number;
   location?: string;
   birthDate?: string;
@@ -65,7 +64,6 @@ export interface ProfileForm {
   avatar: File | string | null;
   isStudent: boolean;
   productivity: number;
-  bio: string;
   location: string;
   birthDate: string;
   livesIndependently: boolean;
@@ -88,7 +86,6 @@ export interface Employee {
   avatar?: string;
   isStudent: boolean;
   productivity: number;
-  bio?: string;
   location?: string;
   birthDate?: string;
   livesIndependently: boolean;
@@ -98,4 +95,11 @@ export interface Employee {
   peselNumber?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface DepartmentCard {
+  departmentId: string;
+  departmentName: string;
+  unitsCompleted: number;
+  position: number;
 }

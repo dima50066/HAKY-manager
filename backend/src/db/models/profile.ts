@@ -5,7 +5,6 @@ export interface Profile extends Document {
   avatar?: string;
   isStudent: boolean;
   productivity: number;
-  bio?: string;
   location?: string;
   birthDate?: Date;
   livesIndependently: boolean;
@@ -33,7 +32,6 @@ const ProfileSchema: Schema<Profile> = new Schema(
     avatar: { type: String },
     isStudent: { type: Boolean, required: true },
     productivity: { type: Number, required: true },
-    bio: { type: String },
     location: { type: String },
     birthDate: { type: Date },
     livesIndependently: { type: Boolean, required: true, default: false },

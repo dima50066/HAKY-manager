@@ -16,7 +16,6 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     avatar: null,
     isStudent: profile?.isStudent || false,
     productivity: profile?.productivity ?? 100,
-    bio: profile?.bio || "",
     location: profile?.location || "",
     birthDate: profile?.birthDate || "",
     livesIndependently: profile?.livesIndependently || false,
@@ -31,7 +30,6 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
         avatar: null,
         isStudent: profile.isStudent,
         productivity: profile.productivity ?? 100,
-        bio: profile.bio || "",
         location: profile.location || "",
         birthDate: profile.birthDate || "",
         livesIndependently: profile.livesIndependently,
@@ -83,7 +81,6 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
 
     formData.append("isStudent", String(form.isStudent));
     formData.append("productivity", String(form.productivity));
-    formData.append("bio", form.bio);
     formData.append("location", form.location);
     formData.append("birthDate", form.birthDate);
     formData.append("livesIndependently", String(form.livesIndependently));
@@ -101,7 +98,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
       const result = await dispatch(updateProfile(formData)).unwrap();
       console.log("Profile updated successfully!", result);
       alert("Profile updated successfully!");
-      onClose(); // Закриваємо форму після успішного оновлення
+      onClose();
     } catch (error) {
       console.error("Failed to update profile:", error);
     }
@@ -171,22 +168,6 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
           <option value={125}>125%</option>
         </select>
       </div>
-
-      <div>
-        <label htmlFor="bio" className="block font-medium text-gray-700">
-          Bio
-        </label>
-        <textarea
-          name="bio"
-          id="bio"
-          placeholder="Tell us about yourself"
-          maxLength={500}
-          value={form.bio}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
-      </div>
-
       <div>
         <label htmlFor="location" className="block font-medium text-gray-700">
           Location

@@ -15,15 +15,18 @@ import ProductivityAccordion from "./ProductivityAccordion";
 import ProductivitySummary from "./ProductivitySummary";
 import { ProductivityRecord } from "../../types";
 
-export const groupByDate = (records: ProductivityRecord[]) => {
+export const groupByDateAndDepartment = (records: ProductivityRecord[]) => {
   return records.reduce((acc, record) => {
     const date = new Date(record.date).toLocaleDateString();
     if (!acc[date]) {
-      acc[date] = [];
+      acc[date] = {};
     }
-    acc[date].push(record);
+    if (!acc[date][record.departmentName]) {
+      acc[date][record.departmentName] = [];
+    }
+    acc[date][record.departmentName].push(record);
     return acc;
-  }, {} as Record<string, ProductivityRecord[]>);
+  }, {} as Record<string, Record<string, ProductivityRecord[]>>);
 };
 
 const ProductivityList: React.FC = () => {
@@ -47,7 +50,7 @@ const ProductivityList: React.FC = () => {
     setEditingRecord(record);
   };
 
-  const groupedRecords = groupByDate(records);
+  const groupedRecords = groupByDateAndDepartment(records);
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6">
@@ -64,11 +67,11 @@ const ProductivityList: React.FC = () => {
 
       <ProductivitySummary records={records} />
 
-      {Object.entries(groupedRecords).map(([date, records]) => (
+      {Object.entries(groupedRecords).map(([date, recordsByDepartment]) => (
         <ProductivityAccordion
           key={date}
           date={date}
-          records={records}
+          recordsByDepartment={recordsByDepartment}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />

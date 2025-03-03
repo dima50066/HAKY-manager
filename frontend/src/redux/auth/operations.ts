@@ -12,14 +12,12 @@ interface AuthResponse {
 }
 
 export const registerUser = createAsyncThunk<
-  AuthResponse,
-  { email: string; password: string }
+  User,
+  { name: string; email: string; password: string }
 >("auth/register", async (userData, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post("/auth/register", userData);
-    const { accessToken, user } = response.data.data;
-    setAuthHeader(accessToken);
-    return { accessToken, user };
+    return response.data.data;
   } catch (error: any) {
     return rejectWithValue(
       error.response?.data.message || "Registration failed"

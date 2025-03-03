@@ -16,7 +16,6 @@ import {
 
 interface ProfilePayload {
   avatar?: string;
-  bio?: string;
   isStudent: boolean;
   productivity: number;
   location?: string;
@@ -35,7 +34,6 @@ export const createProfile = async (
   if (existingProfile) throw createHttpError(409, "Profile already exists");
 
   const data: ProfilePayload = {
-    bio: req.body?.bio || "",
     isStudent: req.body?.isStudent === "true",
     productivity: parseInt(req.body?.productivity || "100", 10),
     location: req.body?.location || "",
@@ -68,7 +66,6 @@ export const updateProfile = async (
   if (!profile) throw createHttpError(404, "Profile not found for update");
 
   const data: ProfilePayload = {
-    bio: req.body?.bio || profile.bio,
     isStudent: req.body?.isStudent === "true",
     productivity: parseInt(
       req.body?.productivity || profile.productivity.toString(),
@@ -203,7 +200,7 @@ export const getDocumentPreviewLink = async (
   }
 
   try {
-    const dbx = await createDropboxInstance(); // Тепер створюємо Dropbox API-інстанс у функції
+    const dbx = await createDropboxInstance();
 
     const sharedLinksResponse = await dbx.sharingListSharedLinks({
       path: document.url,

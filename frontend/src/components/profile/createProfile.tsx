@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createProfile } from '../../redux/profile/operations';
-import { AppDispatch } from '../../redux/store';
-import { useNavigate } from 'react-router-dom';
-import { ProfileForm } from '../../types';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createProfile } from "../../redux/profile/operations";
+import { AppDispatch } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
+import { ProfileForm } from "../../types";
 
 const CreateProfile: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,13 +12,14 @@ const CreateProfile: React.FC = () => {
     avatar: null,
     isStudent: false,
     productivity: 100,
-    bio: '',
-    location: 'Gorzow',
-    birthDate: '',
+    location: "Gorzow",
+    birthDate: "",
     livesIndependently: false,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
       ...prevForm,
@@ -50,19 +51,18 @@ const CreateProfile: React.FC = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    if (form.avatar instanceof File) formData.append('avatar', form.avatar);
-    formData.append('isStudent', String(form.isStudent));
-    formData.append('productivity', String(form.productivity));
-    formData.append('bio', form.bio);
-    formData.append('location', form.location);
-    formData.append('birthDate', form.birthDate);
-    formData.append('livesIndependently', String(form.livesIndependently));
+    if (form.avatar instanceof File) formData.append("avatar", form.avatar);
+    formData.append("isStudent", String(form.isStudent));
+    formData.append("productivity", String(form.productivity));
+    formData.append("location", form.location);
+    formData.append("birthDate", form.birthDate);
+    formData.append("livesIndependently", String(form.livesIndependently));
 
     try {
       await dispatch(createProfile(formData)).unwrap();
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      console.error('Failed to create profile:', error);
+      console.error("Failed to create profile:", error);
     }
   };
 
@@ -104,14 +104,6 @@ const CreateProfile: React.FC = () => {
         <option value={115}>115%</option>
         <option value={125}>125%</option>
       </select>
-      <textarea
-        name="bio"
-        placeholder="Bio"
-        maxLength={500}
-        value={form.bio}
-        onChange={handleChange}
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-      />
       <select
         name="location"
         value={form.location}
@@ -128,7 +120,10 @@ const CreateProfile: React.FC = () => {
         onChange={handleChange}
         className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
       />
-      <button type="submit" className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-500">
+      <button
+        type="submit"
+        className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-500"
+      >
         Create Profile
       </button>
     </form>

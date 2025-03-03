@@ -18,7 +18,6 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
   const employee = useSelector(selectEmployeeById(profileId));
 
   const [formData, setFormData] = useState({
-    bio: "",
     birthDate: "",
     location: "",
     address: "",
@@ -38,7 +37,6 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
   useEffect(() => {
     if (employee) {
       setFormData({
-        bio: employee.bio || "",
         birthDate: employee.birthDate ? employee.birthDate.split("T")[0] : "",
         location: employee.location || "",
         address: employee.address || "",
@@ -74,13 +72,6 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
     <div className="p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Edit Employee</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <TextField
-          label="Bio"
-          name="bio"
-          value={formData.bio}
-          onChange={handleChange}
-          fullWidth
-        />
         <TextField
           label="Birth Date"
           name="birthDate"

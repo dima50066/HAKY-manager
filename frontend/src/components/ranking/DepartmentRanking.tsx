@@ -56,7 +56,6 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
 
   return (
     <div className="p-5 bg-white rounded-lg shadow-md w-full max-w-lg relative">
-      {/* Close Button */}
       <button
         onClick={onClose}
         className="absolute top-2 right-2 px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 transition"
@@ -68,7 +67,6 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
         Department Ranking
       </h2>
 
-      {/* Period Selector */}
       <div className="flex gap-3 mb-4">
         <button
           className={`px-4 py-2 rounded-lg ${
@@ -102,7 +100,6 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
         </button>
       </div>
 
-      {/* Date Picker for Day Selection */}
       {selectedPeriod === "day" && (
         <input
           type="date"
@@ -112,7 +109,6 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
         />
       )}
 
-      {/* Ranking List */}
       <ul className="space-y-2">
         {ranking.length > 0 ? (
           ranking.map((user, index) => {

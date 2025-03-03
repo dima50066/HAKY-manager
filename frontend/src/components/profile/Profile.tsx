@@ -54,12 +54,6 @@ const Profile: React.FC = () => {
           <p className="text-gray-500">Productivity: {profile.productivity}%</p>
         </div>
         <div className="text-center mt-4">
-          <p className="text-gray-700 font-semibold">Bio</p>
-          <p className="text-gray-500 mt-1">
-            {profile.bio || "No bio provided"}
-          </p>
-        </div>
-        <div className="text-center mt-4">
           <p className="text-gray-700 font-semibold">Location</p>
           <p className="text-gray-500 mt-1">
             {profile.location || "No location provided"}
