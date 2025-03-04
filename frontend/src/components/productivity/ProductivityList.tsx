@@ -52,6 +52,12 @@ const ProductivityList: React.FC = () => {
 
   const groupedRecords = groupByDateAndDepartment(records);
 
+  const sortedDates = Object.keys(groupedRecords).sort((a, b) => {
+    const dateA = new Date(a.split(".").reverse().join("-"));
+    const dateB = new Date(b.split(".").reverse().join("-"));
+    return dateB.getTime() - dateA.getTime();
+  });
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">
@@ -67,11 +73,11 @@ const ProductivityList: React.FC = () => {
 
       <ProductivitySummary records={records} />
 
-      {Object.entries(groupedRecords).map(([date, recordsByDepartment]) => (
+      {sortedDates.map((date) => (
         <ProductivityAccordion
           key={date}
           date={date}
-          recordsByDepartment={recordsByDepartment}
+          recordsByDepartment={groupedRecords[date]}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />

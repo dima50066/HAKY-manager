@@ -41,6 +41,10 @@ const ProductivityAccordion: React.FC<Props> = ({
     }));
   };
 
+  const calculateDepartmentUnits = (records: ProductivityRecord[]) => {
+    return records.reduce((sum, record) => sum + record.unitsCompleted, 0);
+  };
+
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden mb-2">
       <button
@@ -61,7 +65,8 @@ const ProductivityAccordion: React.FC<Props> = ({
                 onClick={() => toggleDepartment(department)}
                 className="w-full text-left text-gray-700 font-medium flex justify-between"
               >
-                🏢 {department} ({records.length} records) — 💰 $
+                🏢 {department} ({records.length} records) —{" "}
+                {calculateDepartmentUnits(records)} units, 💰 $
                 {calculateDepartmentEarnings(records)}
                 <span>{openDepartments[department] ? "▲" : "▼"}</span>
               </button>
