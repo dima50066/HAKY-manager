@@ -45,6 +45,19 @@ const RequestList: React.FC = () => {
         userRole === "coordinator")
   );
 
+  const rejectedRequestsForUser = requests.filter(
+    (req) =>
+      req.userId &&
+      req.status === "declined" &&
+      (typeof req.userId === "object" ? req.userId._id : req.userId) ===
+        currentUser?._id
+  );
+
+  const rejectedRequestsForCoordinator =
+    userRole === "coordinator"
+      ? requests.filter((req) => req.status === "declined")
+      : [];
+
   return (
     <div className="mt-6">
       <RequestGroup title="Your Requests" requests={userRequests} />
@@ -59,6 +72,21 @@ const RequestList: React.FC = () => {
         isCoordinator={userRole === "coordinator"}
       />
       <RequestGroup title="Confirmed Requests" requests={confirmedRequests} />
+
+      {rejectedRequestsForUser.length > 0 && (
+        <RequestGroup
+          title="Rejected Requests (Your)"
+          requests={rejectedRequestsForUser}
+        />
+      )}
+
+      {rejectedRequestsForCoordinator.length > 0 && (
+        <RequestGroup
+          title="Rejected Requests (All)"
+          requests={rejectedRequestsForCoordinator}
+          isCoordinator
+        />
+      )}
     </div>
   );
 };

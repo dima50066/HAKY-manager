@@ -21,10 +21,21 @@ const RequestItem: React.FC<{ request: any; isCoordinator?: boolean }> = ({
 
   const canManageRequest = request.status === "pending";
 
+  const statusColors: Record<string, string> = {
+    pending: "bg-yellow-100 border-yellow-400 hover:bg-yellow-200",
+    confirmed: "bg-green-100 border-green-400 hover:bg-green-200",
+    declined: "bg-red-100 border-red-400 hover:bg-red-200",
+  };
+
   return (
-    <li className="border p-4 rounded-lg shadow-lg mb-4 flex items-center justify-between bg-white hover:bg-gray-100 transition duration-300 ease-in-out">
+    <li
+      className={`border p-4 rounded-lg shadow-lg mb-4 flex items-center justify-between transition duration-300 ease-in-out ${
+        statusColors[request.status] ||
+        "bg-gray-100 border-gray-400 hover:bg-gray-200"
+      }`}
+    >
       <div className="flex flex-col">
-        <span className="text-xl font-semibold text-gray-800">
+        <span className="text-xl font-semibold text-gray-800 capitalize">
           {request.type}
         </span>
         <span className="text-sm text-gray-500">

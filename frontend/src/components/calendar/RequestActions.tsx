@@ -20,7 +20,9 @@ const RequestActions: React.FC<RequestActionsProps> = ({
 
   return (
     <div className="flex gap-2">
-      {(requestType === "day-off" || requestType === "work-day") && (
+      {(requestType === "day-off" ||
+        requestType === "work-day" ||
+        requestType === "vacation") && (
         <button
           onClick={() => dispatch(confirmRequest(requestId))}
           className="bg-green-500 text-white px-2 py-1 rounded"
