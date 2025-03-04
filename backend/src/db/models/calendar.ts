@@ -29,6 +29,7 @@ const RequestSchema = new Schema<RequestEntry>(
     },
     respondedBy: { type: Schema.Types.ObjectId, ref: "users" },
     approvedBy: { type: Schema.Types.ObjectId, ref: "users" },
+    createdAt: { type: Date, default: Date.now, expires: 3888000 },
   },
   {
     timestamps: true,
