@@ -1,49 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import CalendarView from "../../components/calendar/CalendarView";
-import CalendarFormModal from "../../components/calendar/CalendarFormModal";
-import { AppDispatch } from "../../redux/store";
-import { fetchCalendarEntries } from "../../redux/calendar/operations";
-import { selectCalendarLoading } from "../../redux/calendar/selectors";
-import LoadingSpinner from "../../components/loader/LoadingSpinner";
+import RequestForm from "../../components/calendar/RequestForm";
+import RequestList from "../../components/calendar/RequestList";
+import { useAppDispatch } from "../../redux/store";
+import { fetchRequests } from "../../redux/requests/operations";
+import { fetchAllUsers } from "../../redux/ranking/operations";
 
-const CalendarPage = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
-  const isLoading = useSelector(selectCalendarLoading);
+const CalendarPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
 
   useEffect(() => {
-    dispatch(fetchCalendarEntries());
+    dispatch(fetchRequests());
+    dispatch(fetchAllUsers());
   }, [dispatch]);
 
-  const handleDayClick = (date: Date) => {
-    setSelectedDate(date);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedDate(null);
-  };
-
   return (
-    <div className="mt-6 px-4">
-      <h1 className="text-2xl font-bold text-center mb-6">Календар</h1>
-
-      {isLoading ? (
-        <LoadingSpinner loading={isLoading} size={50} color="#3498db" />
-      ) : (
-        <>
-          <CalendarView onDayClick={handleDayClick} />
-          {isModalOpen && selectedDate && (
-            <CalendarFormModal
-              date={selectedDate.toISOString()}
-              onClose={closeModal}
-            />
-          )}
-        </>
-      )}
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Calendar</h1>
+      <div className="flex gap-6">
+        <CalendarView
+          selectedDates={selectedDates}
+          setSelectedDates={setSelectedDates}
+        />
+        <RequestForm selectedDates={selectedDates} />
+      </div>
+      <RequestList />
     </div>
   );
 };

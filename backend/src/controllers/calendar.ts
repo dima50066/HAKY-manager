@@ -1,77 +1,159 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  getAllCalendarEntries,
-  upsertCalendarEntry,
-  deleteCalendarEntry,
-} from "../services/calendar";
+import createHttpError from "http-errors";
 import { AuthenticatedRequest } from "../types";
+import {
+  createCalendarRequest,
+  getAllCalendarRequests,
+  confirmCalendarRequest,
+  respondToCalendarRequest,
+  declineCalendarRequest,
+} from "../services/calendar";
+import mongoose from "mongoose";
 
-export const getCalendarEntries = async (
+export const createCalendarRequestHandler = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const userId = req.user?._id?.toString();
+    const userId = req.user?.id;
 
     if (!userId) {
-      return res.status(401).json({ message: "User not authenticated" });
+      return next(createHttpError(401, "User is not authenticated"));
     }
 
-    const entries = await getAllCalendarEntries(userId);
-    res.status(200).json({ status: "success", data: entries });
-  } catch (error) {
-    console.error("Error in getCalendarEntries:", error);
-    next(error);
+    const { type, date, endDate } = req.body;
+    const request = await createCalendarRequest(userId, type, date, endDate);
+
+    res.status(201).json({
+      status: "success",
+      data: request,
+    });
+  } catch (error: any) {
+    next(
+      createHttpError(
+        500,
+        error.message || "Server error while creating request"
+      )
+    );
   }
 };
 
-export const setCalendarEntry = async (
+export const getCalendarRequestsHandler = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const userId = req.user?._id?.toString();
-    const { date, isWorkday } = req.body;
-
-    if (!userId) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
-    const entry = await upsertCalendarEntry({ userId, date, isWorkday });
-    res.status(200).json({ status: "success", data: entry });
-  } catch (error) {
-    console.error("Error in setCalendarEntry:", error);
-    next(error);
+    const requests = await getAllCalendarRequests();
+    res.status(200).json({
+      status: "success",
+      data: requests,
+    });
+  } catch (error: any) {
+    next(
+      createHttpError(
+        500,
+        error.message || "Server error while fetching requests"
+      )
+    );
   }
 };
 
-export const removeCalendarEntry = async (
+export const respondCalendarToRequestHandler = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const userId = req.user?._id?.toString();
-    const { date } = req.body;
-
+    const userId = req.user?.id;
     if (!userId) {
-      return res.status(401).json({ message: "User not authenticated" });
+      return next(createHttpError(401, "User is not authenticated"));
     }
 
-    const deletedEntry = await deleteCalendarEntry(userId, date);
+    const { requestId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(requestId)) {
+      return next(createHttpError(400, "Invalid request ID"));
+    }
 
-    if (!deletedEntry) {
-      return res.status(404).json({ message: "Calendar entry not found" });
+    const request = await respondToCalendarRequest(requestId, userId);
+    if (!request) {
+      return next(createHttpError(404, "Request not found"));
     }
 
     res.status(200).json({
       status: "success",
-      message: "Calendar entry deleted successfully",
+      data: request,
     });
-  } catch (error) {
-    console.error("Error in removeCalendarEntry:", error);
-    next(error);
+  } catch (error: any) {
+    next(
+      createHttpError(
+        500,
+        error.message || "Server error while responding to request"
+      )
+    );
+  }
+};
+
+export const confirmCalendarRequestHandler = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(createHttpError(401, "User is not authenticated"));
+    }
+
+    const { requestId } = req.params;
+    const request = await confirmCalendarRequest(requestId, userId);
+
+    res.status(200).json({
+      status: "success",
+      data: request,
+    });
+  } catch (error: any) {
+    next(
+      createHttpError(
+        500,
+        error.message || "Server error while confirming request"
+      )
+    );
+  }
+};
+
+export const declineCalendarRequestHandler = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(createHttpError(401, "User is not authenticated"));
+    }
+
+    const { requestId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(requestId)) {
+      return next(createHttpError(400, "Invalid request ID"));
+    }
+
+    const request = await declineCalendarRequest(requestId, userId);
+    if (!request) {
+      return next(createHttpError(404, "Request not found"));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: request,
+    });
+  } catch (error: any) {
+    next(
+      createHttpError(
+        500,
+        error.message || "Server error while declining request"
+      )
+    );
   }
 };

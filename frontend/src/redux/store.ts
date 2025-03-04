@@ -5,7 +5,7 @@ import profileReducer from "./profile/slice";
 import productivityReducer from "./productivity/slice";
 import departmentsReducer from "./departments/slice";
 import salaryReducer from "./salary/slice";
-import calendarReducer from "./calendar/slice";
+import requestsReducer from "./requests/slice";
 import documentsReducer from "./documents/slice";
 import coordinatorReducer from "./coordinator/slice";
 import rankingReducer from "./ranking/slice";
@@ -28,7 +28,7 @@ const persistConfig = {
   whitelist: [
     "auth",
     "profile",
-    "calendar",
+    "requests",
     "departments",
     "ranking",
     "employees",
@@ -44,7 +44,7 @@ const appReducer = combineReducers({
   productivity: productivityReducer,
   departments: departmentsReducer,
   salary: salaryReducer,
-  calendar: calendarReducer,
+  requests: requestsReducer,
   documents: documentsReducer,
   employees: coordinatorReducer,
   ranking: rankingReducer,

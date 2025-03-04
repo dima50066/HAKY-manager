@@ -1,42 +1,83 @@
-import { Calendar } from "../db/models/calendar";
-import { Types } from "mongoose";
+import { Requests } from "../db/models/calendar";
 
-interface CalendarEntryData {
-  userId: string;
-  date: string;
-  isWorkday: boolean;
-}
-
-export const getAllCalendarEntries = async (userId: string) => {
-  const entries = await Calendar.find({ userId }).sort({ date: 1 });
-  return entries;
+export const createCalendarRequest = async (
+  userId: string,
+  type: "vacation" | "day-off" | "work-day",
+  date: string,
+  endDate?: string
+) => {
+  try {
+    const request = new Requests({
+      userId,
+      type,
+      date: new Date(date),
+      endDate: endDate ? new Date(endDate) : undefined,
+    });
+    const savedRequest = await request.save();
+    return savedRequest;
+  } catch (error) {
+    console.error("Error creating request:", error);
+    throw error;
+  }
 };
 
-export const upsertCalendarEntry = async (data: CalendarEntryData) => {
-  const { userId, date, isWorkday } = data;
-
-  const parsedDate = new Date(date);
-  if (isNaN(parsedDate.getTime())) {
-    throw new Error("Invalid date format");
+export const getAllCalendarRequests = async () => {
+  try {
+    const requests = await Requests.find().populate("userId", "name email");
+    return requests;
+  } catch (error) {
+    console.error("Error fetching requests:", error);
+    throw error;
   }
-
-  const entry = await Calendar.findOneAndUpdate(
-    { userId, date: parsedDate },
-    { isWorkday },
-    { new: true, upsert: true }
-  );
-  return entry;
 };
 
-export const deleteCalendarEntry = async (userId: string, date: string) => {
-  const parsedDate = new Date(date);
-  if (isNaN(parsedDate.getTime())) {
-    throw new Error("Invalid date format");
+export const respondToCalendarRequest = async (
+  requestId: string,
+  userId: string
+) => {
+  try {
+    const updatedRequest = await Requests.findByIdAndUpdate(
+      requestId,
+      { respondedBy: userId, status: "responded" },
+      { new: true }
+    );
+    return updatedRequest;
+  } catch (error) {
+    console.error("Error responding to request:", error);
+    throw error;
   }
+};
 
-  const deletedEntry = await Calendar.findOneAndDelete({
-    userId,
-    date: parsedDate,
-  });
-  return deletedEntry;
+export const confirmCalendarRequest = async (
+  requestId: string,
+  userId: string
+) => {
+  try {
+    const updatedRequest = await Requests.findByIdAndUpdate(
+      requestId,
+      { approvedBy: userId, status: "confirmed" },
+      { new: true }
+    );
+    return updatedRequest;
+  } catch (error) {
+    console.error("Error confirming request:", error);
+    throw error;
+  }
+};
+
+export const declineCalendarRequest = async (
+  requestId: string,
+  userId: string
+) => {
+  try {
+    const updatedRequest = await Requests.findByIdAndUpdate(
+      requestId,
+      { approvedBy: userId, status: "declined" },
+      { new: true }
+    );
+    return updatedRequest;
+  } catch (error) {
+    console.error("Error declining request:", error);
+    throw error;
+  }
 };

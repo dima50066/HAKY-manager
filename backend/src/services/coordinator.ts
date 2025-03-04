@@ -14,19 +14,11 @@ import {
 } from "../utils/dropbox";
 import { ProductivityRecord } from "../db/models/productivity";
 import { Salary } from "../db/models/salary";
-import { Calendar } from "../db/models/calendar";
+import { Requests } from "../db/models/calendar";
 import { SessionsCollection } from "../db/models/session";
 import { UsersCollection } from "../db/models/user";
 import { deleteFileFromCloudinary } from "../utils/cloudinary";
-import mongoose from "mongoose";
 
-interface UpdateSalaryInput {
-  userId: string;
-  recordId: string;
-  additionalHours?: number;
-  bonus?: number;
-  penalty?: number;
-}
 export const getAllEmployeeProfiles = async (): Promise<Profile[]> => {
   const profiles = await ProfilesCollection.find({})
     .populate("user", "name email role")
@@ -253,7 +245,7 @@ export const deleteEmployeeProfile = async (profileId: string) => {
   await Promise.all([
     Salary.deleteMany({ userId }),
     ProductivityRecord.deleteMany({ userId }),
-    Calendar.deleteMany({ userId }),
+    Requests.deleteMany({ userId }),
     SessionsCollection.deleteMany({ userId }),
     UsersCollection.findByIdAndDelete(userId),
     ProfilesCollection.findByIdAndDelete(profileId),

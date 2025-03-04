@@ -1,17 +1,38 @@
-import { Schema, model, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
-interface CalendarEntry extends Document {
+export interface RequestEntry extends Document {
   userId: Types.ObjectId;
+  type: "vacation" | "day-off" | "work-day";
   date: Date;
-  isWorkday: boolean;
+  endDate?: Date;
+  status: "pending" | "responded" | "confirmed" | "declined";
+  respondedBy?: Types.ObjectId;
+  approvedBy?: Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const CalendarSchema = new Schema<CalendarEntry>({
-  userId: { type: Schema.Types.ObjectId, ref: "users", required: true },
-  date: { type: Date, required: true },
-  isWorkday: { type: Boolean, required: true },
-});
+const RequestSchema = new Schema<RequestEntry>(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: "users", required: true },
+    type: {
+      type: String,
+      enum: ["vacation", "day-off", "work-day"],
+      required: true,
+    },
+    date: { type: Date, required: true },
+    endDate: { type: Date },
+    status: {
+      type: String,
+      enum: ["pending", "responded", "confirmed", "declined"],
+      default: "pending",
+    },
+    respondedBy: { type: Schema.Types.ObjectId, ref: "users" },
+    approvedBy: { type: Schema.Types.ObjectId, ref: "users" },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-CalendarSchema.index({ userId: 1, date: 1 }, { unique: true });
-
-export const Calendar = model<CalendarEntry>("Calendar", CalendarSchema);
+export const Requests = mongoose.model<RequestEntry>("Requests", RequestSchema);

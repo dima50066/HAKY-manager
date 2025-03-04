@@ -17,7 +17,6 @@ import PrivateRoute from "./components/routers/PrivateRoute";
 import CreateProfile from "./components/profile/createProfile";
 import Productivity from "./pages/productivity/ProductivityPage";
 import Salary from "./pages/salary/Salary";
-import Calendar from "./pages/calendar/CalendarPage";
 import {
   selectIsAuthenticated,
   selectAuthLoading,
@@ -28,6 +27,7 @@ import CoordinatorPage from "./pages/coordinator/CoordinatorPage";
 import CoordinatorRoute from "./components/routers/CoordinatorRoute";
 import EmployeeDetails from "./components/coordinator/EmployeeDetails";
 import RankingPage from "./pages/ranking/RankingPage";
+import CalendarPage from "./pages/calendar/CalendarPage";
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -89,12 +89,6 @@ const App: React.FC = () => {
           element={<PrivateRoute component={<Salary />} redirectTo="/login" />}
         />
         <Route
-          path="/calendar"
-          element={
-            <PrivateRoute component={<Calendar />} redirectTo="/login" />
-          }
-        />
-        <Route
           path="/coordinator"
           element={
             <CoordinatorRoute component={<CoordinatorPage />} redirectTo="/" />
@@ -111,6 +105,13 @@ const App: React.FC = () => {
           path="/ranking"
           element={
             <PrivateRoute component={<RankingPage />} redirectTo="/login" />
+          }
+        />
+
+        <Route
+          path="/Calendar"
+          element={
+            <PrivateRoute component={<CalendarPage />} redirectTo="/login" />
           }
         />
       </Routes>

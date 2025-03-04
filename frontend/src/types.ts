@@ -103,3 +103,14 @@ export interface DepartmentCard {
   unitsCompleted: number;
   position: number;
 }
+
+export interface RequestEntry {
+  _id: string;
+  userId: string | { _id: string; name: string };
+  type: "vacation" | "day-off" | "work-day";
+  date: string;
+  endDate?: string;
+  status: "pending" | "responded" | "confirmed" | "declined";
+  respondedBy?: string;
+  approvedBy?: string | { _id: string; name: string };
+}

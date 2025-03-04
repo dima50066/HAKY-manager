@@ -1,77 +1,69 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { selectCalendarEntries } from "../../redux/calendar/selectors";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
+import React, { useState } from "react";
+import { Calendar, dateFnsLocalizer, Event } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./CalendarView.css";
-import "moment/locale/uk";
+import { format, parse, startOfWeek, getDay } from "date-fns";
+import { enUS } from "date-fns/locale";
 
-moment.updateLocale("uk", {
-  week: {
-    dow: 1,
-    doy: 4,
-  },
+const locales = { "en-US": enUS };
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
+  getDay,
+  locales,
 });
 
-const localizer = momentLocalizer(moment);
+interface CalendarViewProps {
+  selectedDates: string[];
+  setSelectedDates: (dates: string[]) => void;
+}
 
-const CalendarView: React.FC<{ onDayClick: (date: Date) => void }> = ({
-  onDayClick,
+const CalendarView: React.FC<CalendarViewProps> = ({
+  selectedDates,
+  setSelectedDates,
 }) => {
-  const calendarEntries = useSelector(selectCalendarEntries);
+  const [events, setEvents] = useState<Event[]>([]);
 
-  const handleSlotSelect = ({ start }: { start: Date }) => {
-    onDayClick(start);
-  };
+  const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
+    const formattedStart = new Date(start);
+    formattedStart.setHours(0, 0, 0, 0);
 
-  const getDayStyle = (date: Date) => {
-    const today = new Date();
-    const isToday =
-      today.getDate() === date.getDate() &&
-      today.getMonth() === date.getMonth() &&
-      today.getFullYear() === date.getFullYear();
+    const correctedEnd = new Date(end);
+    correctedEnd.setDate(correctedEnd.getDate() - 1);
+    correctedEnd.setHours(23, 59, 59, 999);
 
-    const entry = calendarEntries.find((entry) => {
-      const entryDate = new Date(entry.date);
-      return (
-        entryDate.getDate() === date.getDate() &&
-        entryDate.getMonth() === date.getMonth() &&
-        entryDate.getFullYear() === date.getFullYear()
-      );
-    });
+    setSelectedDates([
+      formattedStart.toISOString(),
+      correctedEnd.toISOString(),
+    ]);
 
-    if (isToday && entry) {
-      return {
-        className: entry.isWorkday ? "today-workday" : "today-holiday",
-      };
-    } else if (entry) {
-      return {
-        className: entry.isWorkday ? "workday" : "holiday",
-      };
-    }
-
-    if (isToday) {
-      return { className: "today-neutral" };
-    }
-
-    return {};
+    setEvents([
+      {
+        title: "Selected Dates",
+        start: formattedStart,
+        end: correctedEnd,
+        allDay: true,
+      },
+    ]);
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-xl">
+    <div className="border p-4 rounded shadow-md">
+      <h2 className="text-lg font-semibold mb-2">Calendar</h2>
       <Calendar
         localizer={localizer}
-        events={[]} // Відсутні події
+        events={events}
         startAccessor="start"
         endAccessor="end"
         selectable
-        onSelectSlot={handleSlotSelect}
-        style={{ height: "600px" }}
+        style={{ height: 400 }}
+        onSelectSlot={handleSelectSlot}
         views={["month"]}
-        dayPropGetter={getDayStyle}
-        className="custom-calendar"
       />
+      <p className="mt-2">
+        Selected Dates:{" "}
+        {selectedDates.length > 0 ? selectedDates.join(", ") : "Not selected"}
+      </p>
     </div>
   );
 };

@@ -1,33 +1,43 @@
 import express from "express";
 import {
-  getCalendarEntries,
-  setCalendarEntry,
-  removeCalendarEntry,
+  createCalendarRequestHandler,
+  getCalendarRequestsHandler,
+  respondCalendarToRequestHandler,
+  confirmCalendarRequestHandler,
+  declineCalendarRequestHandler,
 } from "../controllers/calendar";
 import { authenticate } from "../middlewares/authenticate";
 import { ctrlWrapper } from "../utils/ctrlWrapper";
-import {
-  calendarEntrySchema,
-  calendarEntryDeleteSchema,
-} from "../validation/calendar";
+import { checkRole } from "../middlewares/checkRole";
+import { UserRole } from "../constants/constants";
 import { validateBody } from "../middlewares/validateBody";
+import { requestSchema } from "../validation/calendar";
 
 const router = express.Router();
 
-router.get("/", authenticate, ctrlWrapper(getCalendarEntries));
-
 router.post(
-  "/",
+  "/request",
   authenticate,
-  validateBody(calendarEntrySchema),
-  ctrlWrapper(setCalendarEntry)
+  validateBody(requestSchema),
+  ctrlWrapper(createCalendarRequestHandler)
+);
+router.get("/requests", authenticate, ctrlWrapper(getCalendarRequestsHandler));
+router.post(
+  "/respond/:requestId",
+  authenticate,
+  ctrlWrapper(respondCalendarToRequestHandler)
+);
+router.post(
+  "/confirm/:requestId",
+  authenticate,
+  ctrlWrapper(confirmCalendarRequestHandler)
 );
 
-router.delete(
-  "/",
+router.post(
+  "/decline/:requestId",
   authenticate,
-  validateBody(calendarEntryDeleteSchema),
-  ctrlWrapper(removeCalendarEntry)
+  checkRole(UserRole.COORDINATOR),
+  ctrlWrapper(declineCalendarRequestHandler)
 );
 
 export default router;
