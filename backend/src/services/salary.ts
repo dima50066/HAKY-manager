@@ -77,6 +77,13 @@ export const updateUserSalaryRecord = async ({
     additionalHours,
   });
 
+  if (!mongoose.Types.ObjectId.isValid(recordId)) {
+    throw new Error("Invalid recordId format");
+  }
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new Error("Invalid userId format");
+  }
+
   const salaryRecord = await Salary.findOne({
     _id: new mongoose.Types.ObjectId(recordId),
     userId: new mongoose.Types.ObjectId(userId),

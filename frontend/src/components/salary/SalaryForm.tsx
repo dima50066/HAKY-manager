@@ -5,6 +5,7 @@ import {
   selectMySalaryHistoryLoading,
   selectMySalaryHistoryError,
 } from "../../redux/salary/selectors";
+import { selectUser } from "../../redux/auth/selectors";
 import { AppDispatch } from "../../redux/store";
 
 interface SalaryFormProps {
@@ -15,12 +16,14 @@ const SalaryForm: React.FC<SalaryFormProps> = ({ recordId }) => {
   const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector(selectMySalaryHistoryLoading);
   const error = useSelector(selectMySalaryHistoryError);
+  const user = useSelector(selectUser);
+
   const [hoursWorked, setHoursWorked] = useState<number>(0);
 
   const handleUpdateSalary = () => {
     dispatch(
       updateUserSalary({
-        userId: "",
+        userId: user?._id || "",
         recordId,
         additionalHours: hoursWorked,
       })
