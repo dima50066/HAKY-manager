@@ -25,14 +25,6 @@ const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
     }
   };
 
-  const handleCustomNameChange = (index: number, newName: string) => {
-    setFiles((prevFiles) =>
-      prevFiles.map((fileObj, i) =>
-        i === index ? { ...fileObj, customName: newName } : fileObj
-      )
-    );
-  };
-
   const handleUploadAll = async (event: React.FormEvent) => {
     event.preventDefault();
     for (const { file, customName } of files) {
@@ -44,22 +36,26 @@ const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
     }
   };
 
-  const removeFile = (index: number) => {
-    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
-
   return (
     <form onSubmit={handleUploadAll} className="mb-4">
       <div className="flex flex-col space-y-4">
-        <div className="flex items-center">
+        <div className="relative">
           <input
             type="file"
             ref={fileInputRef}
             onChange={handleFileChange}
             multiple
-            className="border border-gray-300 p-2 rounded-md flex-grow"
+            className="hidden"
+            id="file-upload"
           />
+          <label
+            htmlFor="file-upload"
+            className="bg-gray-200 border border-gray-400 text-gray-700 py-2 px-4 rounded cursor-pointer inline-block text-center"
+          >
+            Choose Files
+          </label>
         </div>
+
         {files.length > 0 && (
           <div className="mt-4">
             <h3 className="text-sm font-medium text-gray-700 mb-2">
@@ -67,37 +63,34 @@ const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
             </h3>
             <ul className="list-disc pl-5 space-y-2">
               {files.map((fileObj, index) => (
-                <li key={index} className="flex flex-col mb-2">
+                <li
+                  key={index}
+                  className="flex flex-col bg-gray-100 p-2 rounded-md overflow-hidden"
+                >
                   <div className="flex justify-between items-center">
-                    <span className="font-medium">{fileObj.file.name}</span>
+                    <span className="font-medium truncate w-48">
+                      {fileObj.file.name}
+                    </span>
                     <button
                       type="button"
-                      onClick={() => removeFile(index)}
+                      onClick={() =>
+                        setFiles((prev) => prev.filter((_, i) => i !== index))
+                      }
                       className="text-red-500 hover:underline ml-4"
                     >
                       Remove
                     </button>
                   </div>
-                  <label className="block text-sm text-gray-600 mt-1">
-                    New Document Name:
-                  </label>
-                  <input
-                    type="text"
-                    value={fileObj.customName}
-                    onChange={(e) =>
-                      handleCustomNameChange(index, e.target.value)
-                    }
-                    className="border border-gray-300 p-2 rounded-md w-full"
-                  />
                 </li>
               ))}
             </ul>
           </div>
         )}
+
         <button
           type="submit"
           disabled={files.length === 0}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
         >
           Upload All
         </button>

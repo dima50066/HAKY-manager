@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import clsx from "clsx";
 import Icon from "../icon/Icon";
@@ -20,6 +20,17 @@ const Modal: React.FC<ModalProps> = ({
   classNameWrapper,
   btnClassName,
 }) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -28,15 +39,21 @@ const Modal: React.FC<ModalProps> = ({
     };
 
     if (isOpen) {
-      document.body.classList.add("modal-open");
+      document.body.classList.add("overflow-hidden");
       document.addEventListener("keydown", handleEscape);
     } else {
-      document.body.classList.remove("modal-open");
+      const openModals = document.querySelectorAll(".modal-instance").length;
+      if (openModals === 0) {
+        document.body.classList.remove("overflow-hidden");
+      }
       document.removeEventListener("keydown", handleEscape);
     }
 
     return () => {
-      document.body.classList.remove("modal-open");
+      const openModals = document.querySelectorAll(".modal-instance").length;
+      if (openModals === 0) {
+        document.body.classList.remove("overflow-hidden");
+      }
       document.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen, onClose]);
@@ -51,26 +68,32 @@ const Modal: React.FC<ModalProps> = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className={clsx(
+        "fixed inset-0 flex items-center justify-center z-50 modal-instance",
+        !isMobile && "bg-black bg-opacity-50"
+      )}
       onClick={handleBackdropClick}
     >
       <div
         className={clsx(
-          "relative bg-white rounded-xl shadow-lg overflow-hidden max-w-md w-full p-6",
+          "relative bg-white rounded-xl shadow-lg w-full max-w-md",
+          isMobile ? "h-screen max-h-screen" : "max-h-[80vh]",
           classNameWrapper
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          className={clsx(
-            "absolute top-4 right-4 text-gray-600 hover:text-red-500 transition",
-            btnClassName
-          )}
-          onClick={onClose}
-        >
-          <Icon id="x-close" className="w-6 h-6" />
-        </button>
-        {children}
+        <div className="p-6 overflow-y-auto h-full max-h-full ">
+          <button
+            className={clsx(
+              "absolute top-4 right-4 text-gray-600 hover:text-red-500 transition",
+              btnClassName
+            )}
+            onClick={onClose}
+          >
+            <Icon id="x-close" className="w-6 h-6 stroke-black" />
+          </button>
+          {children}
+        </div>
       </div>
     </div>,
     document.body
