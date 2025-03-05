@@ -6,13 +6,13 @@ export const AuthNav: React.FC = () => {
     <div className="flex space-x-4 justify-between">
       <Link
         to="/login"
-        className="px-4 py-2 rounded-md bg-[#151728] text-gray-300 hover:bg-[#131526] hover:text-white transition duration-200"
+        className="px-4 py-2 text-sm sm:text-base font-medium text-white bg-[#1E88E5] hover:bg-[#1565C0] rounded-md shadow-md transition-all duration-300"
       >
         Login
       </Link>
       <Link
         to="/register"
-        className="px-4 py-2 rounded-md bg-[#151728] text-gray-300 hover:bg-[#131526] hover:text-white transition duration-200"
+        className="px-4 py-2 text-sm sm:text-base font-medium text-white bg-[#43A047] hover:bg-[#2E7D32] rounded-md shadow-md transition-all duration-300"
       >
         Register
       </Link>
