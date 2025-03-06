@@ -56,7 +56,7 @@ const SalaryList: React.FC = () => {
 
               <div className="flex items-center gap-2 text-gray-600">
                 <Icon
-                  id="database"
+                  id="coin"
                   width={20}
                   height={20}
                   className="text-gray-600"

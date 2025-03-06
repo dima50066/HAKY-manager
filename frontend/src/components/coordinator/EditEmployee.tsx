@@ -69,76 +69,81 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
   };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Edit Employee</h2>
+    <div className="p-6 bg-white  rounded-lg max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-center">Edit Employee</h2>
+
       <form onSubmit={handleSubmit} className="space-y-4">
-        <TextField
-          label="Birth Date"
-          name="birthDate"
-          type="date"
-          value={formData.birthDate}
-          onChange={handleChange}
-          fullWidth
-        />
-        <TextField
-          label="Location"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          fullWidth
-        />
-        <TextField
-          label="Address"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          fullWidth
-        />
-        <TextField
-          label="PESEL Number"
-          name="peselNumber"
-          value={formData.peselNumber}
-          onChange={handleChange}
-          fullWidth
-        />
-        <TextField
-          label="Emergency Contact"
-          name="emergencyContactNumber"
-          value={formData.emergencyContactNumber}
-          onChange={handleChange}
-          fullWidth
-        />
-        <TextField
-          label="Productivity"
-          name="productivity"
-          type="number"
-          value={formData.productivity}
-          onChange={handleChange}
-          fullWidth
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <TextField
+            label="Birth Date"
+            name="birthDate"
+            type="date"
+            value={formData.birthDate}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label="Location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label="Address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label="PESEL Number"
+            name="peselNumber"
+            value={formData.peselNumber}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label="Emergency Contact"
+            name="emergencyContactNumber"
+            value={formData.emergencyContactNumber}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label="Productivity"
+            name="productivity"
+            type="number"
+            value={formData.productivity}
+            onChange={handleChange}
+            fullWidth
+          />
+        </div>
 
-        <FormControlLabel
-          control={
-            <Switch
-              checked={formData.isStudent}
-              onChange={handleSwitchChange}
-              name="isStudent"
-            />
-          }
-          label="Is Student"
-        />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={formData.livesIndependently}
-              onChange={handleSwitchChange}
-              name="livesIndependently"
-            />
-          }
-          label="Lives Independently"
-        />
+        <div className="flex justify-between mt-2">
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.isStudent}
+                onChange={handleSwitchChange}
+                name="isStudent"
+              />
+            }
+            label="Is Student"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.livesIndependently}
+                onChange={handleSwitchChange}
+                name="livesIndependently"
+              />
+            }
+            label="Lives Independently"
+          />
+        </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-end space-x-4 mt-4">
           <Button variant="contained" color="primary" type="submit">
             Save
           </Button>

@@ -1,52 +1,42 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserRole } from "../../redux/auth/selectors";
 
 const Navigation: React.FC = () => {
   const role = useSelector(selectUserRole);
+  const location = useLocation();
+  const getLinkClass = (path: string) =>
+    location.pathname === path
+      ? "text-white border-b-2 border-white"
+      : "text-gray-300 hover:text-white transition duration-200";
 
   return (
-    <nav className="w-full flex justify-center ">
+    <nav className="w-full flex justify-center">
       <ul className="hidden lg:flex items-center justify-center space-x-6 text-lg font-medium gap-4">
         <li>
-          <Link
-            to="/productivity"
-            className="text-gray-300 hover:text-white transition duration-200"
-          >
+          <Link to="/productivity" className={getLinkClass("/productivity")}>
             Productivity
           </Link>
         </li>
         <li>
-          <Link
-            to="/salary"
-            className="text-gray-300 hover:text-white transition duration-200"
-          >
+          <Link to="/salary" className={getLinkClass("/salary")}>
             Salary
           </Link>
         </li>
         <li>
-          <Link
-            to="/calendar"
-            className="text-gray-300 hover:text-white transition duration-200"
-          >
+          <Link to="/calendar" className={getLinkClass("/calendar")}>
             Calendar
           </Link>
         </li>
         <li>
-          <Link
-            to="/ranking"
-            className="text-gray-300 hover:text-white transition duration-200"
-          >
+          <Link to="/ranking" className={getLinkClass("/ranking")}>
             Ranking
           </Link>
         </li>
         {role === "coordinator" && (
           <li>
-            <Link
-              to="/coordinator"
-              className="text-gray-300 hover:text-white transition duration-200"
-            >
+            <Link to="/coordinator" className={getLinkClass("/coordinator")}>
               Coordinator
             </Link>
           </li>
@@ -57,7 +47,9 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/productivity"
-            className="block w-full text-center text-gray-300 hover:text-white transition duration-200 py-2"
+            className={`${getLinkClass(
+              "/productivity"
+            )} block w-full text-center py-2`}
           >
             Productivity
           </Link>
@@ -65,7 +57,9 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/salary"
-            className="block w-full text-center text-gray-300 hover:text-white transition duration-200 py-2"
+            className={`${getLinkClass(
+              "/salary"
+            )} block w-full text-center py-2`}
           >
             Salary
           </Link>
@@ -73,7 +67,9 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/calendar"
-            className="block w-full text-center text-gray-300 hover:text-white transition duration-200 py-2"
+            className={`${getLinkClass(
+              "/calendar"
+            )} block w-full text-center py-2`}
           >
             Calendar
           </Link>
@@ -81,7 +77,9 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/ranking"
-            className="block w-full text-center text-gray-300 hover:text-white transition duration-200 py-2"
+            className={`${getLinkClass(
+              "/ranking"
+            )} block w-full text-center py-2`}
           >
             Ranking
           </Link>
@@ -90,7 +88,9 @@ const Navigation: React.FC = () => {
           <li>
             <Link
               to="/coordinator"
-              className="block w-full text-center text-gray-300 hover:text-white transition duration-200 py-2"
+              className={`${getLinkClass(
+                "/coordinator"
+              )} block w-full text-center py-2`}
             >
               Coordinator
             </Link>
