@@ -15,7 +15,7 @@ const SalaryPage: React.FC = () => {
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-700 text-center mb-8">
-          Salary Management
+          Your Salary Overview
         </h1>
 
         {loading && (
