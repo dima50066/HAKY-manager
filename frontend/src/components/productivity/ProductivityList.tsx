@@ -13,6 +13,7 @@ import { AppDispatch } from "../../redux/store";
 import ProductivityUpdateForm from "./ProductivityUpdateForm";
 import ProductivityAccordion from "./ProductivityAccordion";
 import ProductivitySummary from "./ProductivitySummary";
+import Modal from "../../shared/modal/Modal";
 import { ProductivityRecord } from "../../types";
 
 export const groupByDateAndDepartment = (records: ProductivityRecord[]) => {
@@ -59,11 +60,7 @@ const ProductivityList: React.FC = () => {
   });
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-        My Productivity Records
-      </h2>
-
+    <div className="bg-white shadow-md rounded-lg">
       {loading && <p className="text-gray-600">Loading records...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
@@ -84,10 +81,12 @@ const ProductivityList: React.FC = () => {
       ))}
 
       {editingRecord && (
-        <ProductivityUpdateForm
-          record={editingRecord}
-          onClose={() => setEditingRecord(null)}
-        />
+        <Modal isOpen={!!editingRecord} onClose={() => setEditingRecord(null)}>
+          <ProductivityUpdateForm
+            record={editingRecord}
+            onClose={() => setEditingRecord(null)}
+          />
+        </Modal>
       )}
     </div>
   );

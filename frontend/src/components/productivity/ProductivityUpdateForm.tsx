@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMyProductivityRecord } from "../../redux/productivity/operations";
 import { fetchDepartments } from "../../redux/departments/operations";
 import { AppDispatch, RootState } from "../../redux/store";
-import { ProductivityRecord } from "../../types";
+import { ProductivityRecord, Department } from "../../types";
+import Icon from "../../shared/icon/Icon";
 
 interface ProductivityUpdateFormProps {
   record: ProductivityRecord;
@@ -15,13 +16,6 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
   onClose,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [department, setDepartment] = useState({
-    id: record.departmentId as string,
-    name: record.department?.name || "",
-  });
-  const [date, setDate] = useState(record.date);
-  const [unitsCompleted, setUnitsCompleted] = useState(record.unitsCompleted);
-
   const departments = useSelector(
     (state: RootState) => state.departments.departments
   );
@@ -29,21 +23,52 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
     (state: RootState) => state.departments.loading
   );
 
+  console.log("RECORD RECEIVED:", record);
+
+  const getDepartmentId = (
+    department: string | Department | undefined
+  ): string => {
+    if (!department) return "";
+    return typeof department === "string" ? department : department._id;
+  };
+
+  const [departmentId, setDepartmentId] = useState<string>(
+    getDepartmentId(record.departmentId)
+  );
+  const [date, setDate] = useState<string>(
+    record.date ? new Date(record.date).toISOString().split("T")[0] : ""
+  );
+  const [unitsCompleted, setUnitsCompleted] = useState<number>(
+    record.unitsCompleted
+  );
+
   useEffect(() => {
     dispatch(fetchDepartments());
   }, [dispatch]);
 
+  useEffect(() => {
+    console.log("Updated Record:", record);
+    console.log("Updated Date (Before Conversion):", record.date);
+
+    setDepartmentId(getDepartmentId(record.departmentId));
+    setDate(
+      record.date ? new Date(record.date).toISOString().split("T")[0] : ""
+    );
+    setUnitsCompleted(record.unitsCompleted);
+
+    console.log("Updated Date (After Conversion):", date);
+    console.log("Updated DepartmentId:", departmentId);
+  }, [record, date, departmentId]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Submitting Data:", { departmentId, date, unitsCompleted });
 
     dispatch(
       updateMyProductivityRecord({
         id: record._id,
         data: {
-          department: {
-            id: department.id,
-            name: department.name.trim() || record.department?.name || "",
-          },
+          departmentId,
           date,
           unitsCompleted,
         },
@@ -51,18 +76,6 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
     );
 
     onClose();
-  };
-
-  const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedDepartment = departments.find(
-      (dept) => dept._id === e.target.value
-    );
-    if (selectedDepartment) {
-      setDepartment({
-        id: selectedDepartment._id,
-        name: selectedDepartment.name,
-      });
-    }
   };
 
   return (
@@ -78,8 +91,8 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
           Department:
         </label>
         <select
-          value={department.id}
-          onChange={handleDepartmentChange}
+          value={departmentId}
+          onChange={(e) => setDepartmentId(e.target.value)}
           required
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         >
@@ -87,9 +100,9 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
           {loadingDepartments ? (
             <option disabled>Loading departments...</option>
           ) : (
-            departments.map((department) => (
-              <option key={department._id} value={department._id}>
-                {department.name} - {department.description}
+            departments.map((dept) => (
+              <option key={dept._id} value={dept._id}>
+                {dept.name} - {dept.description}
               </option>
             ))
           )}
@@ -108,13 +121,29 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
         <label className="block text-gray-700 font-medium mb-2">
           Units Completed:
         </label>
-        <input
-          type="number"
-          value={unitsCompleted}
-          onChange={(e) => setUnitsCompleted(+e.target.value)}
-          required
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
+        <div className="flex items-center space-x-2">
+          <button
+            type="button"
+            onClick={() => setUnitsCompleted((prev) => Math.max(0, prev - 1))}
+            className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            <Icon id="minus" width={16} height={16} className="stroke-black" />
+          </button>
+          <input
+            type="number"
+            value={unitsCompleted}
+            onChange={(e) => setUnitsCompleted(+e.target.value)}
+            required
+            className="w-full no-spinner p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500 text-center"
+          />
+          <button
+            type="button"
+            onClick={() => setUnitsCompleted((prev) => prev + 1)}
+            className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            <Icon id="plus" width={16} height={16} className="stroke-black" />
+          </button>
+        </div>
       </div>
       <button
         type="submit"
