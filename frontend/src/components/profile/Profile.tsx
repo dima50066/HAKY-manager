@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../loader/LoadingSpinner";
 import ProfileInfoCard from "./ProfileInfoCard";
 import { User } from "../../types";
+import Icon from "../../shared/icon/Icon";
 
 interface ProfileProps {
   onEdit: () => void;
@@ -96,9 +97,10 @@ const Profile: React.FC<ProfileProps> = ({ onEdit }) => {
       </div>
 
       <button
-        className="mt-4 w-full bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+        className="mt-4 w-full bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"
         onClick={onEdit}
       >
+        <Icon id="edit" className="w-5 h-5 text-white" />
         Edit Profile
       </button>
     </div>

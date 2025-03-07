@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import Icon from "../../shared/icon/Icon"; // Імпортуємо компонент іконки
 
 interface FileWithCustomName {
   file: File;
@@ -90,8 +91,9 @@ const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
         <button
           type="submit"
           disabled={files.length === 0}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-2"
         >
+          <Icon id="upload" className="w-5 h-5 text-white" />
           Upload All
         </button>
       </div>

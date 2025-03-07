@@ -10,6 +10,7 @@ import {
   selectDepartmentRankingLoading,
   selectAllUsers,
 } from "../../redux/ranking/selectors";
+import RankingListComponent from "./RankingListComponent";
 
 interface DepartmentRankingProps {
   departmentId: string;
@@ -18,7 +19,6 @@ interface DepartmentRankingProps {
 
 const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
   departmentId,
-  onClose,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const ranking = useSelector(selectDepartmentRanking);
@@ -52,17 +52,8 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
     dispatch(fetchAllUsers());
   }, [dispatch, departmentId, selectedPeriod, selectedDate]);
 
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
-
   return (
-    <div className="p-5 bg-white rounded-lg shadow-md w-full max-w-lg relative">
-      <button
-        onClick={onClose}
-        className="absolute top-2 right-2 px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 transition"
-      >
-        Close
-      </button>
-
+    <div className="p-5 bg-white rounded-lg  w-full max-w-lg">
       <h2 className="text-lg font-bold text-gray-800 border-b pb-2 mb-4">
         Department Ranking
       </h2>
@@ -109,28 +100,7 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
         />
       )}
 
-      <ul className="space-y-2">
-        {ranking.length > 0 ? (
-          ranking.map((user, index) => {
-            const foundUser = users.find((usr) => usr._id === user._id);
-            const userName = foundUser ? foundUser.name : "Unknown User";
-
-            return (
-              <li
-                key={user._id}
-                className="bg-gray-100 p-2 rounded-md shadow-sm flex justify-between"
-              >
-                <span className="font-semibold">
-                  {index + 1}. {userName}
-                </span>
-                <span className="text-gray-700">{user.totalUnits} units</span>
-              </li>
-            );
-          })
-        ) : (
-          <p className="text-center text-gray-600">No data available</p>
-        )}
-      </ul>
+      <RankingListComponent ranking={ranking} users={users} loading={loading} />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { loadMoreHistory } from "../../redux/ranking/slice";
 import RankingList from "../../components/ranking/RankingList";
 import DepartmentRanking from "../../components/ranking/DepartmentRanking";
 import DailyRanking from "../../components/ranking/DailyRanking";
+import Modal from "../../shared/modal/Modal";
 
 const RankingPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,45 +16,58 @@ const RankingPage: React.FC = () => {
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
     null
   );
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedDateForDepartment, setSelectedDateForDepartment] = useState<{
+    date: string;
+    departmentId: string;
+  } | null>(null);
 
   useEffect(() => {
     dispatch(fetchUserHistory());
   }, [dispatch]);
 
   return (
-    <div className="p-5 bg-white rounded-lg shadow-md w-full max-w-3xl">
+    <div className="p-5 bg-white rounded-lg shadow-md w-full">
       <h1 className="text-xl font-bold text-gray-800 mb-4">My Ranking</h1>
 
-      {!selectedDepartment && !selectedDate && (
-        <>
-          <RankingList
-            history={visibleHistory}
-            onSelectDepartment={setSelectedDepartment}
-            onSelectDate={setSelectedDate}
+      <RankingList
+        history={visibleHistory}
+        onSelectDepartment={setSelectedDepartment}
+        onSelectDate={(date, departmentId) =>
+          setSelectedDateForDepartment({ date, departmentId })
+        }
+      />
+
+      <button
+        className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+        onClick={() => dispatch(loadMoreHistory())}
+      >
+        Load More
+      </button>
+
+      <Modal
+        isOpen={!!selectedDepartment}
+        onClose={() => setSelectedDepartment(null)}
+      >
+        {selectedDepartment && (
+          <DepartmentRanking
+            departmentId={selectedDepartment}
+            onClose={() => setSelectedDepartment(null)}
           />
-          <button
-            className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
-            onClick={() => dispatch(loadMoreHistory())}
-          >
-            Load More
-          </button>
-        </>
-      )}
+        )}
+      </Modal>
 
-      {selectedDepartment && (
-        <DepartmentRanking
-          departmentId={selectedDepartment}
-          onClose={() => setSelectedDepartment(null)}
-        />
-      )}
-
-      {selectedDate && (
-        <DailyRanking
-          date={selectedDate}
-          onClose={() => setSelectedDate(null)}
-        />
-      )}
+      <Modal
+        isOpen={!!selectedDateForDepartment}
+        onClose={() => setSelectedDateForDepartment(null)}
+      >
+        {selectedDateForDepartment && (
+          <DailyRanking
+            date={selectedDateForDepartment.date}
+            departmentId={selectedDateForDepartment.departmentId}
+            onClose={() => setSelectedDateForDepartment(null)}
+          />
+        )}
+      </Modal>
     </div>
   );
 };

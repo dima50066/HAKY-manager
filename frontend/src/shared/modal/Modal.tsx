@@ -90,7 +90,7 @@ const Modal: React.FC<ModalProps> = ({
             )}
             onClick={onClose}
           >
-            <Icon id="x-close" className="w-6 h-6 stroke-black" />
+            <Icon id="menu-close" className="w-6 h-6 stroke-black" />
           </button>
           {children}
         </div>

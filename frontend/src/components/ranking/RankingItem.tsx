@@ -1,4 +1,5 @@
 import React from "react";
+import Icon from "../../shared/icon/Icon";
 
 interface RankingItemProps {
   department: {
@@ -9,7 +10,7 @@ interface RankingItemProps {
     date: string;
   };
   onSelectDepartment: (departmentId: string) => void;
-  onSelectDate: (date: string) => void;
+  onSelectDate: (date: string, departmentId: string) => void;
 }
 
 const RankingItem: React.FC<RankingItemProps> = ({
@@ -25,17 +26,19 @@ const RankingItem: React.FC<RankingItemProps> = ({
       >
         {department.departmentName}
       </h4>
-      <p className="text-gray-700">
+      <p className="text-gray-700 flex items-center gap-1">
         Completed:{" "}
-        <span className="font-semibold text-gray-900">
+        <span className="font-semibold text-gray-900 flex items-center gap-1">
           {department.unitsCompleted}
+          <Icon id="box" className="w-5 h-5 text-gray-700" />
         </span>{" "}
-        units | Position:{" "}
+        | Position:{" "}
         <span
-          className="text-red-500 font-semibold cursor-pointer hover:underline"
-          onClick={() => onSelectDate(department.date)}
+          className="text-red-500 font-semibold cursor-pointer hover:underline flex items-center gap-1"
+          onClick={() => onSelectDate(department.date, department.departmentId)}
         >
           {department.position}
+          <Icon id="star" className="w-5 h-5 text-yellow-500" />
         </span>
       </p>
     </div>
