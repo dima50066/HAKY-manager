@@ -10,7 +10,9 @@ import { UPLOAD_DIR } from "./constants/constants";
 
 dotenv.config();
 
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const FRONTEND_URL =
+  process.env.FRONTEND_URL ||
+  "http://localhost:3000 || https://haky-manager-53ocbg6dr-dima50066s-projects.vercel.app/";
 
 const pinoConfig =
   process.env.NODE_ENV !== "production"
