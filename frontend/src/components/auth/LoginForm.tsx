@@ -10,10 +10,12 @@ import { getProfile } from "../../redux/profile/operations";
 import { selectProfile } from "../../redux/profile/selectors";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Icon from "../../shared/icon/Icon";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const isLoading = useSelector(selectAuthLoading);
@@ -56,15 +58,25 @@ const LoginForm: React.FC = () => {
         autoComplete="email"
         className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
       />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        required
-        autoComplete="current-password"
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-      />
+      <div className="relative flex items-center">
+        <input
+          type={showPassword ? "text" : "password"}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+          autoComplete="current-password"
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500 pr-10"
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword((prev) => !prev)}
+          className="absolute inset-y-0 right-3 flex items-center"
+        >
+          <Icon id={showPassword ? "eyeOff" : "eye"} width="22" height="22" />
+        </button>
+      </div>
+
       <button
         type="submit"
         className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-500 disabled:opacity-50"

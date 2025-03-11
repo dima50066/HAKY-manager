@@ -8,6 +8,7 @@ import type { ProfileForm } from "../../types";
 interface ProfileUpdateFormProps {
   onClose: () => void;
 }
+
 const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
   const profile = useSelector(selectProfile);
@@ -24,26 +25,27 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     peselNumber: profile?.peselNumber || "",
   });
 
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [columns, setColumns] = useState(1);
+
   useEffect(() => {
-    if (profile) {
-      setForm({
-        avatar: null,
-        isStudent: profile.isStudent,
-        productivity: profile.productivity ?? 100,
-        location: profile.location || "",
-        birthDate: profile.birthDate || "",
-        livesIndependently: profile.livesIndependently,
-        address: profile.address || "",
-        emergencyContactNumber: profile.emergencyContactNumber || "",
-        peselNumber: profile.peselNumber || "",
-      });
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (screenWidth >= 1024) {
+      setColumns(3);
+    } else if (screenWidth >= 768) {
+      setColumns(2);
+    } else {
+      setColumns(1);
     }
-  }, [profile]);
+  }, [screenWidth]);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
@@ -72,7 +74,6 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const formData = new FormData();
 
     if (form.avatar instanceof File) {
@@ -81,22 +82,31 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
 
     formData.append("isStudent", String(form.isStudent));
     formData.append("productivity", String(form.productivity));
-    formData.append("location", form.location);
-    formData.append("birthDate", form.birthDate);
+
+    if (form.location) {
+      formData.append("location", form.location);
+    }
+
+    if (form.birthDate) {
+      formData.append("birthDate", form.birthDate);
+    }
+
     formData.append("livesIndependently", String(form.livesIndependently));
-    formData.append("address", String(form.address));
-    formData.append(
-      "emergencyContactNumber",
-      String(form.emergencyContactNumber)
-    );
-    formData.append("peselNumber", String(form.peselNumber));
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
+
+    if (form.address) {
+      formData.append("address", form.address);
+    }
+
+    if (form.emergencyContactNumber) {
+      formData.append("emergencyContactNumber", form.emergencyContactNumber);
+    }
+
+    if (form.peselNumber) {
+      formData.append("peselNumber", form.peselNumber);
     }
 
     try {
-      const result = await dispatch(updateProfile(formData)).unwrap();
-      console.log("Profile updated successfully!", result);
+      await dispatch(updateProfile(formData)).unwrap();
       alert("Profile updated successfully!");
       onClose();
     } catch (error) {
@@ -107,145 +117,160 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md space-y-4"
+      className={`mx-auto p-6 bg-white rounded-lg space-y-4 transition-all duration-300 ${
+        columns === 1 ? "max-w-md" : columns === 2 ? "max-w-3xl" : "max-w-5xl"
+      }`}
     >
-      <div>
-        <label htmlFor="avatar" className="block font-medium text-gray-700">
-          Avatar
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
-      </div>
+      <div
+        className={`grid gap-4 ${
+          columns === 1
+            ? "grid-cols-1"
+            : columns === 2
+            ? "grid-cols-2"
+            : "grid-cols-3"
+        }`}
+      >
+        <div>
+          <label htmlFor="avatar" className="block font-medium text-gray-700">
+            Avatar
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
 
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          name="isStudent"
-          id="isStudent"
-          checked={form.isStudent}
-          onChange={handleCheckboxChange}
-          className="form-checkbox text-blue-600"
-        />
-        <label htmlFor="isStudent" className="text-gray-700">
-          Student
-        </label>
-      </div>
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="isStudent"
+            id="isStudent"
+            checked={form.isStudent}
+            onChange={handleCheckboxChange}
+            className="form-checkbox text-blue-600"
+          />
+          <label htmlFor="isStudent" className="text-gray-700">
+            Student
+          </label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="livesIndependently"
+            id="livesIndependently"
+            checked={form.livesIndependently}
+            onChange={handleCheckboxChange}
+            className="form-checkbox text-blue-600"
+          />
+          <label htmlFor="livesIndependently" className="block text-gray-700">
+            Lives Independently
+          </label>
+        </div>
+        <div>
+          <label
+            htmlFor="productivity"
+            className="block font-medium text-gray-700"
+          >
+            Productivity Level
+          </label>
+          <select
+            name="productivity"
+            id="productivity"
+            value={form.productivity}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          >
+            <option value={100}>100%</option>
+            <option value={115}>115%</option>
+            <option value={125}>125%</option>
+          </select>
+        </div>
 
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          name="livesIndependently"
-          id="livesIndependently"
-          checked={form.livesIndependently}
-          onChange={handleCheckboxChange}
-          className="form-checkbox text-blue-600"
-        />
-        <label htmlFor="livesIndependently" className="text-gray-700">
-          Lives Independently
-        </label>
-      </div>
+        <div>
+          <label htmlFor="location" className="block font-medium text-gray-700">
+            Location
+          </label>
+          <select
+            name="location"
+            id="location"
+            value={form.location}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          >
+            <option value="Gorzow">Gorzow</option>
+            <option value="Gdansk">Gdansk</option>
+          </select>
+        </div>
 
-      <div>
-        <label
-          htmlFor="productivity"
-          className="block font-medium text-gray-700"
-        >
-          Productivity Level
-        </label>
-        <select
-          name="productivity"
-          id="productivity"
-          value={form.productivity}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        >
-          <option value={100}>100%</option>
-          <option value={115}>115%</option>
-          <option value={125}>125%</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="location" className="block font-medium text-gray-700">
-          Location
-        </label>
-        <select
-          name="location"
-          id="location"
-          value={form.location}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        >
-          <option value="Gorzow">Gorzow</option>
-          <option value="Gdansk">Gdansk</option>
-        </select>
-      </div>
+        <div>
+          <label htmlFor="address" className="block font-medium text-gray-700">
+            Address
+          </label>
+          <input
+            type="text"
+            name="address"
+            id="address"
+            placeholder="Enter your address"
+            value={form.address}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
 
-      <div>
-        <label htmlFor="address" className="block font-medium text-gray-700">
-          Address
-        </label>
-        <input
-          type="text"
-          name="address"
-          id="address"
-          placeholder="Enter your address"
-          value={form.address}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
-      </div>
+        <div>
+          <label
+            htmlFor="emergencyContactNumber"
+            className="block font-medium text-gray-700"
+          >
+            Emergency Contact Number
+          </label>
+          <input
+            type="text"
+            name="emergencyContactNumber"
+            id="emergencyContactNumber"
+            placeholder="Enter your emergency contact number"
+            value={form.emergencyContactNumber}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
 
-      <div>
-        <label
-          htmlFor="emergencyContactNumber"
-          className="block font-medium text-gray-700"
-        >
-          Emergency Contact Number
-        </label>
-        <input
-          type="text"
-          name="emergencyContactNumber"
-          id="emergencyContactNumber"
-          placeholder="Enter emergency contact number"
-          value={form.emergencyContactNumber}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="peselNumber"
-          className="block font-medium text-gray-700"
-        >
-          Pesel Number
-        </label>
-        <input
-          type="text"
-          name="peselNumber"
-          id="peselNumber"
-          placeholder="Enter your pesel number"
-          value={form.peselNumber}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
-      </div>
+        <div>
+          <label
+            htmlFor="peselNumber"
+            className="block font-medium text-gray-700"
+          >
+            PESEL Number
+          </label>
+          <input
+            type="text"
+            name="peselNumber"
+            id="peselNumber"
+            placeholder="Enter your PESEL number"
+            value={form.peselNumber}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
 
-      <div>
-        <label htmlFor="birthDate" className="block font-medium text-gray-700">
-          Birth Date
-        </label>
-        <input
-          type="date"
-          name="birthDate"
-          id="birthDate"
-          value={form.birthDate}
-          onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
+        <div>
+          <label
+            htmlFor="birthDate"
+            className="block font-medium text-gray-700"
+          >
+            Birth Date
+          </label>
+          <input
+            type="date"
+            name="birthDate"
+            id="birthDate"
+            value={form.birthDate}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
       </div>
 
       <button

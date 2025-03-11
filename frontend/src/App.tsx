@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/login/Login";
-import RegisterPage from "./pages/register/Register";
 import ResetPassword from "./components/auth/SendReset";
 import AppBar from "./components/appBar/AppBar";
 import HomePage from "./pages/home/Home";
 import { AppDispatch } from "./redux/store";
-import RestrictedRoute from "./components/routers/RestrictedRoute";
 import { refreshUser } from "./redux/auth/operations";
 import { ToastContainer } from "react-toastify";
 import LoadingSpinner from "./components/loader/LoadingSpinner";
@@ -55,64 +52,38 @@ const App: React.FC = () => {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route
-          path="/login"
-          element={<RestrictedRoute component={<LoginPage />} redirectTo="/" />}
-        />
-        <Route
-          path="/register"
-          element={
-            <RestrictedRoute component={<RegisterPage />} redirectTo="/" />
-          }
-        />
         <Route path="/send-reset" element={<ResetPassword />} />
         <Route
           path="/profile"
-          element={
-            <PrivateRoute component={<ProfilePage />} redirectTo="/login" />
-          }
+          element={<PrivateRoute component={<ProfilePage />} />}
         />
         <Route
           path="/profile/create"
-          element={
-            <PrivateRoute component={<CreateProfile />} redirectTo="/login" />
-          }
+          element={<PrivateRoute component={<CreateProfile />} />}
         />
         <Route
           path="/productivity"
-          element={
-            <PrivateRoute component={<Productivity />} redirectTo="/login" />
-          }
+          element={<PrivateRoute component={<Productivity />} />}
         />
         <Route
           path="/salary"
-          element={<PrivateRoute component={<Salary />} redirectTo="/login" />}
+          element={<PrivateRoute component={<Salary />} />}
         />
         <Route
           path="/coordinator"
-          element={
-            <CoordinatorRoute component={<CoordinatorPage />} redirectTo="/" />
-          }
+          element={<CoordinatorRoute component={<CoordinatorPage />} />}
         />
         <Route
           path="/coordinator/employees/:id"
-          element={
-            <CoordinatorRoute component={<EmployeeDetails />} redirectTo="/" />
-          }
+          element={<CoordinatorRoute component={<EmployeeDetails />} />}
         />
-
         <Route
           path="/ranking"
-          element={
-            <PrivateRoute component={<RankingPage />} redirectTo="/login" />
-          }
+          element={<PrivateRoute component={<RankingPage />} />}
         />
-
         <Route
-          path="/Calendar"
-          element={
-            <PrivateRoute component={<CalendarPage />} redirectTo="/login" />
-          }
+          path="/calendar"
+          element={<PrivateRoute component={<CalendarPage />} />}
         />
       </Routes>
     </Router>

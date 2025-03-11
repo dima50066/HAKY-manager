@@ -2,21 +2,18 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../redux/auth/selectors";
 import { logOut } from "../../redux/auth/operations";
-import { useNavigate } from "react-router-dom";
-import { User } from "../../types";
-import { HiOutlineUser } from "react-icons/hi";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Icon from "../../shared/icon/Icon";
 
 const UserMenu: React.FC = () => {
   const dispatch = useDispatch();
-  const currentUser = useSelector(selectUser) as User | null;
+  const currentUser = useSelector(selectUser);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await dispatch(logOut() as unknown as any);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
       toast.success("Successfully logged out!");
       navigate("/");
     } catch (error) {
@@ -25,20 +22,34 @@ const UserMenu: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center space-x-2 sm:space-x-4 p-2 bg-gray-100 rounded-lg shadow-md">
+    <div className="flex items-center space-x-4 p-2 bg-[#151728] text-gray-300 rounded-lg shadow-md justify-between">
       {currentUser ? (
         <>
-          <HiOutlineUser className="text-blue-500 w-5 h-5 sm:w-6 sm:h-6" />
-          <p className="hidden sm:block text-lg text-blue-700">
-            Hello,{" "}
-            <span className="font-semibold text-blue-800">
+          <Link
+            to="/profile"
+            className="flex items-center space-x-2 hover:text-white transition"
+          >
+            <Icon id="user" width="22" height="22" className="text-white" />
+            <p className="text-lg font-semibold text-white sm:hidden">
               {currentUser.name}
-            </span>
-          </p>
+            </p>
+            <p className="hidden sm:block text-lg">
+              Hello,{" "}
+              <span className="font-semibold text-white">
+                {currentUser.name}
+              </span>
+            </p>
+          </Link>
           <button
             onClick={handleLogout}
-            className="text-sm sm:text-base px-2 py-1 sm:px-4 sm:py-2 bg-red-600 text-white rounded hover:bg-red-500 transition duration-200"
+            className="flex items-center px-4 py-2 rounded-md bg-[#e74c3c] text-white hover:bg-red-500 transition duration-200"
           >
+            <Icon
+              id="logOut"
+              width="20"
+              height="20"
+              className="mr-2 stroke-white"
+            />
             Log out
           </button>
         </>

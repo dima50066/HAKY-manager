@@ -4,11 +4,14 @@ import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { registerUser } from "../../redux/auth/operations";
 import { selectAuthLoading, selectAuthError } from "../../redux/auth/selectors";
+import Icon from "../../shared/icon/Icon";
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -24,7 +27,7 @@ const RegisterForm: React.FC = () => {
 
     if (registerUser.fulfilled.match(resultAction)) {
       toast.success("Registration successful!");
-      navigate("/login");
+      navigate("/");
     } else {
       const errorMessage =
         typeof resultAction.payload === "string"
@@ -56,16 +59,26 @@ const RegisterForm: React.FC = () => {
           className="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
       </label>
-      <label className="block">
+      <label className="block relative">
         <span className="text-gray-700">Password:</span>
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-          className="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-        />
+        <div className="relative flex items-center mt-1">
+          <input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+            className="block w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500 pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute inset-y-0 right-3 flex items-center"
+          >
+            <Icon id={showPassword ? "eyeOff" : "eye"} width="22" height="22" />
+          </button>
+        </div>
       </label>
+
       <button
         type="submit"
         disabled={isLoading}

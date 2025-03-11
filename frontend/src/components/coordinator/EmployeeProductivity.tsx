@@ -4,6 +4,7 @@ import { fetchProductivityById } from "../../redux/productivity/operations";
 import { selectProductivityById } from "../../redux/productivity/selectors";
 import { AppDispatch } from "../../redux/store";
 import { ProductivityRecord } from "../../types";
+import Icon from "../../shared/icon/Icon";
 
 interface EmployeeProductivityProps {
   userId: string;
@@ -13,7 +14,6 @@ export const EmployeeProductivity: React.FC<EmployeeProductivityProps> = ({
   userId,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const productivityRecords = useSelector(selectProductivityById(userId));
 
   useEffect(() => {
     if (userId) {
@@ -21,7 +21,10 @@ export const EmployeeProductivity: React.FC<EmployeeProductivityProps> = ({
     }
   }, [dispatch, userId]);
 
+  const productivityRecords = useSelector(selectProductivityById(userId));
+
   const groupedProductivity = useMemo(() => {
+    const records = productivityRecords || [];
     const grouped: Record<
       string,
       Record<
@@ -35,7 +38,7 @@ export const EmployeeProductivity: React.FC<EmployeeProductivityProps> = ({
       >
     > = {};
 
-    productivityRecords.forEach((record: ProductivityRecord) => {
+    records.forEach((record: ProductivityRecord) => {
       const monthKey = new Date(record.date).toISOString().slice(0, 7);
       const departmentKey =
         typeof record.departmentId === "object"
@@ -74,34 +77,43 @@ export const EmployeeProductivity: React.FC<EmployeeProductivityProps> = ({
 
   return (
     <div className="mt-4">
-      <h3 className="text-xl font-semibold">Productivity Records</h3>
+      <h3 className="text-xl font-semibold">
+        {Object.entries(groupedProductivity).length > 0
+          ? "Productivity Records"
+          : "No Productivity Data Available"}
+      </h3>
 
-      {Object.entries(groupedProductivity).length > 0 ? (
-        Object.entries(groupedProductivity).map(([month, departments]) => (
-          <div key={month} className="mt-4">
-            <h4 className="text-lg font-bold text-blue-600">
-              {new Date(`${month}-01`).toLocaleDateString("en-US", {
-                month: "long",
-                year: "numeric",
-              })}
-            </h4>
-            <ul className="list-disc pl-5">
-              {Object.entries(departments).map(([departmentId, stats]) => (
-                <li key={departmentId} className="mt-2">
-                  <strong>{stats.departmentName}:</strong>{" "}
-                  <div className="ml-4">
-                    <p>Total Units Completed: {stats.totalUnits}</p>
-                    <p>Average Productivity Level: {stats.avgProductivity}</p>
-                    <p>Total Earnings: ${stats.totalEarnings}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      ) : (
-        <p>No productivity records</p>
-      )}
+      {Object.entries(groupedProductivity).map(([month, departments]) => (
+        <div key={month} className="mt-4 bg-white shadow-md rounded-lg p-6">
+          <h4 className="text-lg font-bold text-blue-600">
+            {new Date(`${month}-01`).toLocaleDateString("en-US", {
+              month: "long",
+              year: "numeric",
+            })}
+          </h4>
+          <ul className="list-disc pl-5 mt-2">
+            {Object.entries(departments).map(([departmentId, stats]) => (
+              <li key={departmentId} className="mt-2">
+                <strong>{stats.departmentName}:</strong>
+                <div className="ml-4">
+                  <p className="flex items-center">
+                    Total Units Completed: {stats.totalUnits}
+                    <Icon id="box" width={16} height={16} className="ml-2" />
+                  </p>
+                  <p className="flex items-center">
+                    Average Productivity Level: {stats.avgProductivity}
+                    <Icon id="level" width={16} height={16} className="ml-2" />
+                  </p>
+                  <p className="flex items-center">
+                    Total Earnings: {stats.totalEarnings} ZLT
+                    <Icon id="coin" width={16} height={16} className="ml-2" />
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ProductivityRecord } from "../../types";
 import ProductivityItem from "./ProductivityItem";
+import Icon from "../../shared/icon/Icon";
 
 interface Props {
   date: string;
@@ -49,12 +50,25 @@ const ProductivityAccordion: React.FC<Props> = ({
     <div className="border border-gray-300 rounded-lg overflow-hidden mb-2">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-gray-200 px-4 py-2 flex justify-between items-center text-left text-gray-800 font-semibold"
+        className="w-full bg-gray-200 px-4 py-2 flex flex-col items-center text-gray-800 font-semibold"
       >
-        <span>
-          📅 {date} — {totalUnits} units, 💰 ${totalEarnings}
+        <span className="flex items-center gap-2">
+          <Icon id="day" width={16} height={16} className="fill-gray-700" />
+          {date}
+          <Icon id="box" width={16} height={16} className="fill-gray-700" />
+          {totalUnits}
         </span>
-        <span>{isOpen ? "▲" : "▼"}</span>
+
+        <span className="flex items-center gap-2 mt-1">
+          <Icon id="coin" width={16} height={16} className="fill-gray-700" />
+          {totalEarnings}
+          <Icon
+            id={isOpen ? "arrow-up" : "arrow-down"}
+            width={16}
+            height={16}
+            className="fill-gray-700"
+          />
+        </span>
       </button>
 
       {isOpen && (
@@ -63,12 +77,35 @@ const ProductivityAccordion: React.FC<Props> = ({
             <div key={department} className="border-b py-2">
               <button
                 onClick={() => toggleDepartment(department)}
-                className="w-full text-left text-gray-700 font-medium flex justify-between"
+                className="w-full text-left text-gray-700 font-medium flex flex-col justify-between items-start"
               >
-                🏢 {department} ({records.length} records) —{" "}
-                {calculateDepartmentUnits(records)} units, 💰 $
-                {calculateDepartmentEarnings(records)}
-                <span>{openDepartments[department] ? "▲" : "▼"}</span>
+                <span className="w-full break-words">{department}</span>
+
+                <span className="w-full flex justify-between items-center mt-1">
+                  <span className="flex items-center gap-2">
+                    <Icon
+                      id="box"
+                      width={14}
+                      height={14}
+                      className="fill-gray-700"
+                    />
+                    {calculateDepartmentUnits(records)}
+                    <Icon
+                      id="coin"
+                      width={14}
+                      height={14}
+                      className="fill-gray-700"
+                    />
+                    {calculateDepartmentEarnings(records)}
+                  </span>
+
+                  <Icon
+                    id={openDepartments[department] ? "arrow-up" : "arrow-down"}
+                    width={14}
+                    height={14}
+                    className="fill-gray-700"
+                  />
+                </span>
               </button>
 
               {openDepartments[department] && (

@@ -49,7 +49,7 @@ export const EmployeeDocuments: React.FC<EmployeeDocumentsProps> = ({
 
   return (
     <div className="mt-4">
-      <h3 className="text-xl font-semibold">Documents</h3>
+      <h3 className="text-xl font-semibold pb-5">Documents</h3>
 
       <DocumentUploadForm onUpload={handleUploadDocument} />
 

@@ -40,14 +40,19 @@ const DocumentsManager: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
-      <h1 className="text-2xl font-bold mb-4 text-center">Documents Manager</h1>
+    <div className="w-full lg:max-w-3xl min-h-[450px] p-6 bg-white  rounded-xl flex flex-col">
+      <h1 className="text-2xl font-semibold mb-4 text-gray-800 text-center">
+        Documents Manager
+      </h1>
+
       <DocumentUploadForm onUpload={handleUpload} />
+
       {loading && (
         <p className="text-center text-blue-500">Loading documents...</p>
       )}
       {error && <p className="text-center text-red-500">Error: {error}</p>}
-      <div className="mt-6">
+
+      <div className="mt-6 flex flex-col gap-3">
         {documents.length > 0 ? (
           documents.map((doc) => (
             <DocumentItem

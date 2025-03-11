@@ -1,62 +1,55 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserRole } from "../../redux/auth/selectors";
 
 const Navigation: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const role = useSelector(selectUserRole);
-
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
+  const location = useLocation();
+  const getLinkClass = (path: string) =>
+    location.pathname === path
+      ? "text-white border-b-2 border-white"
+      : "text-gray-300 hover:text-white transition duration-200";
 
   return (
-    <nav className="relative">
-      <button
-        className="flex items-center px-3 py-2 text-white bg-blue-500 rounded lg:hidden hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        onClick={toggleMenu}
-      >
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 6h16M4 12h16m-7 6h7"
-          />
-        </svg>
-      </button>
-      <ul
-        className={`flex-col lg:flex-row space-x-0 mt-2 lg:space-x-4 lg:space-y-0 space-y-2  ${
-          isOpen ? "block" : "hidden"
-        } lg:flex`}
-      >
+    <nav className="w-full flex justify-center">
+      <ul className="hidden lg:flex items-center justify-center space-x-6 text-lg font-medium gap-4">
         <li>
-          <Link
-            to="/"
-            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
-          >
-            Home
+          <Link to="/productivity" className={getLinkClass("/productivity")}>
+            Productivity
           </Link>
         </li>
         <li>
-          <Link
-            to="/profile"
-            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
-          >
-            Profile
+          <Link to="/salary" className={getLinkClass("/salary")}>
+            Salary
           </Link>
         </li>
+        <li>
+          <Link to="/calendar" className={getLinkClass("/calendar")}>
+            Calendar
+          </Link>
+        </li>
+        <li>
+          <Link to="/ranking" className={getLinkClass("/ranking")}>
+            Ranking
+          </Link>
+        </li>
+        {role === "coordinator" && (
+          <li>
+            <Link to="/coordinator" className={getLinkClass("/coordinator")}>
+              Coordinator
+            </Link>
+          </li>
+        )}
+      </ul>
+
+      <ul className="lg:hidden flex flex-col items-center text-lg font-medium space-y-4 max-h-60 overflow-y-auto pr-5">
         <li>
           <Link
             to="/productivity"
-            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
+            className={`${getLinkClass(
+              "/productivity"
+            )} block w-full text-center py-2`}
           >
             Productivity
           </Link>
@@ -64,7 +57,9 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/salary"
-            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
+            className={`${getLinkClass(
+              "/salary"
+            )} block w-full text-center py-2`}
           >
             Salary
           </Link>
@@ -72,7 +67,9 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/calendar"
-            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
+            className={`${getLinkClass(
+              "/calendar"
+            )} block w-full text-center py-2`}
           >
             Calendar
           </Link>
@@ -80,7 +77,9 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/ranking"
-            className="text-white hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white px-4 py-2 rounded transition duration-200"
+            className={`${getLinkClass(
+              "/ranking"
+            )} block w-full text-center py-2`}
           >
             Ranking
           </Link>
@@ -89,7 +88,9 @@ const Navigation: React.FC = () => {
           <li>
             <Link
               to="/coordinator"
-              className="text-white hover:bg-blue-500 hover:text-white px-4 py-2 rounded transition duration-200"
+              className={`${getLinkClass(
+                "/coordinator"
+              )} block w-full text-center py-2`}
             >
               Coordinator
             </Link>
