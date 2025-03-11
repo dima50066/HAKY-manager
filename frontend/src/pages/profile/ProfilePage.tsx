@@ -5,6 +5,7 @@ import DocumentsManager from "../../components/documents/DocumentsManager";
 import Modal from "../../shared/modal/Modal";
 import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
+import KeepAliveButton from "../../components/profile/KeepAliveButton";
 
 const ProfilePage: React.FC = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -67,6 +68,8 @@ const ProfilePage: React.FC = () => {
               </Popover.Content>
             </Popover.Portal>
           </Popover.Root>
+
+          <KeepAliveButton />
         </div>
 
         <Profile onEdit={() => setIsFormVisible(true)} />
