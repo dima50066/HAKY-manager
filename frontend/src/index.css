@@ -11,3 +11,14 @@
 .no-spinner {
   -moz-appearance: textfield;
 }
+
+.rbc-event-custom {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border-radius: 4px !important;
+  padding: 2px;
+}
+
+.rbc-selected-cell {
+  background-color: #3b82f6 !important;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import RequestActions from "./RequestActions";
 import { useAppSelector } from "../../redux/store";
 import { selectAllUsers } from "../../redux/ranking/selectors";
+import { format, parseISO } from "date-fns";
 
 type UserRef = string | { _id: string; name: string };
 
@@ -17,6 +18,18 @@ const RequestItem: React.FC<{ request: any; isCoordinator?: boolean }> = ({
       return foundUser ? foundUser.name : "Unknown User";
     }
     return user.name || "Unknown User";
+  };
+
+  const formatDate = (dateString: string) => {
+    return format(parseISO(dateString), "dd.MM.yyyy");
+  };
+
+  const isSingleDay = formatDate(request.date) === formatDate(request.endDate);
+
+  const getDateText = () => {
+    return isSingleDay
+      ? formatDate(request.date)
+      : `${formatDate(request.date)} - ${formatDate(request.endDate)}`;
   };
 
   const canManageRequest = request.status === "pending";
@@ -38,16 +51,19 @@ const RequestItem: React.FC<{ request: any; isCoordinator?: boolean }> = ({
         <span className="text-xl font-semibold text-gray-800 capitalize">
           {request.type}
         </span>
-        <span className="text-sm text-gray-500">
-          {new Date(request.date).toLocaleDateString()}
+        <span className="text-sm text-gray-500">Date: {getDateText()}</span>
+        <span className="text-sm text-gray-600">
+          Requested by: <strong>{getUserName(request.userId)}</strong>
         </span>
+        {request.status !== "pending" && request.approvedBy && (
+          <span className="text-sm text-gray-600">
+            {request.status === "confirmed" ? "Approved by" : "Declined by"}:{" "}
+            <strong>{getUserName(request.approvedBy)}</strong>
+          </span>
+        )}
       </div>
 
       <div className="flex items-center space-x-2">
-        <strong className="text-lg text-gray-700">
-          by {getUserName(request.userId)}
-        </strong>
-
         {canManageRequest && (
           <RequestActions requestId={request._id} requestType={request.type} />
         )}

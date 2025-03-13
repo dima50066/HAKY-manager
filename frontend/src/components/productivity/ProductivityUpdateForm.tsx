@@ -68,7 +68,6 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
       updateMyProductivityRecord({
         id: record._id,
         data: {
-          departmentId,
           date,
           unitsCompleted,
         },

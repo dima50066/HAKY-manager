@@ -41,7 +41,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ selectedDates }) => {
   };
 
   return (
-    <div className="border p-4 rounded shadow-md">
+    <div className="border p-4 rounded shadow-md bg-white">
       <h2 className="text-lg font-semibold mb-2">Create Request</h2>
       <form onSubmit={handleSubmit}>
         <label className="block mb-2">
@@ -51,7 +51,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ selectedDates }) => {
             onChange={(e) =>
               setType(e.target.value as "vacation" | "day-off" | "work-day")
             }
-            className="ml-2 border"
+            className="ml-2 border p-2 rounded w-full"
           >
             <option value="day-off">Day off</option>
             <option value="work-day">Work day</option>
@@ -60,7 +60,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ selectedDates }) => {
         </label>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-500 text-white px-4 py-2 rounded w-full mt-2"
         >
           Send
         </button>
