@@ -12,14 +12,13 @@ const AppBar: React.FC = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
+  const toggleMenu = () => setIsOpen((prev) => !prev);
+  const closeMenu = () => setIsOpen(false);
 
   return (
     <header className="flex items-center justify-between p-4 bg-[#141726] text-white shadow-md">
       <div className="flex items-center">
-        <Link to="/">
+        <Link to="/" onClick={closeMenu}>
           <img src={logo} alt="Logo" className="h-14 sm:h-20 cursor-pointer" />
         </Link>
       </div>
@@ -45,10 +44,10 @@ const AppBar: React.FC = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute top-16 left-0 w-full bg-[#141726] p-4 shadow-md lg:hidden rounded-lg">
-          <Navigation />
+        <div className="z-50 absolute top-16 left-0 w-full bg-[#141726] p-4 shadow-md lg:hidden rounded-lg">
+          <Navigation closeMenu={closeMenu} />
           <div className="mt-4">
-            {isAuthenticated ? <UserMenu /> : <AuthNav />}
+            {isAuthenticated ? <UserMenu closeMenu={closeMenu} /> : <AuthNav />}
           </div>
         </div>
       )}

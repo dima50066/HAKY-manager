@@ -3,7 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserRole } from "../../redux/auth/selectors";
 
-const Navigation: React.FC = () => {
+interface NavigationProps {
+  closeMenu?: () => void;
+}
+
+const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
   const role = useSelector(selectUserRole);
   const location = useLocation();
   const getLinkClass = (path: string) =>
@@ -15,28 +19,48 @@ const Navigation: React.FC = () => {
     <nav className="w-full flex justify-center">
       <ul className="hidden lg:flex items-center justify-center space-x-6 text-lg font-medium gap-4">
         <li>
-          <Link to="/productivity" className={getLinkClass("/productivity")}>
+          <Link
+            to="/productivity"
+            className={getLinkClass("/productivity")}
+            onClick={closeMenu}
+          >
             Productivity
           </Link>
         </li>
         <li>
-          <Link to="/salary" className={getLinkClass("/salary")}>
+          <Link
+            to="/salary"
+            className={getLinkClass("/salary")}
+            onClick={closeMenu}
+          >
             Salary
           </Link>
         </li>
         <li>
-          <Link to="/calendar" className={getLinkClass("/calendar")}>
+          <Link
+            to="/calendar"
+            className={getLinkClass("/calendar")}
+            onClick={closeMenu}
+          >
             Calendar
           </Link>
         </li>
         <li>
-          <Link to="/ranking" className={getLinkClass("/ranking")}>
+          <Link
+            to="/ranking"
+            className={getLinkClass("/ranking")}
+            onClick={closeMenu}
+          >
             Ranking
           </Link>
         </li>
         {role === "coordinator" && (
           <li>
-            <Link to="/coordinator" className={getLinkClass("/coordinator")}>
+            <Link
+              to="/coordinator"
+              className={getLinkClass("/coordinator")}
+              onClick={closeMenu}
+            >
               Coordinator
             </Link>
           </li>
@@ -47,9 +71,8 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/productivity"
-            className={`${getLinkClass(
-              "/productivity"
-            )} block w-full text-center py-2`}
+            className={getLinkClass("/productivity")}
+            onClick={closeMenu}
           >
             Productivity
           </Link>
@@ -57,9 +80,8 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/salary"
-            className={`${getLinkClass(
-              "/salary"
-            )} block w-full text-center py-2`}
+            className={getLinkClass("/salary")}
+            onClick={closeMenu}
           >
             Salary
           </Link>
@@ -67,9 +89,8 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/calendar"
-            className={`${getLinkClass(
-              "/calendar"
-            )} block w-full text-center py-2`}
+            className={getLinkClass("/calendar")}
+            onClick={closeMenu}
           >
             Calendar
           </Link>
@@ -77,9 +98,8 @@ const Navigation: React.FC = () => {
         <li>
           <Link
             to="/ranking"
-            className={`${getLinkClass(
-              "/ranking"
-            )} block w-full text-center py-2`}
+            className={getLinkClass("/ranking")}
+            onClick={closeMenu}
           >
             Ranking
           </Link>
@@ -88,9 +108,8 @@ const Navigation: React.FC = () => {
           <li>
             <Link
               to="/coordinator"
-              className={`${getLinkClass(
-                "/coordinator"
-              )} block w-full text-center py-2`}
+              className={getLinkClass("/coordinator")}
+              onClick={closeMenu}
             >
               Coordinator
             </Link>

@@ -68,8 +68,6 @@ const ProductivityList: React.FC = () => {
         <p className="text-gray-500">No records found.</p>
       )}
 
-      <ProductivitySummary records={records} />
-
       {sortedDates.map((date) => (
         <ProductivityAccordion
           key={date}
@@ -79,6 +77,7 @@ const ProductivityList: React.FC = () => {
           onDelete={handleDelete}
         />
       ))}
+      <ProductivitySummary records={records} />
 
       {editingRecord && (
         <Modal isOpen={!!editingRecord} onClose={() => setEditingRecord(null)}>

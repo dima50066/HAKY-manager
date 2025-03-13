@@ -1,14 +1,19 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUser } from "../../redux/auth/selectors";
+import { selectUser, selectUserLoading } from "../../redux/auth/selectors";
 import { logOut } from "../../redux/auth/operations";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Icon from "../../shared/icon/Icon";
 
-const UserMenu: React.FC = () => {
+interface UserMenuProps {
+  closeMenu?: () => void;
+}
+
+const UserMenu: React.FC<UserMenuProps> = ({ closeMenu }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectUser);
+  const userLoading = useSelector(selectUserLoading);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -16,10 +21,19 @@ const UserMenu: React.FC = () => {
       await dispatch(logOut() as unknown as any);
       toast.success("Successfully logged out!");
       navigate("/");
+      if (closeMenu) closeMenu();
     } catch (error) {
       toast.error("Failed to log out. Please try again.");
     }
   };
+
+  if (userLoading) {
+    return (
+      <div className="flex items-center space-x-4 p-2 bg-[#151728] text-gray-300 rounded-lg shadow-md justify-between">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center space-x-4 p-2 bg-[#151728] text-gray-300 rounded-lg shadow-md justify-between">
@@ -28,6 +42,7 @@ const UserMenu: React.FC = () => {
           <Link
             to="/profile"
             className="flex items-center space-x-2 hover:text-white transition"
+            onClick={closeMenu}
           >
             <Icon id="user" width="22" height="22" className="text-white" />
             <p className="text-lg font-semibold text-white sm:hidden">

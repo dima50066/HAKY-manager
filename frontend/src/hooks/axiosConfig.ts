@@ -26,49 +26,51 @@ export const axiosWithToken = (token?: string) => {
   return axiosInstance;
 };
 
-const requestQueue: (() => Promise<void>)[] = [];
-let isBackendAwake = true;
-
-const checkBackendStatus = async () => {
-  try {
-    await axiosInstance.get("/");
-    isBackendAwake = true;
-    console.log("✅ Backend is awake. Processing queued requests...");
-    while (requestQueue.length > 0) {
-      const request = requestQueue.shift();
-      if (request) await request();
-    }
-  } catch {
-    isBackendAwake = false;
-  }
-};
+let isRefreshing = false;
+let refreshPromise: Promise<void> | null = null;
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      error.response?.data?.message === "Access token expired" &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
-      try {
-        await store.dispatch(refreshUser());
+
+      if (!isRefreshing) {
+        isRefreshing = true;
+        refreshPromise = store.dispatch(refreshUser()) as Promise<any>;
+
+        try {
+          await refreshPromise;
+          isRefreshing = false;
+          refreshPromise = null;
+
+          const newToken = store.getState().auth.token;
+          if (newToken) {
+            setAuthHeader(newToken);
+            originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+            return axiosInstance(originalRequest);
+          }
+        } catch (refreshError) {
+          isRefreshing = false;
+          refreshPromise = null;
+          store.dispatch(logOut());
+          return Promise.reject(refreshError);
+        }
+      } else {
+        await refreshPromise;
         const newToken = store.getState().auth.token;
         if (newToken) {
           setAuthHeader(newToken);
           originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
           return axiosInstance(originalRequest);
         }
-      } catch (refreshError) {
-        store.dispatch(logOut());
-        return Promise.reject(refreshError);
       }
-    }
-
-    if (!isBackendAwake) {
-      console.warn("⚠️ Backend is unavailable. Queuing request...");
-      requestQueue.push(() => axiosInstance(originalRequest));
-      checkBackendStatus();
-      return new Promise(() => {});
     }
 
     return Promise.reject(error);

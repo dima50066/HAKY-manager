@@ -8,6 +8,7 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
   isAuthenticated: boolean;
+  userLoading: boolean;
 }
 
 const initialState: AuthState = {
@@ -16,6 +17,7 @@ const initialState: AuthState = {
   isLoading: false,
   error: null,
   isAuthenticated: false,
+  userLoading: false,
 };
 
 const authSlice = createSlice({
@@ -52,6 +54,7 @@ const authSlice = createSlice({
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.userLoading = true;
       })
       .addCase(
         loginUser.fulfilled,
@@ -62,11 +65,13 @@ const authSlice = createSlice({
           state.isAuthenticated = true;
           localStorage.setItem("token", action.payload.accessToken);
           localStorage.setItem("user", JSON.stringify(action.payload.user));
+          state.userLoading = false;
         }
       )
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || "Login failed";
+        state.userLoading = false;
       })
 
       // Logout
@@ -92,6 +97,7 @@ const authSlice = createSlice({
       .addCase(refreshUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.userLoading = true;
       })
       .addCase(
         refreshUser.fulfilled,
@@ -104,6 +110,7 @@ const authSlice = createSlice({
           state.user = action.payload.user;
           state.isAuthenticated = true;
           localStorage.setItem("token", action.payload.accessToken);
+          state.userLoading = false;
         }
       )
 
@@ -115,6 +122,7 @@ const authSlice = createSlice({
         state.token = null;
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        state.userLoading = false;
       });
   },
 });
