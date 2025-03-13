@@ -31,7 +31,12 @@ export const EmployeeActions: React.FC<EmployeeActionsProps> = ({
         Employee
       </button>
 
-      <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>
+      <Modal
+        isOpen={isEditing}
+        classNameWrapper="pt-20 sm:pt-14"
+        btnClassName="top-1 right-4 sm:top-4 sm:right-4"
+        onClose={() => setIsEditing(false)}
+      >
         <EditEmployee
           profileId={profileId}
           onClose={() => setIsEditing(false)}

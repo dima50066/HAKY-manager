@@ -93,18 +93,24 @@ const EmployeeDetails: React.FC = () => {
           <Modal
             isOpen={openModal === "productivity"}
             onClose={() => setOpenModal(null)}
+            classNameWrapper="pt-20 sm:pt-14"
+            btnClassName="top-1 right-4 sm:top-4 sm:right-4"
           >
             <EmployeeProductivity userId={userId} />
           </Modal>
           <Modal
             isOpen={openModal === "salary"}
             onClose={() => setOpenModal(null)}
+            classNameWrapper="pt-20 sm:pt-14"
+            btnClassName="top-1 right-4 sm:top-4 sm:right-4"
           >
             <EmployeeSalary userId={userId} />
           </Modal>
           <Modal
             isOpen={openModal === "documents"}
             onClose={() => setOpenModal(null)}
+            classNameWrapper="pt-20 sm:pt-14"
+            btnClassName="top-1 right-4 sm:top-4 sm:right-4"
           >
             <EmployeeDocuments profileId={profileId} />
           </Modal>
