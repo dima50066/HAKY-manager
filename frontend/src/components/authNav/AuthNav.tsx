@@ -24,7 +24,8 @@ export const AuthNav: React.FC = () => {
 
       <Modal
         isOpen={isLoginOpen}
-        classNameWrapper="pt-10 sm:pt-14"
+        classNameWrapper="pt-20 sm:pt-14"
+        btnClassName="top-1 right-4 sm:top-4 sm:right-4"
         onClose={() => setIsLoginOpen(false)}
       >
         <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">
@@ -35,7 +36,8 @@ export const AuthNav: React.FC = () => {
 
       <Modal
         isOpen={isRegisterOpen}
-        classNameWrapper="pt-10 sm:pt-14"
+        classNameWrapper="pt-20 sm:pt-14"
+        btnClassName="top-1 right-4 sm:top-1 sm:right-4"
         onClose={() => setIsRegisterOpen(false)}
       >
         <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">

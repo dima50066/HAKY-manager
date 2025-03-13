@@ -17,7 +17,12 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component }) => {
   }
 
   return (
-    <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)}>
+    <Modal
+      isOpen={isLoginOpen}
+      classNameWrapper="pt-20 sm:pt-1"
+      btnClassName="top-1 right-4 sm:top-4 sm:right-4"
+      onClose={() => setIsLoginOpen(false)}
+    >
       <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">
         Please log in to continue
       </h2>

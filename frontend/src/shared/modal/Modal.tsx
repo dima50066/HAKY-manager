@@ -82,11 +82,11 @@ const Modal: React.FC<ModalProps> = ({
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 overflow-y-auto h-full max-h-full ">
+        <div className="p-6 overflow-y-auto h-full max-h-full relative">
           <button
             className={clsx(
-              "absolute top-4 right-4 text-gray-600 hover:text-red-500 transition",
-              btnClassName
+              "absolute text-gray-600 hover:text-red-500 transition",
+              btnClassName || "top-4 right-4"
             )}
             onClick={onClose}
           >

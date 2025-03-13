@@ -67,62 +67,85 @@ const CreateProfile: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-      />
-      <label className="flex items-center space-x-2">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 p-4 sm:p-6 bg-white shadow-md rounded-lg"
+    >
+      <div className="space-y-2">
+        <label className="block text-gray-700 font-medium">Upload Avatar</label>
         <input
-          type="checkbox"
-          name="isStudent"
-          checked={form.isStudent}
-          onChange={handleCheckboxChange}
-          className="form-checkbox text-blue-600"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
-        <span>Student</span>
-      </label>
-      <label className="flex items-center space-x-2">
+      </div>
+
+      <div className="flex flex-col space-y-2">
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="isStudent"
+            checked={form.isStudent}
+            onChange={handleCheckboxChange}
+            className="form-checkbox text-blue-600"
+          />
+          <span>Student</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="livesIndependently"
+            checked={form.livesIndependently}
+            onChange={handleCheckboxChange}
+            className="form-checkbox text-blue-600"
+          />
+          <span>Lives Independently</span>
+        </label>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-gray-700 font-medium">Productivity</label>
+        <select
+          name="productivity"
+          value={form.productivity}
+          onChange={handleSelectChange}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        >
+          <option value={100}>100%</option>
+          <option value={115}>115%</option>
+          <option value={125}>125%</option>
+        </select>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-gray-700 font-medium">Location</label>
+        <select
+          name="location"
+          value={form.location}
+          onChange={handleSelectChange}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        >
+          <option value="Gorzow">Gorzow</option>
+          <option value="Gdansk">Gdansk</option>
+          <option value="Gdynia">Krakow</option>
+        </select>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-gray-700 font-medium">Birth Date</label>
         <input
-          type="checkbox"
-          name="livesIndependently"
-          checked={form.livesIndependently}
-          onChange={handleCheckboxChange}
-          className="form-checkbox text-blue-600"
+          type="date"
+          name="birthDate"
+          value={form.birthDate}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
-        <span>Lives Independently</span>
-      </label>
-      <select
-        name="productivity"
-        value={form.productivity}
-        onChange={handleSelectChange}
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-      >
-        <option value={100}>100%</option>
-        <option value={115}>115%</option>
-        <option value={125}>125%</option>
-      </select>
-      <select
-        name="location"
-        value={form.location}
-        onChange={handleSelectChange}
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-      >
-        <option value="Gorzow">Gorzow</option>
-        <option value="Gdansk">Gdansk</option>
-      </select>
-      <input
-        type="date"
-        name="birthDate"
-        value={form.birthDate}
-        onChange={handleChange}
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-      />
+      </div>
+
       <button
         type="submit"
-        className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-500"
+        className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-500 transition"
       >
         Create Profile
       </button>
