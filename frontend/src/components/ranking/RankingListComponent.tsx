@@ -1,5 +1,7 @@
 import React from "react";
 import Icon from "../../shared/icon/Icon";
+import Loader from "../../shared/loader/Loader";
+import useLoader from "../../hooks/useLoader";
 
 interface RankingListComponentProps {
   ranking: { _id: string; totalUnits: number }[];
@@ -12,7 +14,9 @@ const RankingListComponent: React.FC<RankingListComponentProps> = ({
   users,
   loading,
 }) => {
-  if (loading) return <p className="text-center text-gray-600">Loading...</p>;
+  const showLoader = useLoader(loading);
+
+  if (showLoader) return <Loader />;
 
   return (
     <ul className="space-y-2">

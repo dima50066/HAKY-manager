@@ -12,6 +12,8 @@ import {
 import { AppDispatch } from "../../redux/store";
 import SalaryForm from "./SalaryForm";
 import Icon from "../../shared/icon/Icon";
+import Loader from "../../shared/loader/Loader";
+import useLoader from "../../hooks/useLoader";
 
 const formatPeriod = (period: string) => {
   const [year, month] = period.split("-");
@@ -31,10 +33,14 @@ const SalaryList: React.FC = () => {
     dispatch(fetchMySalaryHistory());
   }, [dispatch]);
 
+  const showLoader = useLoader(loading);
+
+  if (showLoader) {
+    return <Loader />;
+  }
+
   if (loading) {
-    return (
-      <p className="text-center text-gray-500">Loading salary history...</p>
-    );
+    return <Loader />;
   }
 
   if (error) {

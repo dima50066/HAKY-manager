@@ -1,15 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import SalaryList from "../../components/salary/SalaryList";
-import {
-  selectMySalaryHistoryLoading,
-  selectMySalaryHistoryError,
-} from "../../redux/salary/selectors";
+import { selectMySalaryHistoryError } from "../../redux/salary/selectors";
 import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
 
 const SalaryPage: React.FC = () => {
-  const loading = useSelector(selectMySalaryHistoryLoading);
   const error = useSelector(selectMySalaryHistoryError);
 
   return (
@@ -54,9 +50,6 @@ const SalaryPage: React.FC = () => {
           </Popover.Root>
         </div>
 
-        {loading && (
-          <p className="text-center text-gray-500">Loading salary data...</p>
-        )}
         {error && <p className="text-center text-red-500">Error: {error}</p>}
 
         <SalaryList />

@@ -7,7 +7,6 @@ import HomePage from "./pages/home/Home";
 import { AppDispatch } from "./redux/store";
 import { refreshUser } from "./redux/auth/operations";
 import { ToastContainer } from "react-toastify";
-import LoadingSpinner from "./components/loader/LoadingSpinner";
 import "react-toastify/dist/ReactToastify.css";
 import ProfilePage from "./pages/profile/ProfilePage";
 import PrivateRoute from "./components/routers/PrivateRoute";
@@ -25,6 +24,7 @@ import CoordinatorRoute from "./components/routers/CoordinatorRoute";
 import EmployeeDetails from "./components/coordinator/EmployeeDetails";
 import RankingPage from "./pages/ranking/RankingPage";
 import CalendarPage from "./pages/calendar/CalendarPage";
+import Loader from "./shared/loader/Loader";
 
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -43,7 +43,7 @@ const App: React.FC = () => {
   }, [dispatch, isAuthenticated, profile]);
 
   if (isLoading || (isAuthenticated && profile === undefined)) {
-    return <LoadingSpinner loading={true} size={60} color="#3498db" />;
+    return <Loader />;
   }
 
   return (

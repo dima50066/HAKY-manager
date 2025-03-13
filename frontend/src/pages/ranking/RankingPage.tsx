@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { fetchUserHistory } from "../../redux/ranking/operations";
-import { selectVisibleHistory } from "../../redux/ranking/selectors";
+import {
+  selectVisibleHistory,
+  selectUserHistoryLoading,
+} from "../../redux/ranking/selectors";
 import { loadMoreHistory } from "../../redux/ranking/slice";
 import RankingList from "../../components/ranking/RankingList";
 import DepartmentRanking from "../../components/ranking/DepartmentRanking";
@@ -14,6 +17,7 @@ import Icon from "../../shared/icon/Icon";
 const RankingPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const visibleHistory = useSelector(selectVisibleHistory);
+  const loading = useSelector(selectUserHistoryLoading);
 
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
     null
@@ -77,6 +81,7 @@ const RankingPage: React.FC = () => {
         onSelectDate={(date, departmentId) =>
           setSelectedDateForDepartment({ date, departmentId })
         }
+        loading={loading}
       />
 
       <button

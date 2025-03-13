@@ -1,6 +1,8 @@
 import React from "react";
 import RankingItem from "./RankingItem";
 import { DepartmentCard } from "../../types";
+import Loader from "../../shared/loader/Loader";
+import useLoader from "../../hooks/useLoader";
 
 interface DayHistory {
   date: string;
@@ -11,13 +13,21 @@ interface RankingListProps {
   history: DayHistory[];
   onSelectDepartment: (departmentId: string) => void;
   onSelectDate: (date: string, departmentId: string) => void;
+  loading: boolean;
 }
 
 const RankingList: React.FC<RankingListProps> = ({
   history,
   onSelectDepartment,
   onSelectDate,
+  loading,
 }) => {
+  const showLoader = useLoader(loading);
+
+  if (showLoader) {
+    return <Loader />;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {history.map((day) => (
@@ -31,7 +41,7 @@ const RankingList: React.FC<RankingListProps> = ({
                 key={dept.departmentId}
                 department={{ ...dept, date: day.date }}
                 onSelectDepartment={onSelectDepartment}
-                onSelectDate={onSelectDate} // Передаємо і дату, і ID департаменту
+                onSelectDate={onSelectDate}
               />
             ))}
           </div>

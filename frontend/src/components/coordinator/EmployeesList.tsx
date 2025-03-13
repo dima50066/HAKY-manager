@@ -8,6 +8,8 @@ import {
   selectEmployeesError,
 } from "../../redux/coordinator/selectors";
 import EmployeeCard from "./EmployeeCard";
+import Loader from "../../shared/loader/Loader";
+import useLoader from "../../hooks/useLoader";
 
 const EmployeesList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,8 +21,12 @@ const EmployeesList: React.FC = () => {
     dispatch(fetchEmployees());
   }, [dispatch]);
 
-  if (isLoading)
-    return <p className="text-center text-blue-500">Loading employees...</p>;
+  const showLoader = useLoader(isLoading);
+
+  if (showLoader) {
+    return <Loader />;
+  }
+
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
   if (employees.length === 0)
     return <p className="text-center">No employees found.</p>;

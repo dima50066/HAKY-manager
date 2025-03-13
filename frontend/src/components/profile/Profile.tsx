@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   selectProfile,
@@ -6,10 +6,10 @@ import {
 } from "../../redux/profile/selectors";
 import { selectUser } from "../../redux/auth/selectors";
 import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../loader/LoadingSpinner";
 import ProfileInfoCard from "./ProfileInfoCard";
 import { User } from "../../types";
 import Icon from "../../shared/icon/Icon";
+import Loader from "../../shared/loader/Loader";
 
 interface ProfileProps {
   onEdit: () => void;
@@ -21,7 +21,16 @@ const Profile: React.FC<ProfileProps> = ({ onEdit }) => {
   const currentUser = useSelector(selectUser) as User | null;
   const navigate = useNavigate();
 
-  if (loading) return <LoadingSpinner loading={loading} />;
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setShowLoader(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [loading, profile]);
+
+  if (showLoader || loading) {
+    return <Loader />;
+  }
 
   if (!profile)
     return (
