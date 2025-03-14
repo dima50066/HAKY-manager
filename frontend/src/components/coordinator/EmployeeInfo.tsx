@@ -100,6 +100,10 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
             {employee.livesIndependently ? "Yes" : "No"}
           </p>
           <p>
+            <strong>Uses Company Transport:</strong>{" "}
+            {employee.usesCompanyTransport ? "Yes" : "No"}
+          </p>
+          <p>
             <strong>Student Status:</strong> {employee.isStudent ? "Yes" : "No"}
           </p>
         </div>

@@ -47,6 +47,7 @@ export interface Profile {
   location?: string;
   birthDate?: string;
   livesIndependently: boolean;
+  usesCompanyTransport: boolean;
   address?: string;
   emergencyContactNumber?: string;
   peselNumber?: string;
@@ -67,6 +68,7 @@ export interface ProfileForm {
   location: string;
   birthDate: string;
   livesIndependently: boolean;
+  usesCompanyTransport: boolean;
   user?: string;
   address?: string;
   emergencyContactNumber?: string;
@@ -89,6 +91,7 @@ export interface Employee {
   location?: string;
   birthDate?: string;
   livesIndependently: boolean;
+  usesCompanyTransport: boolean;
   documents: Document[];
   address?: string;
   emergencyContactNumber?: string;

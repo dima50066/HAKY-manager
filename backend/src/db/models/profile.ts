@@ -8,6 +8,7 @@ export interface Profile extends Document {
   location?: string;
   birthDate?: Date;
   livesIndependently: boolean;
+  usesCompanyTransport: boolean;
   address?: string;
   emergencyContactNumber?: string;
   peselNumber?: string;
@@ -35,6 +36,7 @@ const ProfileSchema: Schema<Profile> = new Schema(
     location: { type: String },
     birthDate: { type: Date },
     livesIndependently: { type: Boolean, required: true, default: false },
+    usesCompanyTransport: { type: Boolean, required: true, default: false },
     address: { type: String, maxlength: 200 },
     emergencyContactNumber: { type: String, maxlength: 30 },
     peselNumber: { type: String },

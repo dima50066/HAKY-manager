@@ -21,6 +21,7 @@ interface ProfilePayload {
   location?: string;
   birthDate?: Date;
   livesIndependently?: boolean;
+  usesCompanyTransport?: boolean;
   address?: string;
   emergencyContactNumber?: string;
   peselNumber?: string;
@@ -39,6 +40,7 @@ export const createProfile = async (
     location: req.body?.location || "",
     birthDate: req.body?.birthDate ? new Date(req.body.birthDate) : undefined,
     livesIndependently: req.body?.livesIndependently === "true",
+    usesCompanyTransport: req.body?.usesCompanyTransport === "true",
   };
 
   if (req.file) {
@@ -76,6 +78,7 @@ export const updateProfile = async (
       ? new Date(req.body.birthDate)
       : profile.birthDate,
     livesIndependently: req.body?.livesIndependently === "true",
+    usesCompanyTransport: req.body?.usesCompanyTransport === "true",
     address: req.body?.address || profile.address,
     emergencyContactNumber:
       req.body?.emergencyContactNumber || profile.emergencyContactNumber,

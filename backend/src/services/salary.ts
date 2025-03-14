@@ -2,6 +2,7 @@ import { Salary } from "../db/models/salary";
 import { ProductivityRecord } from "../db/models/productivity";
 import mongoose from "mongoose";
 import { ProfilesCollection } from "../db/models/profile";
+import { Accommodation, Transportation } from "../constants/constants";
 
 interface CalculateSalaryInput {
   userId: string;
@@ -25,6 +26,7 @@ export const calculateUserSalary = async ({ userId }: CalculateSalaryInput) => {
   const profile = await ProfilesCollection.findOne({
     user: new mongoose.Types.ObjectId(userId),
   });
+
   if (!profile) throw new Error("Profile not found");
 
   const monthlyRecords: { [key: string]: number } = {};
@@ -42,13 +44,19 @@ export const calculateUserSalary = async ({ userId }: CalculateSalaryInput) => {
       period: month,
     });
 
-    let totalSalary =
-      totalEarnings +
-      (salaryRecord
-        ? profile.livesIndependently
-          ? salaryRecord.hoursWorked
-          : 0
-        : 0);
+    let totalSalary = totalEarnings;
+
+    if (!profile.livesIndependently) {
+      totalSalary -= Accommodation;
+    }
+
+    if (profile.usesCompanyTransport) {
+      totalSalary -= Transportation;
+    }
+
+    if (profile.livesIndependently && salaryRecord) {
+      totalSalary += salaryRecord.hoursWorked;
+    }
 
     if (salaryRecord) {
       salaryRecord.totalEarnings = totalSalary;
@@ -93,8 +101,10 @@ export const updateUserSalaryRecord = async ({
     throw new Error("Salary record not found");
   }
 
-  salaryRecord.hoursWorked += additionalHours;
-  salaryRecord.totalEarnings += additionalHours;
+  salaryRecord.hoursWorked = additionalHours;
+
+  const initialTotal = salaryRecord.totalEarnings - salaryRecord.hoursWorked;
+  salaryRecord.totalEarnings = initialTotal + additionalHours;
 
   await salaryRecord.save();
 

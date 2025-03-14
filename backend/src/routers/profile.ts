@@ -9,7 +9,11 @@ import {
   getDocumentPreviewController,
 } from "../controllers/profile";
 import { authenticate } from "../middlewares/authenticate";
-import { profileSchema, documentSchema } from "../validation/profile";
+import {
+  createProfileSchema,
+  updateProfileSchema,
+  documentSchema,
+} from "../validation/profile";
 import { validateBody } from "../middlewares/validateBody";
 import { ctrlWrapper } from "../utils/ctrlWrapper";
 import { upload } from "../middlewares/multer";
@@ -20,7 +24,7 @@ router.post(
   "/create",
   authenticate,
   upload.single("avatar"),
-  validateBody(profileSchema),
+  validateBody(createProfileSchema),
   ctrlWrapper(createProfileController)
 );
 
@@ -30,7 +34,7 @@ router.put(
   "/update",
   authenticate,
   upload.single("avatar"),
-  validateBody(profileSchema),
+  validateBody(updateProfileSchema),
   ctrlWrapper(updateProfileController)
 );
 

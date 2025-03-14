@@ -27,19 +27,26 @@ const SalaryList: React.FC = () => {
   const loading = useSelector(selectMySalaryHistoryLoading);
   const error = useSelector(selectMySalaryHistoryError);
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
+  const [calculationCompleted, setCalculationCompleted] = useState(false);
 
   useEffect(() => {
-    dispatch(calculateUserSalary({ userId: "" }));
-    dispatch(fetchMySalaryHistory());
+    const fetchData = async () => {
+      await dispatch(calculateUserSalary({ userId: "" })).unwrap();
+      setCalculationCompleted(true);
+    };
+
+    fetchData();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (calculationCompleted) {
+      dispatch(fetchMySalaryHistory());
+    }
+  }, [dispatch, calculationCompleted]);
 
   const showLoader = useLoader(loading);
 
   if (showLoader) {
-    return <Loader />;
-  }
-
-  if (loading) {
     return <Loader />;
   }
 

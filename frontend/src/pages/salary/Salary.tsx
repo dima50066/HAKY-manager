@@ -38,7 +38,8 @@ const SalaryPage: React.FC = () => {
                   <li>Based on profile data.</li>
                   <li>Calculated from each completed order.</li>
                   <li>
-                    Includes logged working hours if living independently.
+                    Includes logged working hours if living independently and
+                    use of company transport.
                   </li>
                   <li>Approximate and may not match the final amount.</li>
                 </ul>

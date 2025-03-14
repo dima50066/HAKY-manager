@@ -15,6 +15,7 @@ const CreateProfile: React.FC = () => {
     location: "Gorzow",
     birthDate: "",
     livesIndependently: false,
+    usesCompanyTransport: false,
   });
 
   const handleChange = (
@@ -57,6 +58,7 @@ const CreateProfile: React.FC = () => {
     formData.append("location", form.location);
     formData.append("birthDate", form.birthDate);
     formData.append("livesIndependently", String(form.livesIndependently));
+    formData.append("usesCompanyTransport", String(form.usesCompanyTransport));
 
     try {
       await dispatch(createProfile(formData)).unwrap();
@@ -101,6 +103,16 @@ const CreateProfile: React.FC = () => {
             className="form-checkbox text-blue-600"
           />
           <span>Lives Independently</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="usesCompanyTransport"
+            checked={form.usesCompanyTransport}
+            onChange={handleCheckboxChange}
+            className="form-checkbox text-blue-600"
+          />
+          <span>Uses Company Transport</span>
         </label>
       </div>
 

@@ -90,6 +90,14 @@ const Profile: React.FC<ProfileProps> = ({ onEdit }) => {
               }
             />
             <ProfileInfoCard
+              label="Company Transport"
+              value={
+                profile.usesCompanyTransport
+                  ? "Uses Company Transport"
+                  : "Does Not Use Company Transport"
+              }
+            />
+            <ProfileInfoCard
               label="Address"
               value={profile.address || "Not provided"}
             />

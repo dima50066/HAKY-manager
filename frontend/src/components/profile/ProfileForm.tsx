@@ -20,6 +20,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     location: profile?.location || "",
     birthDate: profile?.birthDate || "",
     livesIndependently: profile?.livesIndependently || false,
+    usesCompanyTransport: profile?.usesCompanyTransport || false,
     address: profile?.address || "",
     emergencyContactNumber: profile?.emergencyContactNumber || "",
     peselNumber: profile?.peselNumber || "",
@@ -92,6 +93,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     }
 
     formData.append("livesIndependently", String(form.livesIndependently));
+    formData.append("usesCompanyTransport", String(form.usesCompanyTransport));
 
     if (form.address) {
       formData.append("address", form.address);
@@ -168,6 +170,20 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             Lives Independently
           </label>
         </div>
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="usesCompanyTransport"
+            id="usesCompanyTransport"
+            checked={form.usesCompanyTransport}
+            onChange={handleCheckboxChange}
+            className="form-checkbox text-blue-600"
+          />
+          <label htmlFor="usesCompanyTransport" className="block text-gray-700">
+            Uses Company Transport
+          </label>
+        </div>
+
         <div>
           <label
             htmlFor="productivity"
@@ -202,74 +218,6 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             <option value="Gorzow">Gorzow</option>
             <option value="Gdansk">Gdansk</option>
           </select>
-        </div>
-
-        <div>
-          <label htmlFor="address" className="block font-medium text-gray-700">
-            Address
-          </label>
-          <input
-            type="text"
-            name="address"
-            id="address"
-            placeholder="Enter your address"
-            value={form.address}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="emergencyContactNumber"
-            className="block font-medium text-gray-700"
-          >
-            Emergency Contact Number
-          </label>
-          <input
-            type="text"
-            name="emergencyContactNumber"
-            id="emergencyContactNumber"
-            placeholder="Enter your emergency contact number"
-            value={form.emergencyContactNumber}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="peselNumber"
-            className="block font-medium text-gray-700"
-          >
-            PESEL Number
-          </label>
-          <input
-            type="text"
-            name="peselNumber"
-            id="peselNumber"
-            placeholder="Enter your PESEL number"
-            value={form.peselNumber}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="birthDate"
-            className="block font-medium text-gray-700"
-          >
-            Birth Date
-          </label>
-          <input
-            type="date"
-            name="birthDate"
-            id="birthDate"
-            value={form.birthDate}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
-          />
         </div>
       </div>
 

@@ -23,6 +23,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
     address: "",
     isStudent: false,
     livesIndependently: false,
+    usesCompanyTransport: false,
     productivity: 0,
     peselNumber: "",
     emergencyContactNumber: "",
@@ -42,6 +43,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
         address: employee.address || "",
         isStudent: employee.isStudent || false,
         livesIndependently: employee.livesIndependently || false,
+        usesCompanyTransport: employee.usesCompanyTransport || false,
         productivity: employee.productivity || 0,
         peselNumber: employee.peselNumber || "",
         emergencyContactNumber: employee.emergencyContactNumber || "",
@@ -69,7 +71,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
   };
 
   return (
-    <div className="p-6 bg-white  rounded-lg max-w-2xl mx-auto">
+    <div className="p-6 bg-white rounded-lg max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-center">Edit Employee</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -120,7 +122,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
           />
         </div>
 
-        <div className="flex justify-between mt-2">
+        <div className="flex-row justify-between mt-2">
           <FormControlLabel
             control={
               <Switch
@@ -140,6 +142,16 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
               />
             }
             label="Lives Independently"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.usesCompanyTransport}
+                onChange={handleSwitchChange}
+                name="usesCompanyTransport"
+              />
+            }
+            label="Uses Company Transport"
           />
         </div>
 
