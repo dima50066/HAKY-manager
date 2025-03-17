@@ -7,12 +7,14 @@ import {
   getDocumentsController,
   deleteDocumentController,
   getDocumentPreviewController,
+  updateLanguageController,
 } from "../controllers/profile";
 import { authenticate } from "../middlewares/authenticate";
 import {
   createProfileSchema,
   updateProfileSchema,
   documentSchema,
+  updateLanguageSchema,
 } from "../validation/profile";
 import { validateBody } from "../middlewares/validateBody";
 import { ctrlWrapper } from "../utils/ctrlWrapper";
@@ -58,6 +60,12 @@ router.get(
   "/documents/preview/:documentName",
   authenticate,
   ctrlWrapper(getDocumentPreviewController)
+);
+router.patch(
+  "/update-language",
+  authenticate,
+  validateBody(updateLanguageSchema),
+  ctrlWrapper(updateLanguageController)
 );
 
 export default router;

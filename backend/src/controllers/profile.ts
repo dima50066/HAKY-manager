@@ -7,6 +7,7 @@ import {
   uploadDocument,
   deleteDocument,
   getDocumentPreviewLink,
+  updateLanguage,
 } from "../services/profile";
 import { AuthenticatedRequest } from "../types";
 
@@ -194,5 +195,35 @@ export const getDocumentPreviewController = async (
         error.message || "Failed to get document preview link"
       )
     );
+  }
+};
+
+export const updateLanguageController = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return next(createHttpError(401, "User is not authenticated"));
+    }
+
+    const { language } = req.body;
+
+    if (!language) {
+      return next(createHttpError(400, "Language is required"));
+    }
+
+    const updatedLanguage = await updateLanguage(userId, language);
+
+    res.status(200).json({
+      status: 200,
+      message: "Language updated successfully!",
+      data: updatedLanguage,
+    });
+  } catch (error: any) {
+    next(createHttpError(500, error.message || "Failed to update language"));
   }
 };

@@ -228,3 +228,16 @@ export const getDocumentPreviewLink = async (
     throw createHttpError(500, "Failed to generate document preview link.");
   }
 };
+
+export const updateLanguage = async (userId: string, language: string) => {
+  const profile = await ProfilesCollection.findOne({ user: userId });
+
+  if (!profile) {
+    throw createHttpError(404, "Profile not found");
+  }
+
+  profile.language = language;
+  await profile.save();
+
+  return { language: profile.language };
+};

@@ -33,3 +33,7 @@ export const documentSchema = Joi.object({
     "string.max": "New document name cannot exceed 100 characters",
   }),
 });
+
+export const updateLanguageSchema = Joi.object({
+  language: Joi.string().valid("en", "uk", "pl", "ru").required(),
+});

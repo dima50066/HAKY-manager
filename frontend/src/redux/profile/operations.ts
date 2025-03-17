@@ -47,7 +47,9 @@ export const updateLanguage = createAsyncThunk(
     const token = (getState() as any).auth.token;
     setAuthHeader(token);
 
-    const response = await axiosInstance.put("/profile/update", { language });
+    const response = await axiosInstance.patch("/profile/update-language", {
+      language,
+    });
     return response.data.data;
   }
 );
