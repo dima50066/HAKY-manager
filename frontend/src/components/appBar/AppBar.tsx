@@ -7,6 +7,7 @@ import { AuthNav } from "../authNav/AuthNav";
 import { selectIsAuthenticated } from "../../redux/auth/selectors";
 import logo from "../../shared/img/logo.png";
 import Icon from "../../shared/icon/Icon";
+import LanguageSelector from "../navigation/LanguageSelector";
 
 const AppBar: React.FC = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -39,6 +40,10 @@ const AppBar: React.FC = () => {
         <Navigation />
       </nav>
 
+      <div className="hidden lg:flex items-center mx-4">
+        <LanguageSelector />
+      </div>
+
       <div className="hidden lg:flex items-center">
         {isAuthenticated ? <UserMenu /> : <AuthNav />}
       </div>
@@ -46,6 +51,12 @@ const AppBar: React.FC = () => {
       {isOpen && (
         <div className="z-50 absolute top-16 left-0 w-full bg-[#141726] p-4 shadow-md lg:hidden rounded-lg">
           <Navigation closeMenu={closeMenu} />
+
+          {/* Додаємо LanguageSelector між Navigation і UserMenu/AuthNav */}
+          <div className="mt-4 flex justify-center">
+            <LanguageSelector />
+          </div>
+
           <div className="mt-4">
             {isAuthenticated ? <UserMenu closeMenu={closeMenu} /> : <AuthNav />}
           </div>

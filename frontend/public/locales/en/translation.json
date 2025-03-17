@@ -1,0 +1,9 @@
+{
+    "welcome": "Welcome to HAKY Manager",
+    "description": "Olden Manager helps **coordinators** track employee performance, manage documents, and oversee salaries. **Employees** can log productivity, manage schedules, and view rankings to track their progress. A complete solution for streamlined team management and efficiency.",
+    "track_productivity": "Track Productivity",
+    "view_profile": "View Profile",
+    "language": "Language",
+    "profile": "Profile",
+    "logout": "Logout"
+}
