@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
-import Icon from "../../shared/icon/Icon"; // Імпортуємо компонент іконки
+import Icon from "../../shared/icon/Icon";
+import { useTranslation } from "react-i18next";
 
 interface FileWithCustomName {
   file: File;
@@ -13,6 +14,7 @@ interface DocumentUploadFormProps {
 const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
   onUpload,
 }) => {
+  const { t } = useTranslation();
   const [files, setFiles] = useState<FileWithCustomName[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -53,14 +55,14 @@ const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
             htmlFor="file-upload"
             className="bg-gray-200 border border-gray-400 text-gray-700 py-2 px-4 rounded cursor-pointer inline-block text-center"
           >
-            Choose Files
+            {t("choose_files")}
           </label>
         </div>
 
         {files.length > 0 && (
           <div className="mt-4">
             <h3 className="text-sm font-medium text-gray-700 mb-2">
-              Files to upload:
+              {t("files_to_upload")}
             </h3>
             <ul className="list-disc pl-5 space-y-2">
               {files.map((fileObj, index) => (
@@ -79,7 +81,7 @@ const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
                       }
                       className="text-red-500 hover:underline ml-4"
                     >
-                      Remove
+                      {t("remove")}
                     </button>
                   </div>
                 </li>
@@ -94,7 +96,7 @@ const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-2"
         >
           <Icon id="upload" className="w-5 h-5 text-white" />
-          Upload All
+          {t("upload_all")}
         </button>
       </div>
     </form>

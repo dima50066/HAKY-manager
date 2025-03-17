@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { AppDispatch } from "../../redux/store";
 import { updateUserSalary } from "../../redux/salary/operations";
 import { Salary } from "../../types";
@@ -23,6 +24,7 @@ const EditEmployeeSalary: React.FC<EditEmployeeSalaryProps> = ({
   salary,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
   const [formData, setFormData] = useState({
@@ -51,10 +53,10 @@ const EditEmployeeSalary: React.FC<EditEmployeeSalaryProps> = ({
 
   return (
     <Dialog open onClose={onClose}>
-      <DialogTitle>Edit Salary</DialogTitle>
+      <DialogTitle>{t("edit_salary")}</DialogTitle>
       <DialogContent>
         <TextField
-          label="Additional Hours"
+          label={t("additional_hours")}
           name="additionalHours"
           type="number"
           value={formData.additionalHours}
@@ -65,10 +67,10 @@ const EditEmployeeSalary: React.FC<EditEmployeeSalaryProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="secondary">
-          Cancel
+          {t("cancel")}
         </Button>
         <Button onClick={handleSubmit} color="primary">
-          Save
+          {t("save")}
         </Button>
       </DialogActions>
     </Dialog>

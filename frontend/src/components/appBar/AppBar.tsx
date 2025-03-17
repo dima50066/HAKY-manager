@@ -52,7 +52,6 @@ const AppBar: React.FC = () => {
         <div className="z-50 absolute top-16 left-0 w-full bg-[#141726] p-4 shadow-md lg:hidden rounded-lg">
           <Navigation closeMenu={closeMenu} />
 
-          {/* Додаємо LanguageSelector між Navigation і UserMenu/AuthNav */}
           <div className="mt-4 flex justify-center">
             <LanguageSelector />
           </div>

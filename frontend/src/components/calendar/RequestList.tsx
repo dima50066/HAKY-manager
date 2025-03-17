@@ -2,8 +2,10 @@ import React from "react";
 import { useAppSelector } from "../../redux/store";
 import RequestGroup from "./RequestGroup";
 import { selectUserRole, selectUser } from "../../redux/auth/selectors";
+import { useTranslation } from "react-i18next";
 
 const RequestList: React.FC = () => {
+  const { t } = useTranslation();
   const requests = useAppSelector((state) => state.requests.requests);
   const currentUser = useAppSelector(selectUser);
   const userRole = useAppSelector(selectUserRole);
@@ -60,29 +62,32 @@ const RequestList: React.FC = () => {
 
   return (
     <div className="mt-6">
-      <RequestGroup title="Your Requests" requests={userRequests} />
+      <RequestGroup title={t("your_requests")} requests={userRequests} />
       <RequestGroup
-        title="Vacation Requests"
+        title={t("vacation_requests")}
         requests={vacationRequests}
         isCoordinator={userRole === "coordinator"}
       />
       <RequestGroup
-        title="Pending Work Requests"
+        title={t("pending_work_requests")}
         requests={pendingWorkRequests}
         isCoordinator={userRole === "coordinator"}
       />
-      <RequestGroup title="Confirmed Requests" requests={confirmedRequests} />
+      <RequestGroup
+        title={t("confirmed_requests")}
+        requests={confirmedRequests}
+      />
 
       {rejectedRequestsForUser.length > 0 && (
         <RequestGroup
-          title="Rejected Requests (Your)"
+          title={t("rejected_requests_your")}
           requests={rejectedRequestsForUser}
         />
       )}
 
       {rejectedRequestsForCoordinator.length > 0 && (
         <RequestGroup
-          title="Rejected Requests (All)"
+          title={t("rejected_requests_all")}
           requests={rejectedRequestsForCoordinator}
           isCoordinator
         />

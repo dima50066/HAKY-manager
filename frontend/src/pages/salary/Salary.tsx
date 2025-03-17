@@ -4,8 +4,10 @@ import SalaryList from "../../components/salary/SalaryList";
 import { selectMySalaryHistoryError } from "../../redux/salary/selectors";
 import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
+import { useTranslation } from "react-i18next";
 
 const SalaryPage: React.FC = () => {
+  const { t } = useTranslation();
   const error = useSelector(selectMySalaryHistoryError);
 
   return (
@@ -13,7 +15,7 @@ const SalaryPage: React.FC = () => {
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-center mb-8 relative">
           <h1 className="text-3xl font-bold text-gray-700 text-center">
-            Your Salary Overview
+            {t("salary_overview")}
           </h1>
 
           <Popover.Root>
@@ -33,15 +35,12 @@ const SalaryPage: React.FC = () => {
                 align="center"
                 className="bg-white shadow-xl rounded-lg p-4 w-72 text-sm text-gray-700 border border-gray-200"
               >
-                <p className="font-semibold">Salary Calculation:</p>
+                <p className="font-semibold">{t("salary_calculation")}</p>
                 <ul className="list-disc pl-4 mt-2">
-                  <li>Based on profile data.</li>
-                  <li>Calculated from each completed order.</li>
-                  <li>
-                    Includes logged working hours if living independently and
-                    use of company transport.
-                  </li>
-                  <li>Approximate and may not match the final amount.</li>
+                  <li>{t("salary_rule_1")}</li>
+                  <li>{t("salary_rule_2")}</li>
+                  <li>{t("salary_rule_3")}</li>
+                  <li>{t("salary_rule_4")}</li>
                 </ul>
                 <Popover.Close className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                   ✖
@@ -51,7 +50,11 @@ const SalaryPage: React.FC = () => {
           </Popover.Root>
         </div>
 
-        {error && <p className="text-center text-red-500">Error: {error}</p>}
+        {error && (
+          <p className="text-center text-red-500">
+            {t("error")} {error}
+          </p>
+        )}
 
         <SalaryList />
       </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import Profile from "../../components/profile/Profile";
 import ProfileUpdateForm from "../../components/profile/ProfileForm";
 import DocumentsManager from "../../components/documents/DocumentsManager";
@@ -7,6 +8,7 @@ import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
 
 const ProfilePage: React.FC = () => {
+  const { t } = useTranslation();
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isDocumentsVisible, setIsDocumentsVisible] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -28,7 +30,9 @@ const ProfilePage: React.FC = () => {
         } lg:w-1/3 flex flex-col`}
       >
         <div className="flex mb-4 items-center gap-2">
-          <h1 className="text-2xl font-bold text-gray-800">My Profile</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            {t("my_profile")}
+          </h1>
           <Popover.Root>
             <Popover.Trigger asChild>
               <button className="mt-2 w-max p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-all">
@@ -46,20 +50,12 @@ const ProfilePage: React.FC = () => {
                 align="center"
                 className="bg-white shadow-xl rounded-lg p-4 w-80 text-sm text-gray-700 border border-gray-200"
               >
-                <p className="font-semibold">On this page, you can:</p>
+                <p className="font-semibold">{t("on_this_page_you_can")}</p>
                 <ul className="list-disc pl-4 mt-2 space-y-1">
-                  <li>
-                    Create your profile by adding the necessary information.
-                  </li>
-                  <li>Your provided details will be used by management.</li>
-                  <li>
-                    Based on this information and your recorded productivity
-                    data, your estimated monthly earnings will be calculated.
-                  </li>
-                  <li>
-                    Upload and manage the necessary work-related documents,
-                    which may be accessed by management when needed.
-                  </li>
+                  <li>{t("create_profile")}</li>
+                  <li>{t("details_used_by_management")}</li>
+                  <li>{t("estimated_earnings")}</li>
+                  <li>{t("upload_documents")}</li>
                 </ul>
                 <Popover.Close className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                   ✖
@@ -75,7 +71,7 @@ const ProfilePage: React.FC = () => {
             className="mt-4 w-full bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
             onClick={() => setIsDocumentsVisible(true)}
           >
-            Manage Documents
+            {t("manage_documents1")}
           </button>
         )}
       </div>

@@ -2,6 +2,7 @@ import React from "react";
 import Icon from "../../shared/icon/Icon";
 import Loader from "../../shared/loader/Loader";
 import useLoader from "../../hooks/useLoader";
+import { useTranslation } from "react-i18next";
 
 interface RankingListComponentProps {
   ranking: { _id: string; totalUnits: number }[];
@@ -14,6 +15,7 @@ const RankingListComponent: React.FC<RankingListComponentProps> = ({
   users,
   loading,
 }) => {
+  const { t } = useTranslation();
   const showLoader = useLoader(loading);
 
   if (showLoader) return <Loader />;
@@ -23,7 +25,7 @@ const RankingListComponent: React.FC<RankingListComponentProps> = ({
       {ranking.length > 0 ? (
         ranking.map((user, index) => {
           const foundUser = users.find((usr) => usr._id === user._id);
-          const userName = foundUser ? foundUser.name : "Unknown User";
+          const userName = foundUser ? foundUser.name : t("unknown_user");
 
           return (
             <li
@@ -41,7 +43,7 @@ const RankingListComponent: React.FC<RankingListComponentProps> = ({
           );
         })
       ) : (
-        <p className="text-center text-gray-600">No data available</p>
+        <p className="text-center text-gray-600">{t("no_data_available")}</p>
       )}
     </ul>
   );

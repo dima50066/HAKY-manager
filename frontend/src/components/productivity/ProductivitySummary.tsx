@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ProductivityRecord } from "../../types";
 import Icon from "../../shared/icon/Icon";
 
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const ProductivitySummary: React.FC<Props> = ({ records }) => {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<"all" | "month">("all");
 
   const getFilteredRecords = () => {
@@ -40,15 +42,15 @@ const ProductivitySummary: React.FC<Props> = ({ records }) => {
       <div className="w-full flex flex-col items-center mb-3">
         <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
           <Icon id="summary" width={20} height={20} className="fill-gray-700" />
-          Summary of statistics
+          {t("summary_of_statistics")}
         </h3>
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value as "all" | "month")}
           className="border border-gray-300 rounded px-2 py-1 text-sm mt-2"
         >
-          <option value="all">All Time</option>
-          <option value="month">This Month</option>
+          <option value="all">{t("all_time")}</option>
+          <option value="month">{t("this_month")}</option>
         </select>
       </div>
 
@@ -77,7 +79,7 @@ const ProductivitySummary: React.FC<Props> = ({ records }) => {
       </ul>
 
       {filteredRecords.length === 0 && (
-        <p className="text-gray-500 mt-2">No records found for this period.</p>
+        <p className="text-gray-500 mt-2">{t("no_records_found")}</p>
       )}
     </div>
   );

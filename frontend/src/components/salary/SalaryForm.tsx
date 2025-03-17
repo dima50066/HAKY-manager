@@ -10,12 +10,14 @@ import { selectUser } from "../../redux/auth/selectors";
 import { AppDispatch } from "../../redux/store";
 import Icon from "../../shared/icon/Icon";
 import * as Popover from "@radix-ui/react-popover";
+import { useTranslation } from "react-i18next";
 
 interface SalaryFormProps {
   recordId: string;
 }
 
 const SalaryForm: React.FC<SalaryFormProps> = ({ recordId }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectUser);
   const salaryHistory = useSelector(selectMySalaryHistory);
@@ -49,7 +51,7 @@ const SalaryForm: React.FC<SalaryFormProps> = ({ recordId }) => {
     <div className="max-w-lg mx-auto bg-white shadow-lg rounded-xl p-6 mt-4">
       <div className="flex items-center justify-center gap-2 relative">
         <h2 className="text-xl font-semibold text-gray-700 text-center">
-          Update Worked Hours
+          {t("update_worked_hours")}
         </h2>
 
         {/* Popover для пояснення введення годин */}
@@ -70,19 +72,12 @@ const SalaryForm: React.FC<SalaryFormProps> = ({ recordId }) => {
               align="center"
               className="bg-white shadow-xl rounded-lg p-4 w-72 text-sm text-gray-700 border border-gray-200"
             >
-              <p className="font-semibold">How to enter worked hours:</p>
+              <p className="font-semibold">{t("hours_input_guide")}</p>
               <ul className="list-disc pl-4 mt-2">
-                <li>
-                  Enter the **total hours worked** (previous + new hours).
-                </li>
-                <li>
-                  This helps track your work history and salary calculations.
-                </li>
-                <li>
-                  If you live independently, your salary may depend on logged
-                  hours.
-                </li>
-                <li>Ensure accuracy for proper payroll calculation.</li>
+                <li>{t("hours_rule_1")}</li>
+                <li>{t("hours_rule_2")}</li>
+                <li>{t("hours_rule_3")}</li>
+                <li>{t("hours_rule_4")}</li>
               </ul>
               <Popover.Close className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                 ✖
@@ -107,7 +102,7 @@ const SalaryForm: React.FC<SalaryFormProps> = ({ recordId }) => {
 
         <input
           type="number"
-          placeholder="Enter hours worked"
+          placeholder={t("enter_hours_worked")}
           value={hoursWorked}
           onChange={(e) => setHoursWorked(Number(e.target.value))}
           className="w-20 border border-gray-300 rounded-md p-2 text-center text-gray-700 no-spinner"
@@ -130,7 +125,7 @@ const SalaryForm: React.FC<SalaryFormProps> = ({ recordId }) => {
         onClick={handleUpdateSalary}
         className="w-full bg-blue-500 text-white font-semibold rounded-lg p-2 hover:bg-blue-600 disabled:bg-gray-400 transition-all duration-200"
       >
-        Update Salary
+        {t("update_salary")}
       </button>
     </div>
   );

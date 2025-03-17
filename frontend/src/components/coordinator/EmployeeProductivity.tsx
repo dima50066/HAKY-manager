@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { fetchProductivityById } from "../../redux/productivity/operations";
 import { selectProductivityById } from "../../redux/productivity/selectors";
 import { AppDispatch } from "../../redux/store";
@@ -13,6 +14,7 @@ interface EmployeeProductivityProps {
 export const EmployeeProductivity: React.FC<EmployeeProductivityProps> = ({
   userId,
 }) => {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -79,14 +81,14 @@ export const EmployeeProductivity: React.FC<EmployeeProductivityProps> = ({
     <div className="mt-4">
       <h3 className="text-xl font-semibold">
         {Object.entries(groupedProductivity).length > 0
-          ? "Productivity Records"
-          : "No Productivity Data Available"}
+          ? t("productivity_records")
+          : t("no_productivity_data")}
       </h3>
 
       {Object.entries(groupedProductivity).map(([month, departments]) => (
         <div key={month} className="mt-4 bg-white shadow-md rounded-lg p-6">
           <h4 className="text-lg font-bold text-blue-600">
-            {new Date(`${month}-01`).toLocaleDateString("en-US", {
+            {new Date(`${month}-01`).toLocaleDateString(i18n.language, {
               month: "long",
               year: "numeric",
             })}
@@ -97,15 +99,15 @@ export const EmployeeProductivity: React.FC<EmployeeProductivityProps> = ({
                 <strong>{stats.departmentName}:</strong>
                 <div className="ml-4">
                   <p className="flex items-center">
-                    Total Units Completed: {stats.totalUnits}
+                    {t("total_units_completed")}: {stats.totalUnits}
                     <Icon id="box" width={16} height={16} className="ml-2" />
                   </p>
                   <p className="flex items-center">
-                    Average Productivity Level: {stats.avgProductivity}
+                    {t("average_productivity_level")}: {stats.avgProductivity}
                     <Icon id="level" width={16} height={16} className="ml-2" />
                   </p>
                   <p className="flex items-center">
-                    Total Earnings: {stats.totalEarnings} ZLT
+                    {t("total_earnings")}: {stats.totalEarnings} ZLT
                     <Icon id="coin" width={16} height={16} className="ml-2" />
                   </p>
                 </div>

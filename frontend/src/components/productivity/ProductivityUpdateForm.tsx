@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { updateMyProductivityRecord } from "../../redux/productivity/operations";
 import { fetchDepartments } from "../../redux/departments/operations";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -15,6 +16,7 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
   record,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const departments = useSelector(
     (state: RootState) => state.departments.departments
@@ -22,8 +24,6 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
   const loadingDepartments = useSelector(
     (state: RootState) => state.departments.loading
   );
-
-  console.log("RECORD RECEIVED:", record);
 
   const getDepartmentId = (
     department: string | Department | undefined
@@ -47,23 +47,15 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("Updated Record:", record);
-    console.log("Updated Date (Before Conversion):", record.date);
-
     setDepartmentId(getDepartmentId(record.departmentId));
     setDate(
       record.date ? new Date(record.date).toISOString().split("T")[0] : ""
     );
     setUnitsCompleted(record.unitsCompleted);
-
-    console.log("Updated Date (After Conversion):", date);
-    console.log("Updated DepartmentId:", departmentId);
-  }, [record, date, departmentId]);
+  }, [record]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitting Data:", { departmentId, date, unitsCompleted });
-
     dispatch(
       updateMyProductivityRecord({
         id: record._id,
@@ -73,7 +65,6 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
         },
       })
     );
-
     onClose();
   };
 
@@ -83,11 +74,11 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
       className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg space-y-4"
     >
       <h2 className="text-lg font-semibold text-gray-700">
-        Update Productivity Record
+        {t("update_productivity_record")}
       </h2>
       <div>
         <label className="block text-gray-700 font-medium mb-2">
-          Department:
+          {t("select_department")}:
         </label>
         <select
           value={departmentId}
@@ -95,9 +86,9 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
           required
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         >
-          <option value="">Select a department</option>
+          <option value="">{t("select_department")}</option>
           {loadingDepartments ? (
-            <option disabled>Loading departments...</option>
+            <option disabled>{t("loading_departments")}</option>
           ) : (
             departments.map((dept) => (
               <option key={dept._id} value={dept._id}>
@@ -108,7 +99,9 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
         </select>
       </div>
       <div>
-        <label className="block text-gray-700 font-medium mb-2">Date:</label>
+        <label className="block text-gray-700 font-medium mb-2">
+          {t("date")}:
+        </label>
         <input
           type="date"
           value={date}
@@ -118,7 +111,7 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
       </div>
       <div>
         <label className="block text-gray-700 font-medium mb-2">
-          Units Completed:
+          {t("units_completed")}:
         </label>
         <div className="flex items-center space-x-2">
           <button
@@ -148,7 +141,7 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
         type="submit"
         className="w-full p-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
       >
-        Save Changes
+        {t("save_changes")}
       </button>
     </form>
   );

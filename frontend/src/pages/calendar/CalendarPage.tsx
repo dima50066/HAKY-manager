@@ -7,8 +7,10 @@ import { fetchRequests } from "../../redux/requests/operations";
 import { fetchAllUsers } from "../../redux/ranking/operations";
 import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
+import { useTranslation } from "react-i18next";
 
 const CalendarPage: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
 
@@ -20,7 +22,7 @@ const CalendarPage: React.FC = () => {
   return (
     <div className="p-4">
       <div className="flex items-center justify-center mb-4 relative">
-        <h1 className="text-2xl font-bold text-center">Calendar</h1>
+        <h1 className="text-2xl font-bold text-center">{t("calendar")}</h1>
 
         <Popover.Root>
           <Popover.Trigger asChild>
@@ -39,41 +41,23 @@ const CalendarPage: React.FC = () => {
               align="center"
               className="bg-white shadow-xl rounded-lg p-4 w-80 text-sm text-gray-700 border border-gray-200 z-50 "
             >
-              <p className="font-semibold">On this page, you can:</p>
+              <p className="font-semibold">{t("calendar_info")}</p>
               <ul className="list-disc pl-4 mt-2">
-                <li>Manage your work schedule by submitting requests.</li>
+                <li>{t("manage_schedule")}</li>
                 <li>
-                  Available request types: <strong>Work day</strong>,{" "}
-                  <strong>Day off</strong>, <strong>Vacation</strong>.
+                  {t("available_requests")} <strong>{t("work_day")}</strong>,{" "}
+                  <strong>{t("day_off")}</strong>,{" "}
+                  <strong>{t("vacation")}</strong>.
                 </li>
-                <li>
-                  <strong>Work day</strong> and <strong>Day off</strong>{" "}
-                  requests are visible to all users. Others can agree to swap
-                  shifts with you.
-                </li>
-                <li>
-                  <strong>Vacation</strong> requests are visible only to you and
-                  coordinators, who can approve or reject them.
-                </li>
+                <li>{t("work_day_info")}</li>
+                <li>{t("vacation_info")}</li>
               </ul>
 
-              <p className="font-semibold mt-4">Managing the calendar:</p>
+              <p className="font-semibold mt-4">{t("managing_calendar")}</p>
               <ul className="list-disc pl-4 mt-2">
-                <li>
-                  To select a single day, <strong>click and hold in it</strong>.
-                </li>
-                <li>
-                  To select multiple days,{" "}
-                  <strong>
-                    click and hold on the first day, drag to the last day, and
-                    release
-                  </strong>
-                  .
-                </li>
-                <li>
-                  After selecting the dates, choose the appropriate request type
-                  in the form below the calendar and submit it.
-                </li>
+                <li>{t("single_day")}</li>
+                <li>{t("multiple_days")}</li>
+                <li>{t("submit_request")}</li>
               </ul>
 
               <Popover.Close className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">

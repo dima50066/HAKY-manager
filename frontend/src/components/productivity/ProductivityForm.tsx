@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { addMyProductivityRecord } from "../../redux/productivity/operations";
 import { fetchDepartments } from "../../redux/departments/operations";
 import { RootState, AppDispatch } from "../../redux/store";
@@ -13,6 +14,7 @@ import {
 } from "../../redux/productivity/slice";
 
 const ProductivityForm: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const selectedDepartment = useSelector(selectSelectedDepartment);
   const selectedDate = useSelector(selectSelectedDate);
@@ -57,13 +59,13 @@ const ProductivityForm: React.FC = () => {
 
     const department = departments.find((dept) => dept._id === departmentId);
     if (!department) {
-      alert("Department not found");
+      alert(t("department_not_found"));
       return;
     }
 
     const parsedUnits = parseFloat(unitsCompleted);
     if (isNaN(parsedUnits) || parsedUnits <= 0) {
-      alert("Please enter a valid number for units completed.");
+      alert(t("invalid_units"));
       return;
     }
 
@@ -88,7 +90,7 @@ const ProductivityForm: React.FC = () => {
     >
       <div>
         <label className="block text-gray-700 font-medium mb-2">
-          Department:
+          {t("department")}:
         </label>
         <select
           value={departmentId}
@@ -96,9 +98,9 @@ const ProductivityForm: React.FC = () => {
           required
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         >
-          <option value="">Select a department</option>
+          <option value="">{t("select_department")}</option>
           {loadingDepartments ? (
-            <option disabled>Loading departments...</option>
+            <option disabled>{t("loading_departments")}</option>
           ) : (
             departments.map((department) => (
               <option key={department._id} value={department._id}>
@@ -109,7 +111,9 @@ const ProductivityForm: React.FC = () => {
         </select>
       </div>
       <div>
-        <label className="block text-gray-700 font-medium mb-2">Date:</label>
+        <label className="block text-gray-700 font-medium mb-2">
+          {t("date")}:
+        </label>
         <input
           type="date"
           value={date}
@@ -120,13 +124,13 @@ const ProductivityForm: React.FC = () => {
       </div>
       <div>
         <label className="block text-gray-700 font-medium mb-2">
-          Units Completed:
+          {t("units_completed")}:
         </label>
         <input
           type="text"
           inputMode="decimal"
           pattern="^\d*\.?\d{0,3}$"
-          placeholder="Enter units (e.g. 3002.505)"
+          placeholder={t("enter_units")}
           value={unitsCompleted}
           onChange={(e) => setUnitsCompleted(e.target.value)}
           required
@@ -137,7 +141,7 @@ const ProductivityForm: React.FC = () => {
         type="submit"
         className="w-full p-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
       >
-        Add Productivity Record
+        {t("add_productivity_record")}
       </button>
     </form>
   );

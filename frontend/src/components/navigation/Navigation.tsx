@@ -2,12 +2,14 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserRole } from "../../redux/auth/selectors";
+import { useTranslation } from "react-i18next";
 
 interface NavigationProps {
   closeMenu?: () => void;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
+  const { t } = useTranslation();
   const role = useSelector(selectUserRole);
   const location = useLocation();
   const getLinkClass = (path: string) =>
@@ -24,7 +26,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
             className={getLinkClass("/productivity")}
             onClick={closeMenu}
           >
-            Productivity
+            {t("productivity")}
           </Link>
         </li>
         <li>
@@ -33,7 +35,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
             className={getLinkClass("/salary")}
             onClick={closeMenu}
           >
-            Salary
+            {t("salary")}
           </Link>
         </li>
         <li>
@@ -42,7 +44,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
             className={getLinkClass("/calendar")}
             onClick={closeMenu}
           >
-            Calendar
+            {t("calendar")}
           </Link>
         </li>
         <li>
@@ -51,7 +53,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
             className={getLinkClass("/ranking")}
             onClick={closeMenu}
           >
-            Ranking
+            {t("ranking")}
           </Link>
         </li>
         {role === "coordinator" && (
@@ -61,7 +63,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
               className={getLinkClass("/coordinator")}
               onClick={closeMenu}
             >
-              Coordinator
+              {t("coordinator")}
             </Link>
           </li>
         )}
@@ -74,7 +76,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
             className={getLinkClass("/productivity")}
             onClick={closeMenu}
           >
-            Productivity
+            {t("productivity")}
           </Link>
         </li>
         <li>
@@ -83,7 +85,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
             className={getLinkClass("/salary")}
             onClick={closeMenu}
           >
-            Salary
+            {t("salary")}
           </Link>
         </li>
         <li>
@@ -92,7 +94,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
             className={getLinkClass("/calendar")}
             onClick={closeMenu}
           >
-            Calendar
+            {t("calendar")}
           </Link>
         </li>
         <li>
@@ -101,7 +103,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
             className={getLinkClass("/ranking")}
             onClick={closeMenu}
           >
-            Ranking
+            {t("ranking")}
           </Link>
         </li>
         {role === "coordinator" && (
@@ -111,7 +113,7 @@ const Navigation: React.FC<NavigationProps> = ({ closeMenu }) => {
               className={getLinkClass("/coordinator")}
               onClick={closeMenu}
             >
-              Coordinator
+              {t("coordinator")}
             </Link>
           </li>
         )}

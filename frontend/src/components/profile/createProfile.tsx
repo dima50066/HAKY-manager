@@ -4,8 +4,10 @@ import { createProfile } from "../../redux/profile/operations";
 import { AppDispatch } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { ProfileForm } from "../../types";
+import { useTranslation } from "react-i18next";
 
 const CreateProfile: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [form, setForm] = useState<ProfileForm>({
@@ -75,7 +77,9 @@ const CreateProfile: React.FC = () => {
       className="space-y-4 p-4 sm:p-6 bg-white shadow-md rounded-lg"
     >
       <div className="space-y-2">
-        <label className="block text-gray-700 font-medium">Upload Avatar</label>
+        <label className="block text-gray-700 font-medium">
+          {t("upload_avatar")}
+        </label>
         <input
           type="file"
           accept="image/*"
@@ -93,7 +97,7 @@ const CreateProfile: React.FC = () => {
             onChange={handleCheckboxChange}
             className="form-checkbox text-blue-600"
           />
-          <span>Student</span>
+          <span>{t("student")}</span>
         </label>
         <label className="flex items-center space-x-2">
           <input
@@ -103,7 +107,7 @@ const CreateProfile: React.FC = () => {
             onChange={handleCheckboxChange}
             className="form-checkbox text-blue-600"
           />
-          <span>Lives Independently</span>
+          <span>{t("lives_independently")}</span>
         </label>
         <label className="flex items-center space-x-2">
           <input
@@ -113,12 +117,14 @@ const CreateProfile: React.FC = () => {
             onChange={handleCheckboxChange}
             className="form-checkbox text-blue-600"
           />
-          <span>Uses Company Transport</span>
+          <span>{t("uses_company_transport")}</span>
         </label>
       </div>
 
       <div className="space-y-2">
-        <label className="block text-gray-700 font-medium">Productivity</label>
+        <label className="block text-gray-700 font-medium">
+          {t("productivity")}
+        </label>
         <select
           name="productivity"
           value={form.productivity}
@@ -132,7 +138,9 @@ const CreateProfile: React.FC = () => {
       </div>
 
       <div className="space-y-2">
-        <label className="block text-gray-700 font-medium">Location</label>
+        <label className="block text-gray-700 font-medium">
+          {t("location")}
+        </label>
         <select
           name="location"
           value={form.location}
@@ -141,12 +149,14 @@ const CreateProfile: React.FC = () => {
         >
           <option value="Gorzow">Gorzow</option>
           <option value="Gdansk">Gdansk</option>
-          <option value="Gdynia">Krakow</option>
+          <option value="Krakow">Krakow</option>
         </select>
       </div>
 
       <div className="space-y-2">
-        <label className="block text-gray-700 font-medium">Birth Date</label>
+        <label className="block text-gray-700 font-medium">
+          {t("birth_date")}
+        </label>
         <input
           type="date"
           name="birthDate"
@@ -160,7 +170,7 @@ const CreateProfile: React.FC = () => {
         type="submit"
         className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-500 transition"
       >
-        Create Profile
+        {t("create_profile")}
       </button>
     </form>
   );

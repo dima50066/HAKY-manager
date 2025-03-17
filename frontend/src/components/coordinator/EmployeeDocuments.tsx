@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import {
   fetchDocumentsById,
   uploadDocumentById,
@@ -18,6 +19,7 @@ interface EmployeeDocumentsProps {
 export const EmployeeDocuments: React.FC<EmployeeDocumentsProps> = ({
   profileId,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const documents = useSelector(selectDocumentsById(profileId));
 
@@ -49,7 +51,7 @@ export const EmployeeDocuments: React.FC<EmployeeDocumentsProps> = ({
 
   return (
     <div className="mt-4">
-      <h3 className="text-xl font-semibold pb-5">Documents</h3>
+      <h3 className="text-xl font-semibold pb-5">{t("documents")}</h3>
 
       <DocumentUploadForm onUpload={handleUploadDocument} />
 
@@ -64,7 +66,7 @@ export const EmployeeDocuments: React.FC<EmployeeDocumentsProps> = ({
             />
           ))
         ) : (
-          <p>No documents uploaded</p>
+          <p>{t("no_documents")}</p>
         )}
       </div>
     </div>

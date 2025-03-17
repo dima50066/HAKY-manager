@@ -5,12 +5,14 @@ import { logOut } from "../../redux/auth/operations";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Icon from "../../shared/icon/Icon";
+import { useTranslation } from "react-i18next";
 
 interface UserMenuProps {
   closeMenu?: () => void;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ closeMenu }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentUser = useSelector(selectUser);
   const userLoading = useSelector(selectUserLoading);
@@ -19,18 +21,18 @@ const UserMenu: React.FC<UserMenuProps> = ({ closeMenu }) => {
   const handleLogout = async () => {
     try {
       await dispatch(logOut() as unknown as any);
-      toast.success("Successfully logged out!");
+      toast.success(t("success_logout"));
       navigate("/");
       if (closeMenu) closeMenu();
     } catch (error) {
-      toast.error("Failed to log out. Please try again.");
+      toast.error(t("failed_logout"));
     }
   };
 
   if (userLoading) {
     return (
       <div className="flex items-center space-x-4 p-2 bg-[#151728] text-gray-300 rounded-lg shadow-md justify-between">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-gray-500">{t("loading")}</p>
       </div>
     );
   }
@@ -49,7 +51,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ closeMenu }) => {
               {currentUser.name}
             </p>
             <p className="hidden sm:block text-lg">
-              Hello,{" "}
+              {t("hello")}{" "}
               <span className="font-semibold text-white">
                 {currentUser.name}
               </span>
@@ -65,11 +67,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ closeMenu }) => {
               height="20"
               className="mr-2 stroke-white"
             />
-            Log out
+            {t("logout")}
           </button>
         </>
       ) : (
-        <p className="text-gray-500">Please log in.</p>
+        <p className="text-gray-500">{t("please_login")}</p>
       )}
     </div>
   );

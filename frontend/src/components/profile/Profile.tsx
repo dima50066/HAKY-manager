@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   selectProfile,
@@ -10,12 +10,14 @@ import ProfileInfoCard from "./ProfileInfoCard";
 import { User } from "../../types";
 import Icon from "../../shared/icon/Icon";
 import Loader from "../../shared/loader/Loader";
+import { useTranslation } from "react-i18next";
 
 interface ProfileProps {
   onEdit: () => void;
 }
 
 const Profile: React.FC<ProfileProps> = ({ onEdit }) => {
+  const { t } = useTranslation();
   const profile = useSelector(selectProfile);
   const loading = useSelector(selectProfileLoading);
   const currentUser = useSelector(selectUser) as User | null;
@@ -35,12 +37,12 @@ const Profile: React.FC<ProfileProps> = ({ onEdit }) => {
   if (!profile)
     return (
       <div className="text-center text-gray-500">
-        <p>No profile data available.</p>
+        <p>{t("no_profile_data")}</p>
         <button
           className="mt-4 p-2 bg-blue-600 text-white rounded hover:bg-blue-500"
           onClick={() => navigate("/profile/create")}
         >
-          Create Profile
+          {t("create_profile")}
         </button>
       </div>
     );
@@ -61,53 +63,53 @@ const Profile: React.FC<ProfileProps> = ({ onEdit }) => {
               {currentUser?.name || "Profile"}
             </h1>
             <p className="text-gray-500">
-              {profile.isStudent ? "Student" : "Not a Student"}
+              {profile.isStudent ? t("student") : t("not_student")}
             </p>
             <p className="text-gray-700 font-semibold mt-2">
-              Productivity: {profile.productivity || "Not provided"}%
+              {t("productivity")}: {profile.productivity || "Not provided"}%
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:w-2/3">
             <ProfileInfoCard
-              label="Location"
-              value={profile.location || "Not provided"}
+              label={t("location")}
+              value={profile.location || t("not_provided")}
             />
             <ProfileInfoCard
-              label="Birth Date"
+              label={t("birth_date")}
               value={
                 profile.birthDate
                   ? new Date(profile.birthDate).toLocaleDateString()
-                  : "Not provided"
+                  : t("not_provided")
               }
             />
             <ProfileInfoCard
-              label="Living Arrangement"
+              label={t("living_arrangement")}
               value={
                 profile.livesIndependently
-                  ? "Lives Independently"
-                  : "Company-Provided Housing"
+                  ? t("lives_independently")
+                  : t("company_provided_housing")
               }
             />
             <ProfileInfoCard
-              label="Company Transport"
+              label={t("company_transport")}
               value={
                 profile.usesCompanyTransport
-                  ? "Uses Company Transport"
-                  : "Does Not Use Company Transport"
+                  ? t("uses_company_transport")
+                  : t("does_not_use_company_transport")
               }
             />
             <ProfileInfoCard
-              label="Address"
-              value={profile.address || "Not provided"}
+              label={t("address")}
+              value={profile.address || t("not_provided")}
             />
             <ProfileInfoCard
-              label="Emergency Contact"
-              value={profile.emergencyContactNumber || "Not provided"}
+              label={t("emergency_contact")}
+              value={profile.emergencyContactNumber || t("not_provided")}
             />
             <ProfileInfoCard
-              label="Pesel Number"
-              value={profile.peselNumber || "Not provided"}
+              label={t("pesel_number")}
+              value={profile.peselNumber || t("not_provided")}
             />
           </div>
         </div>
@@ -118,7 +120,7 @@ const Profile: React.FC<ProfileProps> = ({ onEdit }) => {
         onClick={onEdit}
       >
         <Icon id="edit" className="w-5 h-5 text-white" />
-        Edit Profile
+        {t("edit_profile")}
       </button>
     </div>
   );

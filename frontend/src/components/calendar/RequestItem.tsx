@@ -3,21 +3,23 @@ import RequestActions from "./RequestActions";
 import { useAppSelector } from "../../redux/store";
 import { selectAllUsers } from "../../redux/ranking/selectors";
 import { format, parseISO } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 type UserRef = string | { _id: string; name: string };
 
 const RequestItem: React.FC<{ request: any; isCoordinator?: boolean }> = ({
   request,
 }) => {
+  const { t } = useTranslation();
   const allUsers = useAppSelector(selectAllUsers);
 
   const getUserName = (user: UserRef | undefined): string => {
-    if (!user) return "Unknown User";
+    if (!user) return t("unknown_user");
     if (typeof user === "string") {
       const foundUser = allUsers.find((u) => u._id === user);
-      return foundUser ? foundUser.name : "Unknown User";
+      return foundUser ? foundUser.name : t("unknown_user");
     }
-    return user.name || "Unknown User";
+    return user.name || t("unknown_user");
   };
 
   const formatDate = (dateString: string) => {
@@ -49,16 +51,20 @@ const RequestItem: React.FC<{ request: any; isCoordinator?: boolean }> = ({
     >
       <div className="flex flex-col">
         <span className="text-xl font-semibold text-gray-800 capitalize">
-          {request.type}
+          {t(request.type)}
         </span>
-        <span className="text-sm text-gray-500">Date: {getDateText()}</span>
+        <span className="text-sm text-gray-500">
+          {t("date")}: {getDateText()}
+        </span>
         <span className="text-sm text-gray-600">
-          Requested by: <strong>{getUserName(request.userId)}</strong>
+          {t("requested_by")}: <strong>{getUserName(request.userId)}</strong>
         </span>
         {request.status !== "pending" && request.approvedBy && (
           <span className="text-sm text-gray-600">
-            {request.status === "confirmed" ? "Approved by" : "Declined by"}:{" "}
-            <strong>{getUserName(request.approvedBy)}</strong>
+            {request.status === "confirmed"
+              ? t("approved_by")
+              : t("declined_by")}
+            : <strong>{getUserName(request.approvedBy)}</strong>
           </span>
         )}
       </div>

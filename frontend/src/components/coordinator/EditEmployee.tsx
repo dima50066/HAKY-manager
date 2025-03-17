@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { AppDispatch } from "../../redux/store";
 import {
   fetchEmployeeById,
@@ -14,6 +15,7 @@ interface EditEmployeeProps {
 }
 
 const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const employee = useSelector(selectEmployeeById(profileId));
 
@@ -72,12 +74,14 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
 
   return (
     <div className="p-6 bg-white rounded-lg max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-center">Edit Employee</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">
+        {t("edit_employee")}
+      </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <TextField
-            label="Birth Date"
+            label={t("birth_date")}
             name="birthDate"
             type="date"
             value={formData.birthDate}
@@ -85,35 +89,35 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
             fullWidth
           />
           <TextField
-            label="Location"
+            label={t("location")}
             name="location"
             value={formData.location}
             onChange={handleChange}
             fullWidth
           />
           <TextField
-            label="Address"
+            label={t("address")}
             name="address"
             value={formData.address}
             onChange={handleChange}
             fullWidth
           />
           <TextField
-            label="PESEL Number"
+            label={t("pesel_number")}
             name="peselNumber"
             value={formData.peselNumber}
             onChange={handleChange}
             fullWidth
           />
           <TextField
-            label="Emergency Contact"
+            label={t("emergency_contact")}
             name="emergencyContactNumber"
             value={formData.emergencyContactNumber}
             onChange={handleChange}
             fullWidth
           />
           <TextField
-            label="Productivity"
+            label={t("productivity")}
             name="productivity"
             type="number"
             value={formData.productivity}
@@ -131,7 +135,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
                 name="isStudent"
               />
             }
-            label="Is Student"
+            label={t("is_student")}
           />
           <FormControlLabel
             control={
@@ -141,7 +145,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
                 name="livesIndependently"
               />
             }
-            label="Lives Independently"
+            label={t("lives_independently")}
           />
           <FormControlLabel
             control={
@@ -151,16 +155,16 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
                 name="usesCompanyTransport"
               />
             }
-            label="Uses Company Transport"
+            label={t("uses_company_transport")}
           />
         </div>
 
         <div className="flex justify-end space-x-4 mt-4">
           <Button variant="contained" color="primary" type="submit">
-            Save
+            {t("save")}
           </Button>
           <Button variant="outlined" color="secondary" onClick={onClose}>
-            Cancel
+            {t("cancel")}
           </Button>
         </div>
       </form>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Employee } from "../../types";
 import Icon from "../../shared/icon/Icon";
 
@@ -7,6 +8,8 @@ interface EmployeeInfoProps {
 }
 
 export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
+  const { t } = useTranslation();
+
   const copyToClipboard = (text: string) => {
     if (text) {
       navigator.clipboard.writeText(text);
@@ -25,25 +28,28 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
           <div>
             <h2 className="text-2xl font-bold">{employee.user.name}</h2>
             <p className="text-gray-500">
-              {employee.location || "No location"}
+              {employee.location || t("no_location")}
             </p>
           </div>
         </div>
       </div>
 
       <div className="mt-6 bg-white shadow-md rounded-lg p-6">
-        <h3 className="text-xl font-semibold mb-4">Personal Information</h3>
+        <h3 className="text-xl font-semibold mb-4">
+          {t("personal_information")}
+        </h3>
         <div className="space-y-3">
           <p>
-            <strong>Birth Date:</strong>{" "}
+            <strong>{t("birth_date")}:</strong>{" "}
             {employee.birthDate
               ? new Date(employee.birthDate).toLocaleDateString()
-              : "Not provided"}
+              : t("not_provided")}
           </p>
 
           <div className="flex items-center justify-between">
             <p>
-              <strong>Address:</strong> {employee.address || "Not provided"}
+              <strong>{t("address")}:</strong>{" "}
+              {employee.address || t("not_provided")}
             </p>
             {employee.address && (
               <button
@@ -57,8 +63,8 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
 
           <div className="flex items-center justify-between">
             <p>
-              <strong>Emergency Contact:</strong>{" "}
-              {employee.emergencyContactNumber || "Not provided"}
+              <strong>{t("emergency_contact")}:</strong>{" "}
+              {employee.emergencyContactNumber || t("not_provided")}
             </p>
             {employee.emergencyContactNumber && (
               <div className="flex space-x-2">
@@ -82,8 +88,8 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
 
           <div className="flex items-center justify-between">
             <p>
-              <strong>PESEL Number:</strong>{" "}
-              {employee.peselNumber || "Not provided"}
+              <strong>{t("pesel_number")}:</strong>{" "}
+              {employee.peselNumber || t("not_provided")}
             </p>
             {employee.peselNumber && (
               <button
@@ -96,15 +102,16 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
           </div>
 
           <p>
-            <strong>Lives Independently:</strong>{" "}
-            {employee.livesIndependently ? "Yes" : "No"}
+            <strong>{t("lives_independently")}:</strong>{" "}
+            {employee.livesIndependently ? t("yes") : t("no")}
           </p>
           <p>
-            <strong>Uses Company Transport:</strong>{" "}
-            {employee.usesCompanyTransport ? "Yes" : "No"}
+            <strong>{t("uses_company_transport")}:</strong>{" "}
+            {employee.usesCompanyTransport ? t("yes") : t("no")}
           </p>
           <p>
-            <strong>Student Status:</strong> {employee.isStudent ? "Yes" : "No"}
+            <strong>{t("student_status")}:</strong>{" "}
+            {employee.isStudent ? t("yes") : t("no")}
           </p>
         </div>
       </div>

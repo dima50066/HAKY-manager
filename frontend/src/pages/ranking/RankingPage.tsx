@@ -13,8 +13,10 @@ import DailyRanking from "../../components/ranking/DailyRanking";
 import Modal from "../../shared/modal/Modal";
 import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
+import { useTranslation } from "react-i18next";
 
 const RankingPage: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const visibleHistory = useSelector(selectVisibleHistory);
   const loading = useSelector(selectUserHistoryLoading);
@@ -34,7 +36,7 @@ const RankingPage: React.FC = () => {
   return (
     <div className="p-5 bg-white rounded-lg shadow-md w-full">
       <div className="flex items-center justify-center mb-4 relative">
-        <h1 className="text-xl font-bold text-gray-800">My Ranking</h1>
+        <h1 className="text-xl font-bold text-gray-800">{t("my_ranking")}</h1>
 
         <Popover.Root>
           <Popover.Trigger asChild>
@@ -53,19 +55,11 @@ const RankingPage: React.FC = () => {
               align="center"
               className="bg-white shadow-xl rounded-lg p-4 w-80 text-sm text-gray-700 border border-gray-200"
             >
-              <p className="font-semibold">On this page, you can:</p>
+              <p className="font-semibold">{t("ranking_info_title")}</p>
               <ul className="list-disc pl-4 mt-2 space-y-1">
-                <li>
-                  View your rating for each recorded shift you have worked.
-                </li>
-                <li>
-                  Check the rating for a specific department based on a selected
-                  day, the current month, or all-time data.
-                </li>
-                <li>
-                  See your daily rating and your ranking within the department
-                  where you worked.
-                </li>
+                <li>{t("ranking_info_1")}</li>
+                <li>{t("ranking_info_2")}</li>
+                <li>{t("ranking_info_3")}</li>
               </ul>
               <Popover.Close className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                 ✖
@@ -88,7 +82,7 @@ const RankingPage: React.FC = () => {
         className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
         onClick={() => dispatch(loadMoreHistory())}
       >
-        Load More
+        {t("load_more")}
       </button>
 
       <Modal

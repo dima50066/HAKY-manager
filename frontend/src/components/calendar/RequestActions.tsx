@@ -5,6 +5,7 @@ import {
   declineRequest,
 } from "../../redux/requests/operations";
 import { selectUserRole } from "../../redux/auth/selectors";
+import { useTranslation } from "react-i18next";
 
 interface RequestActionsProps {
   requestId: string;
@@ -15,6 +16,7 @@ const RequestActions: React.FC<RequestActionsProps> = ({
   requestId,
   requestType,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const userRole = useAppSelector(selectUserRole);
 
@@ -27,7 +29,7 @@ const RequestActions: React.FC<RequestActionsProps> = ({
           onClick={() => dispatch(confirmRequest(requestId))}
           className="bg-green-500 text-white px-2 py-1 rounded"
         >
-          Approve
+          {t("approve")}
         </button>
       )}
 
@@ -36,7 +38,7 @@ const RequestActions: React.FC<RequestActionsProps> = ({
           onClick={() => dispatch(declineRequest(requestId))}
           className="bg-red-500 text-white px-2 py-1 rounded"
         >
-          Decline
+          {t("decline")}
         </button>
       )}
     </div>

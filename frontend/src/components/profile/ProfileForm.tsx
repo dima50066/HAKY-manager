@@ -4,12 +4,14 @@ import { updateProfile } from "../../redux/profile/operations";
 import { selectProfile } from "../../redux/profile/selectors";
 import { AppDispatch } from "../../redux/store";
 import type { ProfileForm } from "../../types";
+import { useTranslation } from "react-i18next";
 
 interface ProfileUpdateFormProps {
   onClose: () => void;
 }
 
 const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const profile = useSelector(selectProfile);
 
@@ -110,10 +112,10 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
 
     try {
       await dispatch(updateProfile(formData)).unwrap();
-      alert("Profile updated successfully!");
+      alert(t("profile_updated_success"));
       onClose();
     } catch (error) {
-      console.error("Failed to update profile:", error);
+      console.error(t("profile_update_failed"), error);
     }
   };
 
@@ -135,7 +137,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
       >
         <div>
           <label htmlFor="avatar" className="block font-medium text-gray-700">
-            Avatar
+            {t("avatar")}
           </label>
           <input
             type="file"
@@ -155,7 +157,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             className="form-checkbox text-blue-600"
           />
           <label htmlFor="isStudent" className="text-gray-700">
-            Student
+            {t("is_student")}
           </label>
         </div>
         <div className="flex items-center space-x-2">
@@ -168,7 +170,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             className="form-checkbox text-blue-600"
           />
           <label htmlFor="livesIndependently" className="block text-gray-700">
-            Lives Independently
+            {t("lives_independently")}
           </label>
         </div>
         <div className="flex items-center space-x-2">
@@ -181,7 +183,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             className="form-checkbox text-blue-600"
           />
           <label htmlFor="usesCompanyTransport" className="block text-gray-700">
-            Uses Company Transport
+            {t("uses_company_transport")}
           </label>
         </div>
 
@@ -190,7 +192,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             htmlFor="productivity"
             className="block font-medium text-gray-700"
           >
-            Productivity Level
+            {t("productivity_level")}
           </label>
           <select
             name="productivity"
@@ -207,7 +209,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
 
         <div>
           <label htmlFor="location" className="block font-medium text-gray-700">
-            Location
+            {t("location")}
           </label>
           <select
             name="location"
@@ -226,7 +228,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
         type="submit"
         className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
       >
-        Update Profile
+        {t("update_profile")}
       </button>
     </form>
   );

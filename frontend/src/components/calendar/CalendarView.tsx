@@ -4,6 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { enUS } from "date-fns/locale";
 import "../../index.css";
+import { useTranslation } from "react-i18next";
 
 const locales = { "en-US": enUS };
 const localizer = dateFnsLocalizer({
@@ -23,6 +24,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   selectedDates,
   setSelectedDates,
 }) => {
+  const { t } = useTranslation();
   const [events, setEvents] = useState<Event[]>([]);
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
@@ -55,19 +57,20 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
   const getSelectedDatesText = () => {
     if (selectedDates.length === 0) {
-      return "Dates not selected";
+      return t("dates_not_selected");
     }
     if (selectedDates.length === 1 || selectedDates[0] === selectedDates[1]) {
-      return `Chosen date: ${formatDate(selectedDates[0])}`;
+      return t("chosen_date", { date: formatDate(selectedDates[0]) });
     }
-    return `Chosen dates: ${formatDate(selectedDates[0])} - ${formatDate(
-      selectedDates[1]
-    )}`;
+    return t("chosen_dates", {
+      start: formatDate(selectedDates[0]),
+      end: formatDate(selectedDates[1]),
+    });
   };
 
   return (
     <div className="border p-4 rounded shadow-md bg-white">
-      <h2 className="text-lg font-semibold mb-2">Calendar</h2>
+      <h2 className="text-lg font-semibold mb-2">{t("calendar_title")}</h2>
       <Calendar
         localizer={localizer}
         events={events}

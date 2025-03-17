@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface DocumentPreviewProps {
   previewLink: string;
@@ -9,6 +10,8 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({
   previewLink,
   onClose,
 }) => {
+  const { t } = useTranslation();
+
   const isImage = previewLink.match(/\.(jpeg|jpg|png|gif|svg)$/i);
   const isPdf = previewLink.match(/\.pdf$/i);
   const isText = previewLink.match(/\.(txt|json|csv)$/i);
@@ -22,7 +25,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({
           onClick={onClose}
           className="bg-red-500 text-white px-3 py-1 rounded-md float-right"
         >
-          Close
+          {t("close")}
         </button>
         <div className="mt-4">
           {isImage ? (
@@ -51,7 +54,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({
             />
           ) : (
             <p className="text-center">
-              <strong>Unsupported file type.</strong>
+              <strong>{t("unsupported_file")}</strong>
               <br />
               <a
                 href={previewLink}
@@ -59,7 +62,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({
                 rel="noopener noreferrer"
                 className="text-blue-500 underline"
               >
-                Download the file
+                {t("download_file")}
               </a>
             </p>
           )}

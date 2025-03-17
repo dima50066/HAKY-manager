@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AppDispatch } from "../../redux/store";
 import {
   fetchEmployeeById,
@@ -18,6 +19,7 @@ import { EmployeeActions } from "./EmployeeActions";
 import Modal from "../../shared/modal/Modal";
 
 const EmployeeDetails: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const profileId = id ?? "";
   const dispatch = useDispatch<AppDispatch>();
@@ -47,18 +49,18 @@ const EmployeeDetails: React.FC = () => {
   }, [dispatch, profileId]);
 
   const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this employee?")) {
+    if (window.confirm(t("delete_employee_confirmation"))) {
       await dispatch(deleteEmployee(profileId));
       navigate("/coordinator");
     }
   };
 
   if (isLoading)
-    return (
-      <p className="text-center text-blue-500">Loading employee data...</p>
-    );
+    return <p className="text-center text-blue-500">{t("loading_employee")}</p>;
   if (!employee)
-    return <p className="text-center text-red-500">Employee not found.</p>;
+    return (
+      <p className="text-center text-red-500">{t("employee_not_found")}</p>
+    );
 
   return (
     <div className="p-4 max-w-4xl mx-auto bg-white shadow-md rounded-lg">
@@ -75,19 +77,19 @@ const EmployeeDetails: React.FC = () => {
             className="w-full py-2 bg-blue-500 text-white rounded-lg"
             onClick={() => setOpenModal("productivity")}
           >
-            View Productivity
+            {t("view_productivity")}
           </button>
           <button
             className="w-full py-2 bg-blue-500 text-white rounded-lg"
             onClick={() => setOpenModal("salary")}
           >
-            View Salary
+            {t("view_salary")}
           </button>
           <button
             className="w-full py-2 bg-blue-500 text-white rounded-lg"
             onClick={() => setOpenModal("documents")}
           >
-            View Documents
+            {t("view_documents")}
           </button>
 
           <Modal

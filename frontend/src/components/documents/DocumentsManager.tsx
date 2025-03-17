@@ -12,8 +12,10 @@ import {
 } from "../../redux/documents/selectors";
 import DocumentItem from "./DocumentItem";
 import DocumentUploadForm from "./DocumentUploadForm";
+import { useTranslation } from "react-i18next";
 
 const DocumentsManager: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const documents = useAppSelector(selectMyDocuments);
   const loading = useAppSelector(selectMyDocumentsLoading);
@@ -40,15 +42,15 @@ const DocumentsManager: React.FC = () => {
   };
 
   return (
-    <div className="w-full lg:max-w-3xl min-h-[450px] p-6 bg-white  rounded-xl flex flex-col">
+    <div className="w-full lg:max-w-3xl min-h-[450px] p-6 bg-white rounded-xl flex flex-col">
       <h1 className="text-2xl font-semibold mb-4 text-gray-800 text-center">
-        Documents Manager
+        {t("documents_manager")}
       </h1>
 
       <DocumentUploadForm onUpload={handleUpload} />
 
       {loading && (
-        <p className="text-center text-blue-500">Loading documents...</p>
+        <p className="text-center text-blue-500">{t("loading_documents")}</p>
       )}
       {error && <p className="text-center text-red-500">Error: {error}</p>}
 
@@ -63,7 +65,7 @@ const DocumentsManager: React.FC = () => {
             />
           ))
         ) : (
-          <p className="text-center text-gray-500">No documents available.</p>
+          <p className="text-center text-gray-500">{t("no_documents")}</p>
         )}
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import {
   fetchMyProductivityRecords,
   deleteMyProductivityRecord,
@@ -31,6 +32,7 @@ export const groupByDateAndDepartment = (records: ProductivityRecord[]) => {
 };
 
 const ProductivityList: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const records = useSelector(selectMyProductivityRecords);
   const loading = useSelector(selectMyProductivityLoading);
@@ -61,11 +63,11 @@ const ProductivityList: React.FC = () => {
 
   return (
     <div className="bg-white shadow-md rounded-lg">
-      {loading && <p className="text-gray-600">Loading records...</p>}
+      {loading && <p className="text-gray-600">{t("loading_records")}</p>}
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && records.length === 0 && (
-        <p className="text-gray-500">No records found.</p>
+        <p className="text-gray-500">{t("no_records_found")}</p>
       )}
 
       {sortedDates.map((date) => (

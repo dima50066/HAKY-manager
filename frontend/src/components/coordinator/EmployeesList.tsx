@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { AppDispatch } from "../../redux/store";
 import { fetchEmployees } from "../../redux/coordinator/operations";
 import {
@@ -12,6 +13,7 @@ import Loader from "../../shared/loader/Loader";
 import useLoader from "../../hooks/useLoader";
 
 const EmployeesList: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const employees = useSelector(selectEmployees);
   const isLoading = useSelector(selectEmployeesLoading);
@@ -27,13 +29,19 @@ const EmployeesList: React.FC = () => {
     return <Loader />;
   }
 
-  if (error) return <p className="text-center text-red-500">Error: {error}</p>;
+  if (error)
+    return (
+      <p className="text-center text-red-500">
+        {t("error_message")} {error}
+      </p>
+    );
+
   if (employees.length === 0)
-    return <p className="text-center">No employees found.</p>;
+    return <p className="text-center">{t("no_employees_found")}</p>;
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Employees</h2>
+      <h2 className="text-xl font-bold mb-4">{t("employees")}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {employees.map((employee) => (
           <EmployeeCard key={employee._id} employee={employee} />

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useAppDispatch } from "../../redux/store";
 import { createRequest } from "../../redux/requests/operations";
+import { useTranslation } from "react-i18next";
 
 interface RequestFormProps {
   selectedDates: string[];
 }
 
 const RequestForm: React.FC<RequestFormProps> = ({ selectedDates }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [type, setType] = useState<"vacation" | "day-off" | "work-day">(
     "vacation"
@@ -14,7 +16,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ selectedDates }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedDates.length === 0) return alert("Please select a date");
+    if (selectedDates.length === 0) return alert(t("select_date_warning"));
 
     const startDate = new Date(selectedDates[0]);
     startDate.setHours(0, 0, 0, 0);
@@ -42,10 +44,10 @@ const RequestForm: React.FC<RequestFormProps> = ({ selectedDates }) => {
 
   return (
     <div className="border p-4 rounded shadow-md bg-white">
-      <h2 className="text-lg font-semibold mb-2">Create Request</h2>
+      <h2 className="text-lg font-semibold mb-2">{t("create_request")}</h2>
       <form onSubmit={handleSubmit}>
         <label className="block mb-2">
-          Type of request:
+          {t("request_type")}
           <select
             value={type}
             onChange={(e) =>
@@ -53,16 +55,16 @@ const RequestForm: React.FC<RequestFormProps> = ({ selectedDates }) => {
             }
             className="ml-2 border p-2 rounded w-full"
           >
-            <option value="day-off">Day off</option>
-            <option value="work-day">Work day</option>
-            <option value="vacation">Vacation</option>
+            <option value="day-off">{t("day_off")}</option>
+            <option value="work-day">{t("work_day")}</option>
+            <option value="vacation">{t("vacation")}</option>
           </select>
         </label>
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded w-full mt-2"
         >
-          Send
+          {t("send")}
         </button>
       </form>
     </div>

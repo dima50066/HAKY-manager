@@ -14,6 +14,7 @@ import SalaryForm from "./SalaryForm";
 import Icon from "../../shared/icon/Icon";
 import Loader from "../../shared/loader/Loader";
 import useLoader from "../../hooks/useLoader";
+import { useTranslation } from "react-i18next";
 
 const formatPeriod = (period: string) => {
   const [year, month] = period.split("-");
@@ -22,6 +23,7 @@ const formatPeriod = (period: string) => {
 };
 
 const SalaryList: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const salaryHistory = useSelector(selectMySalaryHistory);
   const loading = useSelector(selectMySalaryHistoryLoading);
@@ -75,7 +77,9 @@ const SalaryList: React.FC = () => {
                   className="text-gray-600"
                 />
                 <span>
-                  Total Earnings: {record.totalEarnings.toFixed(2)} PLN
+                  {t("total_earnings1", {
+                    amount: record.totalEarnings.toFixed(2),
+                  })}
                 </span>
               </div>
 
@@ -86,7 +90,7 @@ const SalaryList: React.FC = () => {
                   height={20}
                   className="text-gray-600"
                 />
-                <span>Hours Worked: {record.hoursWorked}</span>
+                <span>{t("hours_worked1", { hours: record.hoursWorked })}</span>
               </div>
 
               <button
@@ -101,7 +105,7 @@ const SalaryList: React.FC = () => {
                     : "bg-blue-500 text-white hover:bg-blue-600"
                 }`}
               >
-                {selectedRecordId === record._id ? "Close" : "Update"}
+                {selectedRecordId === record._id ? t("close") : t("update")}
               </button>
 
               {selectedRecordId === record._id && (
@@ -112,7 +116,7 @@ const SalaryList: React.FC = () => {
         </ul>
       ) : (
         <p className="text-center text-gray-500 mt-4">
-          No salary history available.
+          {t("no_salary_history")}
         </p>
       )}
     </div>

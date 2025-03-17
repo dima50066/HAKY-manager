@@ -1,14 +1,17 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import EmployeesList from "../../components/coordinator/EmployeesList";
 import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
 
 const CoordinatorPage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="p-4">
       <div className="flex items-center justify-center mb-4 relative">
         <h1 className="text-2xl font-bold text-center">
-          Coordinator Dashboard
+          {t("coordinator_dashboard")}
         </h1>
 
         <Popover.Root>
@@ -28,17 +31,12 @@ const CoordinatorPage: React.FC = () => {
               align="center"
               className="bg-white shadow-xl rounded-lg p-4 w-80 text-sm text-gray-700 border border-gray-200"
             >
-              <p className="font-semibold">
-                The coordinator has the ability to:
-              </p>
+              <p className="font-semibold">{t("coordinator_abilities")}</p>
               <ul className="list-disc pl-4 mt-2">
-                <li>View users' personal information.</li>
-                <li>Monitor their productivity levels.</li>
-                <li>
-                  Review their (approximate) salary history based on
-                  performance.
-                </li>
-                <li>Manage documents related to the user.</li>
+                <li>{t("view_user_info")}</li>
+                <li>{t("monitor_productivity")}</li>
+                <li>{t("review_salary_history")}</li>
+                <li>{t("manage_documents")}</li>
               </ul>
               <Popover.Close className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                 ✖

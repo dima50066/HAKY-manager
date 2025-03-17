@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ProductivityRecord } from "../../types";
 import ProductivityItem from "./ProductivityItem";
 import Icon from "../../shared/icon/Icon";
@@ -16,6 +17,7 @@ const ProductivityAccordion: React.FC<Props> = ({
   onEdit,
   onDelete,
 }) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [openDepartments, setOpenDepartments] = useState<
     Record<string, boolean>
@@ -79,7 +81,9 @@ const ProductivityAccordion: React.FC<Props> = ({
                 onClick={() => toggleDepartment(department)}
                 className="w-full text-left text-gray-700 font-medium flex flex-col justify-between items-start"
               >
-                <span className="w-full break-words">{department}</span>
+                <span className="w-full break-words">
+                  {t("productivity_department")}: {department}
+                </span>
 
                 <span className="w-full flex justify-between items-center mt-1">
                   <span className="flex items-center gap-2">

@@ -11,6 +11,7 @@ import {
   selectAllUsers,
 } from "../../redux/ranking/selectors";
 import RankingListComponent from "./RankingListComponent";
+import { useTranslation } from "react-i18next";
 
 interface DepartmentRankingProps {
   departmentId: string;
@@ -20,6 +21,7 @@ interface DepartmentRankingProps {
 const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
   departmentId,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const ranking = useSelector(selectDepartmentRanking);
   const loading = useSelector(selectDepartmentRankingLoading);
@@ -53,9 +55,9 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
   }, [dispatch, departmentId, selectedPeriod, selectedDate]);
 
   return (
-    <div className="p-5 bg-white rounded-lg  w-full max-w-lg">
+    <div className="p-5 bg-white rounded-lg w-full max-w-lg">
       <h2 className="text-lg font-bold text-gray-800 border-b pb-2 mb-4">
-        Department Ranking
+        {t("department_ranking")}
       </h2>
 
       <div className="flex gap-3 mb-4">
@@ -67,7 +69,7 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
           }`}
           onClick={() => setSelectedPeriod("day")}
         >
-          Day
+          {t("day")}
         </button>
         <button
           className={`px-4 py-2 rounded-lg ${
@@ -77,7 +79,7 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
           }`}
           onClick={() => setSelectedPeriod("month")}
         >
-          Month
+          {t("month")}
         </button>
         <button
           className={`px-4 py-2 rounded-lg ${
@@ -87,7 +89,7 @@ const DepartmentRanking: React.FC<DepartmentRankingProps> = ({
           }`}
           onClick={() => setSelectedPeriod("all")}
         >
-          All Time
+          {t("all_time")}
         </button>
       </div>
 
