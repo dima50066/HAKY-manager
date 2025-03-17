@@ -24,6 +24,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     address: profile?.address || "",
     emergencyContactNumber: profile?.emergencyContactNumber || "",
     peselNumber: profile?.peselNumber || "",
+    language: profile?.language || "",
   });
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);

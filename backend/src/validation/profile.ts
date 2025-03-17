@@ -8,15 +8,10 @@ export const createProfileSchema = Joi.object({
   birthDate: Joi.date().optional(),
   livesIndependently: Joi.boolean().required(),
   usesCompanyTransport: Joi.boolean().required(),
-  peselNumber: Joi.string().max(11).optional().messages({
-    "string.max": "PESEL number cannot exceed 11 characters",
-  }),
-  address: Joi.string().max(200).optional().messages({
-    "string.max": "Address cannot exceed 200 characters",
-  }),
-  emergencyContactNumber: Joi.string().max(15).optional().messages({
-    "string.max": "Emergency contact number cannot exceed 15 characters",
-  }),
+  peselNumber: Joi.string().max(11).optional(),
+  address: Joi.string().max(200).optional(),
+  emergencyContactNumber: Joi.string().max(15).optional(),
+  language: Joi.string().valid("en", "ua", "pl", "ru").default("en"),
 });
 
 export const updateProfileSchema = Joi.object({
@@ -27,15 +22,10 @@ export const updateProfileSchema = Joi.object({
   birthDate: Joi.date().optional(),
   livesIndependently: Joi.boolean().optional(),
   usesCompanyTransport: Joi.boolean().optional(),
-  peselNumber: Joi.string().max(11).optional().messages({
-    "string.max": "PESEL number cannot exceed 11 characters",
-  }),
-  address: Joi.string().max(200).optional().messages({
-    "string.max": "Address cannot exceed 200 characters",
-  }),
-  emergencyContactNumber: Joi.string().max(15).optional().messages({
-    "string.max": "Emergency contact number cannot exceed 15 characters",
-  }),
+  peselNumber: Joi.string().max(11).optional(),
+  address: Joi.string().max(200).optional(),
+  emergencyContactNumber: Joi.string().max(15).optional(),
+  language: Joi.string().valid("en", "ua", "pl", "ru").optional(),
 });
 
 export const documentSchema = Joi.object({

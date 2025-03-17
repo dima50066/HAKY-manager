@@ -12,6 +12,7 @@ export interface Profile extends Document {
   address?: string;
   emergencyContactNumber?: string;
   peselNumber?: string;
+  language: string;
   documents: {
     url: string;
     type: "image" | "pdf" | "other";
@@ -40,6 +41,7 @@ const ProfileSchema: Schema<Profile> = new Schema(
     address: { type: String, maxlength: 200 },
     emergencyContactNumber: { type: String, maxlength: 30 },
     peselNumber: { type: String },
+    language: { type: String, default: "en" },
     documents: [
       {
         url: { type: String, required: true },

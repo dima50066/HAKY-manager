@@ -16,6 +16,7 @@ const CreateProfile: React.FC = () => {
     birthDate: "",
     livesIndependently: false,
     usesCompanyTransport: false,
+    language: "",
   });
 
   const handleChange = (

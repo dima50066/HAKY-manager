@@ -25,6 +25,7 @@ interface ProfilePayload {
   address?: string;
   emergencyContactNumber?: string;
   peselNumber?: string;
+  language?: string;
 }
 
 export const createProfile = async (
@@ -83,6 +84,7 @@ export const updateProfile = async (
     emergencyContactNumber:
       req.body?.emergencyContactNumber || profile.emergencyContactNumber,
     peselNumber: req.body?.peselNumber || profile.peselNumber,
+    language: req.body?.language || profile.language,
   };
 
   if (req.file) {

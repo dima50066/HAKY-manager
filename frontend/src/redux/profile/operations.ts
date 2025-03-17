@@ -40,3 +40,14 @@ export const updateProfile = createAsyncThunk(
     return response.data.data;
   }
 );
+
+export const updateLanguage = createAsyncThunk(
+  "profile/updateLanguage",
+  async (language: string, { getState }) => {
+    const token = (getState() as any).auth.token;
+    setAuthHeader(token);
+
+    const response = await axiosInstance.put("/profile/update", { language });
+    return response.data.data;
+  }
+);

@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createProfile, getProfile, updateProfile } from "./operations";
+import {
+  createProfile,
+  getProfile,
+  updateProfile,
+  updateLanguage,
+} from "./operations";
 
 interface ProfileState {
   profile: any;
@@ -52,6 +57,20 @@ const profileSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateProfile.rejected, (state, action) => {
+        state.error = action.error.message || "An error occurred";
+        state.loading = false;
+      })
+      .addCase(updateLanguage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateLanguage.fulfilled, (state, action) => {
+        if (state.profile) {
+          state.profile.language = action.payload.language;
+        }
+        state.loading = false;
+      })
+      .addCase(updateLanguage.rejected, (state, action) => {
         state.error = action.error.message || "An error occurred";
         state.loading = false;
       });

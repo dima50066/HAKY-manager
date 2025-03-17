@@ -51,6 +51,7 @@ export interface Profile {
   address?: string;
   emergencyContactNumber?: string;
   peselNumber?: string;
+  language: string;
 }
 
 export interface Salary {
@@ -73,6 +74,7 @@ export interface ProfileForm {
   address?: string;
   emergencyContactNumber?: string;
   peselNumber?: string;
+  language: string;
 }
 
 export interface Document {
