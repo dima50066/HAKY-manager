@@ -13,11 +13,16 @@ export const EmployeeActions: React.FC<EmployeeActionsProps> = ({
   profileId,
   onDelete,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const isUkrainian = i18n.language === "uk";
 
   return (
-    <div className="mt-6 flex space-x-4">
+    <div
+      className={`mt-6 space-x-4 flex flex-col gap-2 ${
+        isUkrainian ? "sm:flex sm:flex-row sm:gap-2" : ""
+      }`}
+    >
       <button
         onClick={() => setIsEditing(true)}
         className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 flex items-center"

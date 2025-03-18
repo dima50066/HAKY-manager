@@ -44,7 +44,7 @@ const RequestItem: React.FC<{ request: any; isCoordinator?: boolean }> = ({
 
   return (
     <li
-      className={`border p-4 rounded-lg shadow-lg mb-4 flex items-center justify-between transition duration-300 ease-in-out ${
+      className={`border p-4 rounded-lg shadow-lg mb-4 flex flex-col gap-3  justify-between transition duration-300 ease-in-out ${
         statusColors[request.status] ||
         "bg-gray-100 border-gray-400 hover:bg-gray-200"
       }`}
@@ -69,7 +69,7 @@ const RequestItem: React.FC<{ request: any; isCoordinator?: boolean }> = ({
         )}
       </div>
 
-      <div className="flex items-center space-x-2">
+      <div className="flex flex-row items-center space-x-2">
         {canManageRequest && (
           <RequestActions requestId={request._id} requestType={request.type} />
         )}

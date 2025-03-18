@@ -10,10 +10,16 @@ interface Props {
 }
 
 const ProductivityItem: React.FC<Props> = ({ record, onEdit, onDelete }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isUkrainian = i18n.language === "uk";
+  const isRussian = i18n.language === "ru";
 
   return (
-    <li className="p-4 border-b border-gray-200 flex flex-col items-start">
+    <li
+      className={`${
+        isUkrainian || isRussian ? "pb-2" : "p-4"
+      } border-b border-gray-200 flex flex-col items-start`}
+    >
       <h3 className="text-lg font-semibold text-gray-700">
         {record.departmentName}
       </h3>

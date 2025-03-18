@@ -39,9 +39,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
   }, []);
 
   useEffect(() => {
-    if (screenWidth >= 1024) {
-      setColumns(3);
-    } else if (screenWidth >= 768) {
+    if (screenWidth >= 768) {
       setColumns(2);
     } else {
       setColumns(1);
@@ -128,11 +126,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     >
       <div
         className={`grid gap-4 ${
-          columns === 1
-            ? "grid-cols-1"
-            : columns === 2
-            ? "grid-cols-2"
-            : "grid-cols-3"
+          columns === 1 ? "grid-cols-1" : "grid-cols-2"
         }`}
       >
         <div>

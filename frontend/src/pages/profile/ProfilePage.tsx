@@ -26,8 +26,8 @@ const ProfilePage: React.FC = () => {
     <div className="min-h-screen bg-gray-100 py-6 px-4 md:px-8 lg:px-12 flex flex-col md:flex-row gap-4 md:gap-6 items-start">
       <div
         className={`w-full ${
-          isTablet ? "w-full" : "md:w-1/2"
-        } lg:w-1/3 flex flex-col`}
+          isTablet ? "flex-grow" : "md:w-2/5"
+        } lg:w-2/3 flex flex-col`}
       >
         <div className="flex mb-4 items-center gap-2">
           <h1 className="text-2xl font-bold text-gray-800">
@@ -66,34 +66,22 @@ const ProfilePage: React.FC = () => {
         </div>
 
         <Profile onEdit={() => setIsFormVisible(true)} />
-        {!isLargeScreen && (
-          <button
-            className="mt-4 w-full bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
-            onClick={() => setIsDocumentsVisible(true)}
-          >
-            {t("manage_documents1")}
-          </button>
-        )}
+        <button
+          className="mt-4 w-full bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+          onClick={() => setIsDocumentsVisible(true)}
+        >
+          {t("manage_documents1")}
+        </button>
       </div>
 
-      <div
-        className={`w-full ${
-          isTablet ? "w-full" : "md:w-1/2"
-        } lg:w-2/3 flex flex-col`}
+      {/* The Documents Manager now always exists but is controlled by Modal */}
+      <Modal
+        isOpen={isDocumentsVisible}
+        onClose={() => setIsDocumentsVisible(false)}
+        classNameWrapper="max-w-5xl max-h-[100vh]"
       >
-        {isLargeScreen ? (
-          <div className="h-full flex flex-col justify-start">
-            <DocumentsManager />
-          </div>
-        ) : (
-          <Modal
-            isOpen={isDocumentsVisible}
-            onClose={() => setIsDocumentsVisible(false)}
-          >
-            <DocumentsManager />
-          </Modal>
-        )}
-      </div>
+        <DocumentsManager />
+      </Modal>
 
       <Modal
         isOpen={isFormVisible}

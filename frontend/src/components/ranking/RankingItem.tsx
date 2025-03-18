@@ -29,19 +29,25 @@ const RankingItem: React.FC<RankingItemProps> = ({
       >
         {department.departmentName}
       </h4>
-      <p className="text-gray-700 flex items-center gap-1">
-        {t("completed")}{" "}
-        <span className="font-semibold text-gray-900 flex items-center gap-1">
-          {department.unitsCompleted}
-          <Icon id="box" className="w-5 h-5 text-gray-700" />
-        </span>{" "}
-        | {t("position")}{" "}
-        <span
-          className="text-red-500 font-semibold cursor-pointer hover:underline flex items-center gap-1"
-          onClick={() => onSelectDate(department.date, department.departmentId)}
-        >
-          {department.position}
-          <Icon id="star" className="w-5 h-5 text-yellow-500" />
+      <p className="text-gray-700 flex flex-col lg:flex-row md:flex-col md:items-center sm:flex-row sm:items-center gap-1 w-full sm:w-auto">
+        <span className="w-full sm:w-auto flex items-center gap-1">
+          {t("completed")}{" "}
+          <span className="font-semibold text-gray-900 flex items-center gap-1">
+            {department.unitsCompleted}
+            <Icon id="box" className="w-5 h-5 text-gray-700" />
+          </span>
+        </span>
+        <span className="w-full sm:w-auto flex sm:flex-row items-center gap-1 mt-1 sm:mt-0">
+          {t("position")}{" "}
+          <span
+            className="text-red-500 font-semibold cursor-pointer hover:underline flex items-center gap-1"
+            onClick={() =>
+              onSelectDate(department.date, department.departmentId)
+            }
+          >
+            {department.position}
+            <Icon id="star" className="w-5 h-5 text-yellow-500" />
+          </span>
         </span>
       </p>
     </div>
