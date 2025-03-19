@@ -14,7 +14,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const HomePage = lazy(() => import("./pages/home/Home"));
-const ResetPassword = lazy(() => import("./components/auth/SendReset"));
+const SendReset = lazy(() => import("./components/auth/SendReset"));
+const ResetPasswordPage = lazy(
+  () => import("./pages/resetpwd/ResetPasswordPage")
+);
 const ProfilePage = lazy(() => import("./pages/profile/ProfilePage"));
 const CreateProfile = lazy(() => import("./components/profile/createProfile"));
 const Productivity = lazy(
@@ -68,7 +71,8 @@ const App: React.FC = () => {
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/send-reset" element={<ResetPassword />} />
+          <Route path="/send-reset" element={<SendReset />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route
             path="/profile"
             element={<PrivateRoute component={<ProfilePage />} />}

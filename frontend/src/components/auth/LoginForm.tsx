@@ -11,8 +11,13 @@ import { selectProfile } from "../../redux/profile/selectors";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Icon from "../../shared/icon/Icon";
+import ResetPasswordButton from "./ResetPasswordButton";
 
-const LoginForm: React.FC = () => {
+interface LoginFormProps {
+  onClose: () => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -84,6 +89,10 @@ const LoginForm: React.FC = () => {
       >
         {isLoading ? "Logging in..." : "Login"}
       </button>
+
+      <div className="flex justify-center mt-2">
+        <ResetPasswordButton onClose={onClose} />
+      </div>
     </form>
   );
 };

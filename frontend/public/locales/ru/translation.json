@@ -192,5 +192,12 @@
     "choose_files": "Выбрать файлы",
     "files_to_upload": "Файлы для загрузки:",
     "remove": "Удалить",
-    "upload_all": "Загрузить все"
+    "upload_all": "Загрузить все",
+    "resetpwd_title": "Сброс пароля",
+    "resetpwd_desc": "Введите новый пароль и токен для сброса, полученный на email.",
+    "resetpwd_new": "Новый пароль",
+    "resetpwd_token": "Токен для сброса",
+    "resetpwd_submit": "Сбросить пароль",
+    "resetpwd_loading": "Обновление...",
+    "resetpwd_success": "Ваш пароль был успешно изменен!"
 }

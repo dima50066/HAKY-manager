@@ -192,5 +192,12 @@
     "choose_files": "Wybierz pliki",
     "files_to_upload": "Pliki do przesłania:",
     "remove": "Usuń",
-    "upload_all": "Prześlij wszystkie"
+    "upload_all": "Prześlij wszystkie",
+    "resetpwd_title": "Resetowanie hasła",
+    "resetpwd_desc": "Wprowadź nowe hasło i token resetowania, który otrzymałeś na e-mail.",
+    "resetpwd_new": "Nowe hasło",
+    "resetpwd_token": "Token resetowania",
+    "resetpwd_submit": "Resetuj hasło",
+    "resetpwd_loading": "Aktualizowanie...",
+    "resetpwd_success": "Twoje hasło zostało pomyślnie zmienione!"
 }

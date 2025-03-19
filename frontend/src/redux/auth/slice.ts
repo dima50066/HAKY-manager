@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { loginUser, logOut, refreshUser, registerUser } from "./operations";
+import {
+  loginUser,
+  logOut,
+  refreshUser,
+  registerUser,
+  resetPassword,
+} from "./operations";
 import { User } from "../../types";
 
 export interface AuthState {
@@ -9,6 +15,9 @@ export interface AuthState {
   error: string | null;
   isAuthenticated: boolean;
   userLoading: boolean;
+  resetPasswordLoading: boolean;
+  resetPasswordError: string | null;
+  resetPasswordSuccess: boolean;
 }
 
 const initialState: AuthState = {
@@ -18,6 +27,9 @@ const initialState: AuthState = {
   error: null,
   isAuthenticated: false,
   userLoading: false,
+  resetPasswordLoading: false,
+  resetPasswordError: null,
+  resetPasswordSuccess: false,
 };
 
 const authSlice = createSlice({
@@ -30,6 +42,9 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.isLoading = false;
       state.error = null;
+      state.resetPasswordLoading = false;
+      state.resetPasswordError = null;
+      state.resetPasswordSuccess = false;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     },
@@ -123,6 +138,20 @@ const authSlice = createSlice({
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         state.userLoading = false;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.resetPasswordLoading = true;
+        state.resetPasswordError = null;
+        state.resetPasswordSuccess = false;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.resetPasswordLoading = false;
+        state.resetPasswordSuccess = true;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.resetPasswordLoading = false;
+        state.resetPasswordError =
+          action.error.message || "Reset password failed";
       });
   },
 });

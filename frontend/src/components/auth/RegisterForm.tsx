@@ -5,8 +5,13 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { registerUser } from "../../redux/auth/operations";
 import { selectAuthLoading, selectAuthError } from "../../redux/auth/selectors";
 import Icon from "../../shared/icon/Icon";
+import ResetPasswordButton from "./ResetPasswordButton";
 
-const RegisterForm: React.FC = () => {
+interface RegisterFormProps {
+  onClose: () => void;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ onClose }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -91,6 +96,10 @@ const RegisterForm: React.FC = () => {
         {isLoading ? "Registering..." : "Register"}
       </button>
       {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+
+      <div className="flex justify-center mt-2">
+        <ResetPasswordButton onClose={onClose} />{" "}
+      </div>
     </form>
   );
 };

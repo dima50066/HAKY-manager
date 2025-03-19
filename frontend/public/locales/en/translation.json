@@ -192,5 +192,12 @@
     "choose_files": "Choose Files",
     "files_to_upload": "Files to upload:",
     "remove": "Remove",
-    "upload_all": "Upload All"
+    "upload_all": "Upload All",
+    "resetpwd_title": "Reset Password",
+    "resetpwd_desc": "Enter your new password and the reset token you received via email.",
+    "resetpwd_new": "New Password",
+    "resetpwd_token": "Reset Token",
+    "resetpwd_submit": "Reset Password",
+    "resetpwd_loading": "Updating...",
+    "resetpwd_success": "Your password has been successfully changed!"
 }

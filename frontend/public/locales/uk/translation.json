@@ -191,5 +191,12 @@
     "choose_files": "Вибрати файли",
     "files_to_upload": "Файли для завантаження:",
     "remove": "Видалити",
-    "upload_all": "Завантажити всі"
+    "upload_all": "Завантажити всі",
+    "resetpwd_title": "Скидання пароля",
+    "resetpwd_desc": "Введіть новий пароль і токен для скидання, отриманий на email.",
+    "resetpwd_new": "Новий пароль",
+    "resetpwd_token": "Токен для скидання",
+    "resetpwd_submit": "Скинути пароль",
+    "resetpwd_loading": "Оновлення...",
+    "resetpwd_success": "Ваш пароль було успішно змінено!"
 }

@@ -22,6 +22,11 @@ interface UserPayload {
   role?: string;
 }
 
+interface ResetPasswordPayload {
+  token: string;
+  newPassword?: string;
+  password?: string;
+}
 export const registerUser = async (payload: UserPayload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
   if (user) throw createHttpError(409, "Email in use");
@@ -167,12 +172,6 @@ export const requestResetToken = async (email: string) => {
     );
   }
 };
-
-interface ResetPasswordPayload {
-  token: string;
-  newPassword?: string;
-  password?: string;
-}
 
 export const resetPassword = async (payload: ResetPasswordPayload) => {
   let entries: any;

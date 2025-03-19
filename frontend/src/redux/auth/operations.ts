@@ -95,3 +95,20 @@ export const requestResetToken = createAsyncThunk(
     }
   }
 );
+
+export const resetPassword = createAsyncThunk<
+  void,
+  { token: string; newPassword: string }
+>("auth/resetPassword", async ({ token, newPassword }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post("/auth/reset-pwd", {
+      token,
+      newPassword,
+    });
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response?.data.message || "Failed to reset password"
+    );
+  }
+});

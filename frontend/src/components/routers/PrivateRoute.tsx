@@ -26,7 +26,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component }) => {
       <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">
         Please log in to continue
       </h2>
-      <LoginForm />
+      <LoginForm onClose={() => {}} />
     </Modal>
   );
 };

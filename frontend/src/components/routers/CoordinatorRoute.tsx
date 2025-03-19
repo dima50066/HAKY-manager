@@ -27,7 +27,7 @@ const CoordinatorRoute: React.FC<CoordinatorRouteProps> = ({ component }) => {
         <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">
           Please log in as a Coordinator
         </h2>
-        <LoginForm />
+        <LoginForm onClose={() => {}} />
       </Modal>
     );
   }
