@@ -199,5 +199,7 @@
     "resetpwd_token": "Reset Token",
     "resetpwd_submit": "Reset Password",
     "resetpwd_loading": "Updating...",
-    "resetpwd_success": "Your password has been successfully changed!"
+    "resetpwd_success": "Your password has been successfully changed!",
+    "create_profile_title": "Create Your Profile",
+    "profile_create": "To access all features, you need to create a profile. This helps us personalize your experience and provide accurate information."
 }

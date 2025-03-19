@@ -32,7 +32,6 @@ export const AuthNav: React.FC = () => {
           Login
         </h2>
         <LoginForm onClose={() => setIsLoginOpen(false)} />{" "}
-        {/* Передаємо onClose */}
       </Modal>
 
       <Modal
@@ -45,7 +44,6 @@ export const AuthNav: React.FC = () => {
           Register
         </h2>
         <RegisterForm onClose={() => setIsRegisterOpen(false)} />{" "}
-        {/* Передаємо onClose */}
       </Modal>
     </div>
   );

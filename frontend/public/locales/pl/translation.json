@@ -199,5 +199,7 @@
     "resetpwd_token": "Token resetowania",
     "resetpwd_submit": "Resetuj hasło",
     "resetpwd_loading": "Aktualizowanie...",
-    "resetpwd_success": "Twoje hasło zostało pomyślnie zmienione!"
+    "resetpwd_success": "Twoje hasło zostało pomyślnie zmienione!",
+    "create_profile_title": "Utwórz swój profil",
+    "profile_create": "Aby uzyskać dostęp do wszystkich funkcji, musisz utworzyć profil. Dzięki temu możemy dostosować Twoje doświadczenie i dostarczyć dokładne informacje."
 }

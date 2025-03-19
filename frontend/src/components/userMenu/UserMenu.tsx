@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, selectUserLoading } from "../../redux/auth/selectors";
+import {
+  selectProfile,
+  selectProfileError,
+} from "../../redux/profile/selectors";
+import { getProfile } from "../../redux/profile/operations";
 import { logOut } from "../../redux/auth/operations";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Icon from "../../shared/icon/Icon";
 import { useTranslation } from "react-i18next";
+import { AppDispatch } from "../../redux/store";
 
 interface UserMenuProps {
   closeMenu?: () => void;
@@ -13,10 +19,25 @@ interface UserMenuProps {
 
 const UserMenu: React.FC<UserMenuProps> = ({ closeMenu }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
   const currentUser = useSelector(selectUser);
   const userLoading = useSelector(selectUserLoading);
-  const navigate = useNavigate();
+  const profile = useSelector(selectProfile);
+  const profileError = useSelector(selectProfileError);
+
+  useEffect(() => {
+    if (currentUser && profile === null) {
+      dispatch(getProfile());
+    }
+  }, [dispatch, currentUser, profile]);
+
+  useEffect(() => {
+    if (profileError?.status === 500) {
+      navigate("/profile/create", { replace: true });
+    }
+  }, [profileError, navigate]);
 
   const handleLogout = async () => {
     try {

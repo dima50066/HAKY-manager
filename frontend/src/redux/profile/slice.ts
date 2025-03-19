@@ -9,7 +9,7 @@ import {
 interface ProfileState {
   profile: any;
   loading: boolean;
-  error: string | null;
+  error: { status: number; message: string } | null;
 }
 
 const initialState: ProfileState = {
@@ -33,7 +33,10 @@ const profileSlice = createSlice({
         state.loading = false;
       })
       .addCase(createProfile.rejected, (state, action) => {
-        state.error = action.error.message || "An error occurred";
+        state.error = {
+          status: 500,
+          message: action.error.message || "An error occurred",
+        };
         state.loading = false;
       })
       .addCase(getProfile.pending, (state) => {
@@ -45,7 +48,11 @@ const profileSlice = createSlice({
         state.loading = false;
       })
       .addCase(getProfile.rejected, (state, action) => {
-        state.error = action.error.message || "An error occurred";
+        if (action.payload && typeof action.payload === "object") {
+          state.error = action.payload as { status: number; message: string };
+        } else {
+          state.error = { status: 500, message: "Could not retrieve profile" };
+        }
         state.loading = false;
       })
       .addCase(updateProfile.pending, (state) => {
@@ -57,7 +64,10 @@ const profileSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateProfile.rejected, (state, action) => {
-        state.error = action.error.message || "An error occurred";
+        state.error = {
+          status: 500,
+          message: action.error.message || "An error occurred",
+        };
         state.loading = false;
       })
       .addCase(updateLanguage.pending, (state) => {
@@ -71,7 +81,10 @@ const profileSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateLanguage.rejected, (state, action) => {
-        state.error = action.error.message || "An error occurred";
+        state.error = {
+          status: 500,
+          message: action.error.message || "An error occurred",
+        };
         state.loading = false;
       });
   },
