@@ -8,7 +8,11 @@ interface DocumentItemProps {
   onPreview: (documentName: string) => void;
 }
 
-const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDelete }) => {
+const DocumentItem: React.FC<DocumentItemProps> = ({
+  document,
+  onDelete,
+  onPreview,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -28,7 +32,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({ document, onDelete }) => {
       </div>
       <div className="flex flex-wrap gap-2 mt-3 sm:mt-0">
         <button
-          onClick={() => window.open("#", "_blank")}
+          onClick={() => onPreview(document.name)}
           className="bg-gray-200 text-gray-800 px-3 py-1 rounded-md hover:bg-gray-300 transition"
         >
           {t("preview")}

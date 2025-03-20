@@ -92,7 +92,7 @@ export const getDocumentPreviewById = createAsyncThunk<
   { profileId: string; documentName: string }
 >("documents/getDocumentPreviewById", async ({ profileId, documentName }) => {
   const response = await axiosInstance.get(
-    `/coordinator/employees/${profileId}/documents/preview/${documentName}`
+    `/coordinator/employees/${profileId}/documents/${documentName}/preview`
   );
   return response.data.data.previewLink;
 });

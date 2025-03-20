@@ -5,6 +5,7 @@ import {
   createDropboxFilename,
   uploadFileToDropbox,
   deleteFileFromDropbox,
+  createDropboxInstance,
 } from "../utils/dropbox";
 import path from "path";
 import { TEMP_UPLOAD_DIR } from "../constants/constants";
@@ -145,8 +146,29 @@ export const getDocumentPreviewLinkByProfile = async (
   const document = profile.documents.find((doc) => doc.name === documentName);
   if (!document) throw createHttpError(404, "Document not found");
 
-  const previewLink = await getTemporaryLinkFromDropbox(document.url);
-  return previewLink;
+  try {
+    const dbx = await createDropboxInstance();
+
+    const sharedLinksResponse = await dbx.sharingListSharedLinks({
+      path: document.url,
+    });
+
+    if (
+      sharedLinksResponse.result.links &&
+      sharedLinksResponse.result.links.length > 0
+    ) {
+      return sharedLinksResponse.result.links[0].url.replace("?dl=0", "?raw=1");
+    }
+
+    const response = await dbx.sharingCreateSharedLinkWithSettings({
+      path: document.url,
+    });
+
+    return response.result.url.replace("?dl=0", "?raw=1");
+  } catch (error) {
+    console.error("[Dropbox] Failed to generate preview link:", error);
+    throw createHttpError(500, "Failed to generate document preview link.");
+  }
 };
 
 export const downloadDocumentByProfile = async (

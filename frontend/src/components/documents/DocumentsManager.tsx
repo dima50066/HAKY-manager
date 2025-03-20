@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   fetchMyDocuments,
   uploadMyDocument,
   deleteMyDocument,
+  getDocumentPreview,
 } from "../../redux/documents/operations";
 import {
   selectMyDocuments,
@@ -13,6 +14,7 @@ import {
 import DocumentItem from "./DocumentItem";
 import DocumentUploadForm from "./DocumentUploadForm";
 import { useTranslation } from "react-i18next";
+import DocumentPreview from "./DocumentPreview";
 
 const DocumentsManager: React.FC = () => {
   const { t } = useTranslation();
@@ -20,6 +22,8 @@ const DocumentsManager: React.FC = () => {
   const documents = useAppSelector(selectMyDocuments);
   const loading = useAppSelector(selectMyDocumentsLoading);
   const error = useAppSelector(selectMyDocumentsError);
+
+  const [previewLink, setPreviewLink] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(fetchMyDocuments());
@@ -41,6 +45,19 @@ const DocumentsManager: React.FC = () => {
     await dispatch(deleteMyDocument(documentName));
   };
 
+  const handlePreview = async (documentName: string) => {
+    try {
+      const response = await dispatch(getDocumentPreview(documentName));
+      if (response.payload) {
+        setPreviewLink(response.payload as string);
+      }
+    } catch (error) {
+      console.error("Failed to fetch document preview:", error);
+    }
+  };
+
+  const handleClosePreview = () => setPreviewLink(null);
+
   return (
     <div className="w-full lg:max-w-3xl min-h-[450px] p-6 bg-white rounded-xl flex flex-col">
       <h1 className="text-2xl font-semibold mb-4 text-gray-800 text-center">
@@ -61,13 +78,20 @@ const DocumentsManager: React.FC = () => {
               key={doc.name}
               document={doc}
               onDelete={handleDelete}
-              onPreview={() => {}}
+              onPreview={handlePreview}
             />
           ))
         ) : (
           <p className="text-center text-gray-500">{t("no_documents")}</p>
         )}
       </div>
+
+      {previewLink && (
+        <DocumentPreview
+          previewLink={previewLink}
+          onClose={handleClosePreview}
+        />
+      )}
     </div>
   );
 };

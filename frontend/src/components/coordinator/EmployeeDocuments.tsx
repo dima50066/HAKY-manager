@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,6 +11,7 @@ import { selectDocumentsById } from "../../redux/documents/selectors";
 import { AppDispatch } from "../../redux/store";
 import DocumentUploadForm from "../documents/DocumentUploadForm";
 import DocumentItem from "../documents/DocumentItem";
+import DocumentPreview from "../documents/DocumentPreview";
 
 interface EmployeeDocumentsProps {
   profileId: string;
@@ -22,6 +23,8 @@ export const EmployeeDocuments: React.FC<EmployeeDocumentsProps> = ({
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const documents = useSelector(selectDocumentsById(profileId));
+
+  const [previewLink, setPreviewLink] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(fetchDocumentsById(profileId));
@@ -43,11 +46,13 @@ export const EmployeeDocuments: React.FC<EmployeeDocumentsProps> = ({
       const response = await dispatch(
         getDocumentPreviewById({ profileId, documentName })
       ).unwrap();
-      window.open(response, "_blank");
+      setPreviewLink(response);
     } catch (error) {
       console.error("Failed to get document preview:", error);
     }
   };
+
+  const handleClosePreview = () => setPreviewLink(null);
 
   return (
     <div className="mt-4">
@@ -69,6 +74,13 @@ export const EmployeeDocuments: React.FC<EmployeeDocumentsProps> = ({
           <p>{t("no_documents")}</p>
         )}
       </div>
+
+      {previewLink && (
+        <DocumentPreview
+          previewLink={previewLink}
+          onClose={handleClosePreview}
+        />
+      )}
     </div>
   );
 };
