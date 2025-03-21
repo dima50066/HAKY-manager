@@ -4,7 +4,7 @@ import { refreshUser, logOut } from "../redux/auth/operations";
 
 const API_URL =
   process.env.NODE_ENV === "production"
-    ? "https://haky-manager.onrender.com"
+    ? "https://haky-manager-production.up.railway.app"
     : "http://localhost:5000";
 
 const axiosInstance = axios.create({
