@@ -201,5 +201,10 @@
     "resetpwd_loading": "Updating...",
     "resetpwd_success": "Your password has been successfully changed!",
     "create_profile_title": "Create Your Profile",
-    "profile_create": "To access all features, you need to create a profile. This helps us personalize your experience and provide accurate information."
+    "profile_create": "To access all features, you need to create a profile. This helps us personalize your experience and provide accurate information.",
+    "stops_count": "Stops Count",
+    "store_number": "Store Number",
+    "enter_stops_count": "Enter stops count",
+    "enter_store_number": "Enter store number",
+    "optional": "optional"
 }

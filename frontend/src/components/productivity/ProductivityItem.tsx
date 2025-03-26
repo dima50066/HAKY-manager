@@ -31,6 +31,20 @@ const ProductivityItem: React.FC<Props> = ({ record, onEdit, onDelete }) => {
         {record.totalEarnings.toFixed(2)}
       </p>
 
+      {record.stopsCount !== undefined && (
+        <p className="text-gray-600 mt-1 flex items-center gap-2">
+          <Icon id="stop" width={14} height={14} className="fill-gray-700" />
+          {t("stops_count")}: {record.stopsCount}
+        </p>
+      )}
+
+      {record.storeNumber && (
+        <p className="text-gray-600 mt-1 flex items-center gap-2">
+          <Icon id="store" width={14} height={14} className="fill-gray-700" />
+          {t("store_number")}: {record.storeNumber}
+        </p>
+      )}
+
       <div className="flex space-x-2 mt-2">
         <button
           onClick={() => onEdit(record)}

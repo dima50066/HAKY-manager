@@ -22,6 +22,8 @@ export interface ProductivityData {
   department: { name: string };
   date: string;
   unitsCompleted: number;
+  stopsCount?: number;
+  storeNumber?: string;
 }
 
 export interface Department extends DepartmentData {

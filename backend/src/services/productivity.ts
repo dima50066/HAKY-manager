@@ -9,6 +9,8 @@ interface ProductivityData {
   unitsCompleted: number;
   isStudent: boolean;
   productivityLevel: number;
+  stopsCount?: number;
+  storeNumber?: string;
 }
 
 export const getAllProductivityRecords = async () => {
@@ -34,7 +36,10 @@ export const calculateProductivityAndEarnings = async (
     unitsCompleted,
     isStudent,
     productivityLevel,
+    stopsCount,
+    storeNumber,
   } = data;
+
   const department = await Department.findById(departmentId);
   if (!department) {
     throw new Error("Department not found");
@@ -71,6 +76,8 @@ export const calculateProductivityAndEarnings = async (
     departmentName: departmentName || department.name,
     date,
     unitsCompleted,
+    stopsCount,
+    storeNumber,
     productivityLevel,
     isStudent,
     totalEarnings,
@@ -108,6 +115,14 @@ export const updateProductivityRecord = async (
 
   if (updateData.date !== undefined) {
     existingRecord.date = new Date(updateData.date);
+  }
+
+  if (updateData.stopsCount !== undefined) {
+    existingRecord.stopsCount = updateData.stopsCount;
+  }
+
+  if (updateData.storeNumber !== undefined) {
+    existingRecord.storeNumber = updateData.storeNumber;
   }
 
   const currentDepartment = await Department.findById(

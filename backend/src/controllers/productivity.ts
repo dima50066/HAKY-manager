@@ -22,6 +22,8 @@ export const addProductivityRecord = async (
       unitsCompleted,
       productivityLevel,
       isStudent,
+      stopsCount,
+      storeNumber,
     } = req.body;
 
     const user = await UsersCollection.findById(userId);
@@ -43,6 +45,8 @@ export const addProductivityRecord = async (
       unitsCompleted,
       isStudent,
       productivityLevel,
+      stopsCount,
+      storeNumber,
     });
 
     res.status(201).json({ status: "success", data: record });

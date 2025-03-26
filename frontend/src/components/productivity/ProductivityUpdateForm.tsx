@@ -41,6 +41,12 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
   const [unitsCompleted, setUnitsCompleted] = useState<number>(
     record.unitsCompleted
   );
+  const [stopsCount, setStopsCount] = useState<string>(
+    record.stopsCount?.toString() || ""
+  );
+  const [storeNumber, setStoreNumber] = useState<string>(
+    record.storeNumber || ""
+  );
 
   useEffect(() => {
     dispatch(fetchDepartments());
@@ -52,6 +58,8 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
       record.date ? new Date(record.date).toISOString().split("T")[0] : ""
     );
     setUnitsCompleted(record.unitsCompleted);
+    setStopsCount(record.stopsCount?.toString() || "");
+    setStoreNumber(record.storeNumber || "");
   }, [record]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -62,6 +70,8 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
         data: {
           date,
           unitsCompleted,
+          stopsCount: stopsCount ? parseInt(stopsCount) : undefined,
+          storeNumber: storeNumber || undefined,
         },
       })
     );
@@ -76,6 +86,7 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
       <h2 className="text-lg font-semibold text-gray-700">
         {t("update_productivity_record")}
       </h2>
+
       <div>
         <label className="block text-gray-700 font-medium mb-2">
           {t("select_department")}:
@@ -98,6 +109,7 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
           )}
         </select>
       </div>
+
       <div>
         <label className="block text-gray-700 font-medium mb-2">
           {t("date")}:
@@ -109,6 +121,7 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
       </div>
+
       <div>
         <label className="block text-gray-700 font-medium mb-2">
           {t("units_completed")}:
@@ -137,6 +150,34 @@ const ProductivityUpdateForm: React.FC<ProductivityUpdateFormProps> = ({
           </button>
         </div>
       </div>
+
+      <div>
+        <label className="block text-gray-700 font-medium mb-2">
+          {t("stops_count")} ({t("optional")}):
+        </label>
+        <input
+          type="number"
+          min="0"
+          value={stopsCount}
+          onChange={(e) => setStopsCount(e.target.value)}
+          placeholder={t("enter_stops_count")}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-gray-700 font-medium mb-2">
+          {t("store_number")} ({t("optional")}):
+        </label>
+        <input
+          type="text"
+          value={storeNumber}
+          onChange={(e) => setStoreNumber(e.target.value)}
+          placeholder={t("enter_store_number")}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+      </div>
+
       <button
         type="submit"
         className="w-full p-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"

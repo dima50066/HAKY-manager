@@ -22,6 +22,8 @@ const ProductivityForm: React.FC = () => {
   const [departmentId, setDepartmentId] = useState(selectedDepartment);
   const [date, setDate] = useState(selectedDate);
   const [unitsCompleted, setUnitsCompleted] = useState<string>("");
+  const [stopsCount, setStopsCount] = useState<string>("");
+  const [storeNumber, setStoreNumber] = useState<string>("");
 
   const user = useSelector((state: RootState) => state.auth.user);
   const departments = useSelector(
@@ -69,6 +71,8 @@ const ProductivityForm: React.FC = () => {
       return;
     }
 
+    const parsedStopsCount = stopsCount ? parseInt(stopsCount) : undefined;
+
     dispatch(
       addMyProductivityRecord({
         department: {
@@ -77,10 +81,14 @@ const ProductivityForm: React.FC = () => {
         },
         date,
         unitsCompleted: parsedUnits,
+        stopsCount: parsedStopsCount,
+        storeNumber: storeNumber || undefined,
       })
     );
 
     setUnitsCompleted("");
+    setStopsCount("");
+    setStoreNumber("");
   };
 
   return (
@@ -110,6 +118,7 @@ const ProductivityForm: React.FC = () => {
           )}
         </select>
       </div>
+
       <div>
         <label className="block text-gray-700 font-medium mb-2">
           {t("date")}:
@@ -122,6 +131,7 @@ const ProductivityForm: React.FC = () => {
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
       </div>
+
       <div>
         <label className="block text-gray-700 font-medium mb-2">
           {t("units_completed")}:
@@ -137,6 +147,34 @@ const ProductivityForm: React.FC = () => {
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
         />
       </div>
+
+      <div>
+        <label className="block text-gray-700 font-medium mb-2">
+          {t("stops_count")} ({t("optional")}):
+        </label>
+        <input
+          type="number"
+          min="0"
+          placeholder={t("enter_stops_count")}
+          value={stopsCount}
+          onChange={(e) => setStopsCount(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-gray-700 font-medium mb-2">
+          {t("store_number")} ({t("optional")}):
+        </label>
+        <input
+          type="text"
+          placeholder={t("enter_store_number")}
+          value={storeNumber}
+          onChange={(e) => setStoreNumber(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+        />
+      </div>
+
       <button
         type="submit"
         className="w-full p-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"

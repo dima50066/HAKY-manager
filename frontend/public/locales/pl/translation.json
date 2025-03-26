@@ -201,5 +201,10 @@
     "resetpwd_loading": "Aktualizowanie...",
     "resetpwd_success": "Twoje hasło zostało pomyślnie zmienione!",
     "create_profile_title": "Utwórz swój profil",
-    "profile_create": "Aby uzyskać dostęp do wszystkich funkcji, musisz utworzyć profil. Dzięki temu możemy dostosować Twoje doświadczenie i dostarczyć dokładne informacje."
+    "profile_create": "Aby uzyskać dostęp do wszystkich funkcji, musisz utworzyć profil. Dzięki temu możemy dostosować Twoje doświadczenie i dostarczyć dokładne informacje.",
+    "stops_count": "Liczba przystanków",
+    "store_number": "Numer sklepu",
+    "enter_stops_count": "Wprowadź liczbę przystanków",
+    "enter_store_number": "Wprowadź numer sklepu",
+    "optional": "opcjonalne"
 }

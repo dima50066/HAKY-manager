@@ -6,6 +6,8 @@ interface ProductivityRecord extends Document {
   departmentName: string;
   date: Date;
   unitsCompleted: number;
+  stopsCount?: number;
+  storeNumber?: string;
   productivityLevel: number;
   totalEarnings: number;
   isStudent: boolean;
@@ -21,6 +23,8 @@ const ProductivityRecordSchema = new Schema<ProductivityRecord>({
   departmentName: { type: String, required: false },
   date: { type: Date, required: true },
   unitsCompleted: { type: Number, required: true },
+  stopsCount: { type: Number, required: false },
+  storeNumber: { type: String, required: false },
   productivityLevel: { type: Number, required: true },
   totalEarnings: { type: Number, required: true },
   isStudent: { type: Boolean, required: true },

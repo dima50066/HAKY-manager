@@ -8,6 +8,8 @@ export const productivitySchema = Joi.object({
   }).required(),
   date: Joi.date().required(),
   unitsCompleted: Joi.number().min(0).required(),
+  stopsCount: Joi.number().min(0).optional(),
+  storeNumber: Joi.string().optional(),
   productivityLevel: Joi.number().min(100).max(125).required(),
   isStudent: Joi.boolean().required(),
 });
@@ -20,6 +22,8 @@ export const productivityUpdateSchema = Joi.object({
   }),
   date: Joi.date(),
   unitsCompleted: Joi.number().min(0),
+  stopsCount: Joi.number().min(0).optional(),
+  storeNumber: Joi.string().optional(),
   productivityLevel: Joi.number().min(100).max(125),
   isStudent: Joi.boolean(),
 }).min(1);

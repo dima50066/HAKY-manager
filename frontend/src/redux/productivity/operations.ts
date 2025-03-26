@@ -30,6 +30,8 @@ export const addMyProductivityRecord = createAsyncThunk(
       department: { id: string; name: string };
       date: string;
       unitsCompleted: number;
+      stopsCount?: number;
+      storeNumber?: string;
     },
     { getState, rejectWithValue }
   ) => {
