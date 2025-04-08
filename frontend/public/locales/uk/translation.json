@@ -205,5 +205,23 @@
     "store_number": "Номер магазину",
     "enter_stops_count": "Введіть кількість зупинок",
     "enter_store_number": "Введіть номер магазину",
-    "optional": "необов'язково"
+    "optional": "необов'язково",
+    "months": {
+        "january": "Січень",
+        "february": "Лютий",
+        "march": "Березень",
+        "april": "Квітень",
+        "may": "Травень",
+        "june": "Червень",
+        "july": "Липень",
+        "august": "Серпень",
+        "september": "Вересень",
+        "october": "Жовтень",
+        "november": "Листопад",
+        "december": "Грудень"
+    },
+    "productivity_all_time": "Весь період",
+    "productivity_current_month": "Поточний місяць",
+    "productivity_select_month": "Вибрати місяць",
+    "productivity_selected_month": "Вибраний місяць"
 }

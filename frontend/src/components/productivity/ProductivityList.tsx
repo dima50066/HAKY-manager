@@ -17,20 +17,6 @@ import ProductivitySummary from "./ProductivitySummary";
 import Modal from "../../shared/modal/Modal";
 import { ProductivityRecord } from "../../types";
 
-export const groupByDateAndDepartment = (records: ProductivityRecord[]) => {
-  return records.reduce((acc, record) => {
-    const date = new Date(record.date).toLocaleDateString();
-    if (!acc[date]) {
-      acc[date] = {};
-    }
-    if (!acc[date][record.departmentName]) {
-      acc[date][record.departmentName] = [];
-    }
-    acc[date][record.departmentName].push(record);
-    return acc;
-  }, {} as Record<string, Record<string, ProductivityRecord[]>>);
-};
-
 const ProductivityList: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
@@ -53,11 +39,9 @@ const ProductivityList: React.FC = () => {
     setEditingRecord(record);
   };
 
-  const groupedRecords = groupByDateAndDepartment(records);
-
-  const sortedDates = Object.keys(groupedRecords).sort((a, b) => {
-    const dateA = new Date(a.split(".").reverse().join("-"));
-    const dateB = new Date(b.split(".").reverse().join("-"));
+  const sortedRecords = [...records].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
     return dateB.getTime() - dateA.getTime();
   });
 
@@ -70,15 +54,12 @@ const ProductivityList: React.FC = () => {
         <p className="text-gray-500">{t("no_records_found")}</p>
       )}
 
-      {sortedDates.map((date) => (
-        <ProductivityAccordion
-          key={date}
-          date={date}
-          recordsByDepartment={groupedRecords[date]}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      ))}
+      <ProductivityAccordion
+        records={sortedRecords}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+
       <ProductivitySummary records={records} />
 
       {editingRecord && (

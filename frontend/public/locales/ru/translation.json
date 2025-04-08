@@ -206,5 +206,23 @@
     "store_number": "Номер магазина",
     "enter_stops_count": "Введите количество остановок",
     "enter_store_number": "Введите номер магазина",
-    "optional": "необязательно"
+    "optional": "необязательно",
+    "months": {
+        "january": "Январь",
+        "february": "Февраль",
+        "march": "Март",
+        "april": "Апрель",
+        "may": "Май",
+        "june": "Июнь",
+        "july": "Июль",
+        "august": "Август",
+        "september": "Сентябрь",
+        "october": "Октябрь",
+        "november": "Ноябрь",
+        "december": "Декабрь"
+    },
+    "productivity_all_time": "Весь период",
+    "productivity_current_month": "Текущий месяц",
+    "productivity_select_month": "Выбрать месяц",
+    "productivity_selected_month": "Выбранный месяц"
 }

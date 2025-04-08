@@ -206,5 +206,23 @@
     "store_number": "Store Number",
     "enter_stops_count": "Enter stops count",
     "enter_store_number": "Enter store number",
-    "optional": "optional"
+    "optional": "optional",
+    "months": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
+    },
+    "productivity_all_time": "All Time",
+    "productivity_current_month": "Current Month",
+    "productivity_select_month": "Select Month",
+    "productivity_selected_month": "Selected Month"
 }
