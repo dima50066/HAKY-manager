@@ -1,12 +1,11 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { fetchMyProductivityRecords } from "../../redux/productivity/operations";
 import RecalculateProductivityButton from "../../components/productivity/RecalculateProductivityButton";
 import { AppDispatch } from "../../redux/store";
 import SalaryList from "../../components/salary/SalaryList";
 import { selectMySalaryHistoryError } from "../../redux/salary/selectors";
-import { useSelector } from "react-redux";
 import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
 
@@ -15,9 +14,9 @@ const SalaryPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const salaryError = useSelector(selectMySalaryHistoryError);
 
-  const handleRecalculateSuccess = () => {
+  const handleRecalculateSuccess = useCallback(() => {
     dispatch(fetchMyProductivityRecords());
-  };
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
@@ -79,4 +78,4 @@ const SalaryPage: React.FC = () => {
   );
 };
 
-export default SalaryPage;
+export default React.memo(SalaryPage);
