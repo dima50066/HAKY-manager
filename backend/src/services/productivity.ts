@@ -150,3 +150,84 @@ export const getUserProductivityRecords = async (userId: string) => {
 
   return records;
 };
+
+export const recalculateProductivityRecords = async (
+  userId: string,
+  startDate?: string,
+  endDate?: string
+) => {
+  const query: any = { userId: new mongoose.Types.ObjectId(userId) };
+
+  if (startDate || endDate) {
+    query.date = {};
+    if (startDate) {
+      query.date.$gte = new Date(startDate);
+    }
+    if (endDate) {
+      query.date.$lte = new Date(endDate);
+    }
+  }
+
+  const records = await ProductivityRecord.find(query);
+
+  if (records.length === 0) {
+    return {
+      message: "No records found for the specified criteria",
+      updatedCount: 0,
+    };
+  }
+
+  let updatedCount = 0;
+
+  for (const record of records) {
+    const department = await Department.findById(record.departmentId);
+
+    if (!department) {
+      console.error(`Department not found for record: ${record._id}`);
+      continue;
+    }
+
+    let appliedRate;
+    const hasAdvancedRates =
+      department.rate115 !== undefined && department.rate125 !== undefined;
+
+    if (hasAdvancedRates) {
+      if (record.productivityLevel === 125) {
+        appliedRate = record.isStudent
+          ? department.rate125Student
+          : department.rate125;
+      } else if (record.productivityLevel === 115) {
+        appliedRate = record.isStudent
+          ? department.rate115Student
+          : department.rate115;
+      } else {
+        appliedRate = record.isStudent
+          ? department.baseRateStudent
+          : department.baseRate;
+      }
+    } else {
+      appliedRate = record.isStudent
+        ? department.baseRateStudent
+        : department.baseRate;
+    }
+
+    if (appliedRate === undefined) {
+      console.error(`Rate not defined for department: ${department.name}`);
+      continue;
+    }
+
+    const newTotalEarnings = record.unitsCompleted * appliedRate;
+
+    if (newTotalEarnings !== record.totalEarnings) {
+      record.totalEarnings = newTotalEarnings;
+      record.departmentName = department.name;
+      await record.save();
+      updatedCount++;
+    }
+  }
+
+  return {
+    message: `Successfully recalculated ${updatedCount} records`,
+    updatedCount,
+  };
+};

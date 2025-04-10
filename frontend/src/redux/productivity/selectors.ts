@@ -48,3 +48,12 @@ export const selectMyProductivityLoading = (state: RootState) =>
 
 export const selectMyProductivityError = (state: RootState) =>
   state.productivity.error.myRecords;
+
+export const selectRecalculateProductivityLoading = (state: RootState) =>
+  state.productivity.loading.recalculate;
+
+export const selectRecalculateProductivityError = (state: RootState) =>
+  state.productivity.error.recalculate;
+
+export const selectRecalculateProductivityResult = (state: RootState) =>
+  state.productivity.recalculateResult;

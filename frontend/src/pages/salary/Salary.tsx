@@ -1,14 +1,23 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { fetchMyProductivityRecords } from "../../redux/productivity/operations";
+import RecalculateProductivityButton from "../../components/productivity/RecalculateProductivityButton";
+import { AppDispatch } from "../../redux/store";
 import SalaryList from "../../components/salary/SalaryList";
 import { selectMySalaryHistoryError } from "../../redux/salary/selectors";
+import { useSelector } from "react-redux";
 import * as Popover from "@radix-ui/react-popover";
 import Icon from "../../shared/icon/Icon";
-import { useTranslation } from "react-i18next";
 
 const SalaryPage: React.FC = () => {
   const { t } = useTranslation();
-  const error = useSelector(selectMySalaryHistoryError);
+  const dispatch = useDispatch<AppDispatch>();
+  const salaryError = useSelector(selectMySalaryHistoryError);
+
+  const handleRecalculateSuccess = () => {
+    dispatch(fetchMyProductivityRecords());
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
@@ -33,7 +42,7 @@ const SalaryPage: React.FC = () => {
               <Popover.Content
                 side="bottom"
                 align="center"
-                className="bg-white shadow-xl rounded-lg p-4 w-72 text-sm text-gray-700 border border-gray-200"
+                className="bg-white shadow-xl rounded-lg p-4 w-80 text-sm text-gray-700 border border-gray-200"
               >
                 <p className="font-semibold">{t("salary_calculation")}</p>
                 <ul className="list-disc pl-4 mt-2">
@@ -42,6 +51,10 @@ const SalaryPage: React.FC = () => {
                   <li>{t("salary_rule_3")}</li>
                   <li>{t("salary_rule_4")}</li>
                 </ul>
+                <p className="mt-3 font-semibold">
+                  {t("recalculate_info_title")}
+                </p>
+                <p className="mt-1">{t("recalculate_info_description")}</p>
                 <Popover.Close className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                   ✖
                 </Popover.Close>
@@ -50,11 +63,15 @@ const SalaryPage: React.FC = () => {
           </Popover.Root>
         </div>
 
-        {error && (
+        {salaryError && (
           <p className="text-center text-red-500">
-            {t("error")} {error}
+            {t("error")} {salaryError}
           </p>
         )}
+
+        <div className="flex justify-center mb-4">
+          <RecalculateProductivityButton onSuccess={handleRecalculateSuccess} />
+        </div>
 
         <SalaryList />
       </div>

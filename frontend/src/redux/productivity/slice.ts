@@ -6,6 +6,7 @@ import {
   updateMyProductivityRecord,
   deleteMyProductivityRecord,
   fetchMyProductivityRecords,
+  recalculateMyProductivityRecords,
 } from "./operations";
 import { ProductivityRecord } from "../../types";
 
@@ -22,6 +23,7 @@ interface ProductivityState {
     add: boolean;
     update: boolean;
     delete: boolean;
+    recalculate: boolean;
   };
   error: {
     allRecords: string | null;
@@ -30,7 +32,12 @@ interface ProductivityState {
     add: string | null;
     update: string | null;
     delete: string | null;
+    recalculate: string | null;
   };
+  recalculateResult: {
+    message: string;
+    updatedCount: number;
+  } | null;
 }
 
 const initialState: ProductivityState = {
@@ -46,6 +53,7 @@ const initialState: ProductivityState = {
     add: false,
     update: false,
     delete: false,
+    recalculate: false,
   },
   error: {
     allRecords: null,
@@ -54,7 +62,9 @@ const initialState: ProductivityState = {
     add: null,
     update: null,
     delete: null,
+    recalculate: null,
   },
+  recalculateResult: null,
 };
 
 const productivitySlice = createSlice({
@@ -143,8 +153,8 @@ const productivitySlice = createSlice({
       .addCase(deleteMyProductivityRecord.rejected, (state, action) => {
         state.loading.delete = false;
         state.error.delete = action.error.message || "Error deleting record";
-      });
-    builder
+      })
+
       .addCase(fetchMyProductivityRecords.pending, (state) => {
         state.loading.myRecords = true;
         state.error.myRecords = null;
@@ -157,6 +167,21 @@ const productivitySlice = createSlice({
         state.loading.myRecords = false;
         state.error.myRecords =
           action.error.message || "Error fetching my records";
+      })
+
+      .addCase(recalculateMyProductivityRecords.pending, (state) => {
+        state.loading.recalculate = true;
+        state.error.recalculate = null;
+      })
+      .addCase(recalculateMyProductivityRecords.fulfilled, (state, action) => {
+        state.loading.recalculate = false;
+        state.recalculateResult = action.payload;
+        state.loading.myRecords = true;
+      })
+      .addCase(recalculateMyProductivityRecords.rejected, (state, action) => {
+        state.loading.recalculate = false;
+        state.error.recalculate =
+          action.error.message || "Error recalculating records";
       });
   },
 });

@@ -27,3 +27,11 @@ export const productivityUpdateSchema = Joi.object({
   productivityLevel: Joi.number().min(100).max(125),
   isStudent: Joi.boolean(),
 }).min(1);
+
+export const recalculateProductivitySchema = Joi.object({
+  month: Joi.string()
+    .pattern(/^\d{4}-\d{2}$/)
+    .optional(),
+  startDate: Joi.date().iso().optional(),
+  endDate: Joi.date().iso().min(Joi.ref("startDate")).optional(),
+});

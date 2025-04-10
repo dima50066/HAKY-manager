@@ -223,5 +223,12 @@
     "productivity_all_time": "Весь період",
     "productivity_current_month": "Поточний місяць",
     "productivity_select_month": "Вибрати місяць",
-    "productivity_selected_month": "Вибраний місяць"
+    "productivity_selected_month": "Вибраний місяць",
+    "recalculate_productivity": "Перерахувати продуктивність",
+    "recalculating": "Перерахунок...",
+    "select_month": "Вибрати місяць",
+    "recalculate": "Перерахувати",
+    "view_updated_records": "Переглянути оновлені записи",
+    "recalculate_info_title": "Перерахувати зарплату",
+    "recalculate_info_description": "Ви можете перерахувати свою зарплату за вибраний місяць у випадку зміни ставок. Натисніть кнопку 'Перерахувати продуктивність' та виберіть потрібний місяць."
 }

@@ -5,11 +5,13 @@ import {
   editProductivityRecord,
   removeProductivityRecord,
   getUserProductivityRecordsById,
+  recalculateUserProductivityRecords,
 } from "../controllers/productivity";
 import { validateBody } from "../middlewares/validateBody";
 import {
   productivitySchema,
   productivityUpdateSchema,
+  recalculateProductivitySchema,
 } from "../validation/productivity";
 import { ctrlWrapper } from "../utils/ctrlWrapper";
 import { authenticate } from "../middlewares/authenticate";
@@ -34,6 +36,13 @@ router.get(
   "/:userId",
   authenticate,
   ctrlWrapper(getUserProductivityRecordsById)
+);
+
+router.post(
+  "/recalculate",
+  authenticate,
+  validateBody(recalculateProductivitySchema),
+  ctrlWrapper(recalculateUserProductivityRecords)
 );
 
 export default router;

@@ -224,5 +224,13 @@
     "productivity_all_time": "All Time",
     "productivity_current_month": "Current Month",
     "productivity_select_month": "Select Month",
-    "productivity_selected_month": "Selected Month"
+    "productivity_selected_month": "Selected Month",
+    "recalculate_productivity": "Recalculate Productivity",
+    "recalculating": "Recalculating...",
+    "select_month": "Select Month",
+    "recalculate": "Recalculate",
+    "view_updated_records": "View Updated Records",
+    "recalculate_info_title": "Recalculate Salary",
+    "recalculate_info_description": "You can recalculate your salary for a selected month in case of rate changes. Click the 'Recalculate Productivity' button and select the desired month.",
+    "recalculation_success": "Productivity records recalculated successfully"
 }

@@ -224,5 +224,12 @@
     "productivity_all_time": "Cały okres",
     "productivity_current_month": "Bieżący miesiąc",
     "productivity_select_month": "Wybierz miesiąc",
-    "productivity_selected_month": "Wybrany miesiąc"
+    "productivity_selected_month": "Wybrany miesiąc",
+    "recalculate_productivity": "Przelicz produktywność",
+    "recalculating": "Przeliczanie...",
+    "select_month": "Wybierz miesiąc",
+    "recalculate": "Przelicz",
+    "view_updated_records": "Zobacz zaktualizowane rekordy",
+    "recalculate_info_title": "Przelicz wynagrodzenie",
+    "recalculate_info_description": "Możesz przeliczyć swoje wynagrodzenie za wybrany miesiąc w przypadku zmian stawek. Kliknij przycisk 'Przelicz produktywność' i wybierz odpowiedni miesiąc."
 }

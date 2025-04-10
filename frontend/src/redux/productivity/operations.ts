@@ -111,3 +111,23 @@ export const fetchMyProductivityRecords = createAsyncThunk(
     }
   }
 );
+
+export const recalculateMyProductivityRecords = createAsyncThunk(
+  "productivity/recalculate",
+  async (
+    { startDate, endDate }: { startDate?: string; endDate?: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axiosInstance.post("/productivity/recalculate", {
+        startDate,
+        endDate,
+      });
+      return response.data.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data || "Failed to recalculate records"
+      );
+    }
+  }
+);

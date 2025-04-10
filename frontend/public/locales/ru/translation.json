@@ -224,5 +224,12 @@
     "productivity_all_time": "Весь период",
     "productivity_current_month": "Текущий месяц",
     "productivity_select_month": "Выбрать месяц",
-    "productivity_selected_month": "Выбранный месяц"
+    "productivity_selected_month": "Выбранный месяц",
+    "recalculate_productivity": "Пересчитать продуктивность",
+    "recalculating": "Пересчет...",
+    "select_month": "Выбрать месяц",
+    "recalculate": "Пересчитать",
+    "view_updated_records": "Просмотреть обновленные записи",
+    "recalculate_info_title": "Пересчитать зарплату",
+    "recalculate_info_description": "Вы можете пересчитать свою зарплату за выбранный месяц в случае изменения ставок. Нажмите кнопку 'Пересчитать продуктивность' и выберите нужный месяц."
 }

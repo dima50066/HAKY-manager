@@ -5,6 +5,7 @@ import {
   updateProductivityRecord,
   deleteProductivityRecord,
   getUserProductivityRecords,
+  recalculateProductivityRecords,
 } from "../services/productivity";
 import { UsersCollection } from "../db/models/user";
 import { AuthenticatedRequest } from "../types";
@@ -131,6 +132,46 @@ export const getUserProductivityRecordsById = async (
     res.status(200).json({ status: "success", data: records });
   } catch (error) {
     console.error("Error in getUserProductivityRecordsById:", error);
+    next(error);
+  }
+};
+
+export const recalculateUserProductivityRecords = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: No user data found" });
+    }
+
+    const userId = (req.user._id as string).toString();
+    const { month } = req.body;
+
+    let startDate, endDate;
+    if (month) {
+      const [year, monthNum] = month.split("-").map(Number);
+
+      startDate = new Date(year, monthNum - 1, 1).toISOString().split("T")[0];
+
+      const lastDay = new Date(year, monthNum, 0).getDate();
+      endDate = new Date(year, monthNum - 1, lastDay)
+        .toISOString()
+        .split("T")[0];
+    }
+
+    const result = await recalculateProductivityRecords(
+      userId,
+      startDate,
+      endDate
+    );
+
+    res.status(200).json({ status: "success", data: result });
+  } catch (error) {
+    console.error("Error in recalculateUserProductivityRecords:", error);
     next(error);
   }
 };
