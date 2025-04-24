@@ -156,7 +156,7 @@ const ProductivityAccordion: React.FC<Props> = ({
                   height={16}
                   className="fill-gray-700"
                 />
-                {monthTotals.units}
+                {Math.round(monthTotals.units)}
               </span>
 
               <span className="flex items-center gap-2 mt-1">

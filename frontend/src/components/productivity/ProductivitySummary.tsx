@@ -139,7 +139,9 @@ const ProductivitySummary: React.FC<Props> = ({ records }) => {
             <div className="my-2 border-t border-gray-300 w-40"></div>
 
             <span className="flex items-center gap-2 text-lg">
-              {stats.units}
+              {Number.isInteger(stats.units)
+                ? stats.units
+                : stats.units.toFixed(2)}
               <Icon id="box" width={14} height={14} className="fill-gray-700" />
             </span>
 
