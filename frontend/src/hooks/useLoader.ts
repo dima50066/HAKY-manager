@@ -6,10 +6,10 @@ const useLoader = (isLoading: boolean) => {
   useEffect(() => {
     if (isLoading) {
       setShowLoader(true);
-      const timeout = setTimeout(() => setShowLoader(false), 2000);
+      const timeout = setTimeout(() => setShowLoader(false), 1);
       return () => clearTimeout(timeout);
     }
-    const timeout = setTimeout(() => setShowLoader(false), 2000);
+    const timeout = setTimeout(() => setShowLoader(false), 1);
     return () => clearTimeout(timeout);
   }, [isLoading]);
 

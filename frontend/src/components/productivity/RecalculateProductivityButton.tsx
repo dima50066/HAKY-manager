@@ -22,7 +22,14 @@ const RecalculateProductivityButton: React.FC<
   const error = useSelector(selectRecalculateProductivityError);
   const result = useSelector(selectRecalculateProductivityResult);
 
-  const [selectedMonth, setSelectedMonth] = useState<string>("");
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+  const defaultMonthValue = `${currentYear}-${currentMonth
+    .toString()
+    .padStart(2, "0")}`;
+
+  const [selectedMonth, setSelectedMonth] = useState<string>(defaultMonthValue);
   const [showMonthPicker, setShowMonthPicker] = useState(false);
 
   useEffect(() => {
@@ -46,13 +53,6 @@ const RecalculateProductivityButton: React.FC<
     dispatch(recalculateMyProductivityRecords({ startDate, endDate }));
   };
 
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth() + 1;
-  const defaultMonthValue = `${currentYear}-${currentMonth
-    .toString()
-    .padStart(2, "0")}`;
-
   return (
     <div className="relative">
       <button
@@ -73,7 +73,7 @@ const RecalculateProductivityButton: React.FC<
             </label>
             <input
               type="month"
-              value={selectedMonth || defaultMonthValue}
+              value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
             />
