@@ -1,9 +1,7 @@
-
 import axios from "axios";
 import { store } from "../redux/store";
 import { refreshUser, logOut } from "../redux/auth/operations";
 
-// Set base API URL depending on environment
 const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://haky-manager.onrender.com"
@@ -13,17 +11,14 @@ const axiosInstance = axios.create({
   baseURL: API_URL,
 });
 
-// Sets the Authorization header for future requests
 export const setAuthHeader = (token: string) => {
   axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
-// Clears the Authorization header
 export const clearAuthHeader = () => {
   delete axiosInstance.defaults.headers.common["Authorization"];
 };
 
-// Returns an axios instance with Authorization header set (if token is provided)
 export const axiosWithToken = (token?: string) => {
   if (token) {
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -34,7 +29,6 @@ export const axiosWithToken = (token?: string) => {
 let isRefreshing = false;
 let refreshPromise: Promise<void> | null = null;
 
-// Axios response interceptor to handle token refresh logic on 401 errors
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
