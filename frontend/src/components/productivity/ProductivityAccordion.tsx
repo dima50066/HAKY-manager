@@ -283,14 +283,20 @@ const ProductivityAccordion: React.FC<Props> = ({
 
                                     {openDepartments[department] && (
                                       <ul className="ml-4 mt-2">
-                                        {records.map((record) => (
-                                          <ProductivityItem
-                                            key={record._id}
-                                            record={record}
-                                            onEdit={onEdit}
-                                            onDelete={onDelete}
-                                          />
-                                        ))}
+                                        {[...records]
+                                          .sort(
+                                            (a, b) =>
+                                              new Date(b.date).getTime() -
+                                              new Date(a.date).getTime()
+                                          )
+                                          .map((record) => (
+                                            <ProductivityItem
+                                              key={record._id}
+                                              record={record}
+                                              onEdit={onEdit}
+                                              onDelete={onDelete}
+                                            />
+                                          ))}
                                       </ul>
                                     )}
                                   </div>
