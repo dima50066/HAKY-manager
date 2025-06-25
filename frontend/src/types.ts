@@ -39,6 +39,8 @@ export interface ProductivityRecord extends ProductivityData {
   productivityLevel: number;
   totalEarnings: number;
   isStudent: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Profile {

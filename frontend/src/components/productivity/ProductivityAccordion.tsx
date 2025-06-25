@@ -127,6 +127,11 @@ const ProductivityAccordion: React.FC<Props> = ({
     };
   };
 
+  const getCreatedTime = (r: ProductivityRecord) =>
+    r.createdAt
+      ? new Date(r.createdAt).getTime()
+      : parseInt(r._id.slice(0, 8), 16) * 1000;
+
   return (
     <div className="space-y-2">
       {Object.entries(recordsByMonth).map(([monthKey, monthData]) => {
@@ -286,8 +291,8 @@ const ProductivityAccordion: React.FC<Props> = ({
                                         {[...records]
                                           .sort(
                                             (a, b) =>
-                                              new Date(b.date).getTime() -
-                                              new Date(a.date).getTime()
+                                              getCreatedTime(b) -
+                                              getCreatedTime(a)
                                           )
                                           .map((record) => (
                                             <ProductivityItem

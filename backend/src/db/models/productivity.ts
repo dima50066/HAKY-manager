@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from "mongoose";
 
-interface ProductivityRecord extends Document {
+export interface ProductivityRecordDoc extends Document {
   userId: Types.ObjectId;
   departmentId: Types.ObjectId;
   departmentName: string;
@@ -11,26 +11,31 @@ interface ProductivityRecord extends Document {
   productivityLevel: number;
   totalEarnings: number;
   isStudent: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const ProductivityRecordSchema = new Schema<ProductivityRecord>({
-  userId: { type: Schema.Types.ObjectId, ref: "users", required: true },
-  departmentId: {
-    type: Schema.Types.ObjectId,
-    ref: "Department",
-    required: true,
+const ProductivityRecordSchema = new Schema<ProductivityRecordDoc>(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: "users", required: true },
+    departmentId: {
+      type: Schema.Types.ObjectId,
+      ref: "Department",
+      required: true,
+    },
+    departmentName: { type: String },
+    date: { type: Date, required: true },
+    unitsCompleted: { type: Number, required: true },
+    stopsCount: { type: Number },
+    storeNumber: { type: String },
+    productivityLevel: { type: Number, required: true },
+    totalEarnings: { type: Number, required: true },
+    isStudent: { type: Boolean, required: true },
   },
-  departmentName: { type: String, required: false },
-  date: { type: Date, required: true },
-  unitsCompleted: { type: Number, required: true },
-  stopsCount: { type: Number, required: false },
-  storeNumber: { type: String, required: false },
-  productivityLevel: { type: Number, required: true },
-  totalEarnings: { type: Number, required: true },
-  isStudent: { type: Boolean, required: true },
-});
+  { timestamps: true }
+);
 
-export const ProductivityRecord = model<ProductivityRecord>(
+export const ProductivityRecord = model<ProductivityRecordDoc>(
   "ProductivityRecord",
   ProductivityRecordSchema
 );
