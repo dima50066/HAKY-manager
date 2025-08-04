@@ -149,14 +149,14 @@ export const recalculateUserProductivityRecords = async (
     }
 
     const userId = (req.user._id as string).toString();
-    const { month } = req.body;
+    const { month, startDate: reqStartDate, endDate: reqEndDate } = req.body;
 
-    let startDate, endDate;
-    if (month) {
+    let startDate = reqStartDate;
+    let endDate = reqEndDate;
+
+    if (!startDate && !endDate && month) {
       const [year, monthNum] = month.split("-").map(Number);
-
       startDate = new Date(year, monthNum - 1, 1).toISOString().split("T")[0];
-
       const lastDay = new Date(year, monthNum, 0).getDate();
       endDate = new Date(year, monthNum - 1, lastDay)
         .toISOString()

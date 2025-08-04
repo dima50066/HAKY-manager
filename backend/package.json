@@ -42,7 +42,7 @@
     "handlebars": "^4.7.8",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "multer": "^2.0.1",
+    "multer": "^2.0.2",
     "nodemailer": "^6.9.16",
     "pino": "^9.5.0",
     "pino-http": "^10.3.0",

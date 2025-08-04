@@ -156,7 +156,9 @@ export const recalculateProductivityRecords = async (
   startDate?: string,
   endDate?: string
 ) => {
-  const query: any = { userId: new mongoose.Types.ObjectId(userId) };
+  const query: any = {
+    userId: new mongoose.Types.ObjectId(userId),
+  };
 
   if (startDate || endDate) {
     query.date = {};
@@ -165,6 +167,10 @@ export const recalculateProductivityRecords = async (
     }
     if (endDate) {
       query.date.$lte = new Date(endDate);
+    }
+
+    if (Object.keys(query.date).length === 0) {
+      delete query.date;
     }
   }
 
@@ -181,7 +187,6 @@ export const recalculateProductivityRecords = async (
 
   for (const record of records) {
     const department = await Department.findById(record.departmentId);
-
     if (!department) {
       console.error(`Department not found for record: ${record._id}`);
       continue;
