@@ -75,6 +75,7 @@
     "birth_date": "Birth Date",
     "address": "Address",
     "emergency_contact": "Emergency Contact",
+    "contact_number": "Contact Number",
     "pesel_number": "PESEL Number",
     "lives_independently": "Lives Independently",
     "uses_company_transport": "Uses Company Transport",

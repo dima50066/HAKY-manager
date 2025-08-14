@@ -54,6 +54,7 @@ export interface Profile {
   usesCompanyTransport: boolean;
   address?: string;
   emergencyContactNumber?: string;
+  contactNumber?: string;
   peselNumber?: string;
   language: string;
 }
@@ -77,6 +78,7 @@ export interface ProfileForm {
   user?: string;
   address?: string;
   emergencyContactNumber?: string;
+  contactNumber?: string;
   peselNumber?: string;
   language: string;
 }
@@ -101,6 +103,7 @@ export interface Employee {
   documents: Document[];
   address?: string;
   emergencyContactNumber?: string;
+  contactNumber?: string;
   peselNumber?: string;
   createdAt: string;
   updatedAt: string;

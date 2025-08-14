@@ -76,7 +76,7 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         className={clsx(
-          "relative bg-white rounded-xl shadow-lg w-full max-w-md",
+          "relative bg-white rounded-xl shadow-lg w-full md:max-w-2xl lg:max-w-3xl",
           isMobile ? "h-screen max-h-screen" : "max-h-[80vh]",
           classNameWrapper
         )}

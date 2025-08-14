@@ -75,6 +75,7 @@
     "birth_date": "Дата народження",
     "address": "Адреса",
     "emergency_contact": "Контакт для екстрених випадків",
+    "contact_number": "Контактний номер",
     "pesel_number": "Номер PESEL",
     "lives_independently": "Живе самостійно",
     "uses_company_transport": "Користується корпоративним транспортом",

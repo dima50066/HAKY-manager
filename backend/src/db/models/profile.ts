@@ -11,6 +11,7 @@ export interface Profile extends Document {
   usesCompanyTransport: boolean;
   address?: string;
   emergencyContactNumber?: string;
+  contactNumber?: string;
   peselNumber?: string;
   language: string;
   documents: {
@@ -40,6 +41,7 @@ const ProfileSchema: Schema<Profile> = new Schema(
     usesCompanyTransport: { type: Boolean, required: true, default: false },
     address: { type: String, maxlength: 200 },
     emergencyContactNumber: { type: String, maxlength: 30 },
+    contactNumber: { type: String, maxlength: 30 },
     peselNumber: { type: String },
     language: { type: String, default: "en" },
     documents: [

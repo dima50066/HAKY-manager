@@ -108,6 +108,10 @@ const Profile: React.FC<ProfileProps> = ({ onEdit }) => {
               value={profile.emergencyContactNumber || t("not_provided")}
             />
             <ProfileInfoCard
+              label={t("contact_number")}
+              value={profile.contactNumber || t("not_provided")}
+            />
+            <ProfileInfoCard
               label={t("pesel_number")}
               value={profile.peselNumber || t("not_provided")}
             />

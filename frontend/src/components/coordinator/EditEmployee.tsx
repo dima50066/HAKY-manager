@@ -29,6 +29,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
     productivity: 0,
     peselNumber: "",
     emergencyContactNumber: "",
+    contactNumber: "",
   });
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
         productivity: employee.productivity || 0,
         peselNumber: employee.peselNumber || "",
         emergencyContactNumber: employee.emergencyContactNumber || "",
+        contactNumber: employee.contactNumber || "",
       });
     }
   }, [employee]);
@@ -113,6 +115,13 @@ const EditEmployee: React.FC<EditEmployeeProps> = ({ profileId, onClose }) => {
             label={t("emergency_contact")}
             name="emergencyContactNumber"
             value={formData.emergencyContactNumber}
+            onChange={handleChange}
+            fullWidth
+          />
+          <TextField
+            label={t("contact_number")}
+            name="contactNumber"
+            value={formData.contactNumber}
             onChange={handleChange}
             fullWidth
           />

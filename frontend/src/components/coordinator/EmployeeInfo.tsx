@@ -85,7 +85,28 @@ export const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee }) => {
               </div>
             )}
           </div>
-
+          <div className="flex items-center justify-between">
+            <p>
+              <strong>{t("contact_number")}:</strong>{" "}
+              {employee.contactNumber || t("not_provided")}
+            </p>
+            {employee.contactNumber && (
+              <div className="flex space-x-2">
+                <button
+                  className="p-2 hover:bg-gray-200 rounded"
+                  onClick={() => copyToClipboard(employee.contactNumber || "")}
+                >
+                  <Icon id="copy" width={16} height={16} />
+                </button>
+                <a
+                  href={`tel:${employee.contactNumber}`}
+                  className="p-2 hover:bg-gray-200 rounded"
+                >
+                  <Icon id="phone" width={16} height={16} />
+                </a>
+              </div>
+            )}
+          </div>
           <div className="flex items-center justify-between">
             <p>
               <strong>{t("pesel_number")}:</strong>{" "}

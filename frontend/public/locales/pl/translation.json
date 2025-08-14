@@ -75,6 +75,7 @@
     "birth_date": "Data urodzenia",
     "address": "Adres",
     "emergency_contact": "Kontakt alarmowy",
+    "contact_number": "Numer kontaktowy",
     "pesel_number": "Numer PESEL",
     "lives_independently": "Mieszka samodzielnie",
     "uses_company_transport": "Korzysta z transportu firmowego",

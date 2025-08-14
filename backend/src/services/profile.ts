@@ -24,6 +24,7 @@ interface ProfilePayload {
   usesCompanyTransport?: boolean;
   address?: string;
   emergencyContactNumber?: string;
+  contactNumber?: string;
   peselNumber?: string;
   language?: string;
 }
@@ -84,6 +85,7 @@ export const updateProfile = async (
     emergencyContactNumber:
       req.body?.emergencyContactNumber || profile.emergencyContactNumber,
     peselNumber: req.body?.peselNumber || profile.peselNumber,
+    contactNumber: req.body?.contactNumber || profile.contactNumber,
     language: req.body?.language || profile.language,
   };
 

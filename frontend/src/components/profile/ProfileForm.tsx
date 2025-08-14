@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "../../redux/profile/operations";
 import { selectProfile } from "../../redux/profile/selectors";
@@ -25,34 +25,20 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     usesCompanyTransport: profile?.usesCompanyTransport || false,
     address: profile?.address || "",
     emergencyContactNumber: profile?.emergencyContactNumber || "",
+    contactNumber: profile?.contactNumber || "",
     peselNumber: profile?.peselNumber || "",
     language: profile?.language || "",
   });
 
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const [columns, setColumns] = useState(1);
-
-  useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (screenWidth >= 768) {
-      setColumns(2);
-    } else {
-      setColumns(1);
-    }
-  }, [screenWidth]);
-
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
       ...prevForm,
-      [name]: value,
+      [name]: name === "productivity" ? Number(value) : value,
     }));
   };
 
@@ -88,7 +74,6 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     if (form.location) {
       formData.append("location", form.location);
     }
-
     if (form.birthDate) {
       formData.append("birthDate", form.birthDate);
     }
@@ -99,11 +84,12 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
     if (form.address) {
       formData.append("address", form.address);
     }
-
     if (form.emergencyContactNumber) {
       formData.append("emergencyContactNumber", form.emergencyContactNumber);
     }
-
+    if (form.contactNumber) {
+      formData.append("contactNumber", form.contactNumber);
+    }
     if (form.peselNumber) {
       formData.append("peselNumber", form.peselNumber);
     }
@@ -120,23 +106,110 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`mx-auto p-6 bg-white rounded-lg space-y-4 transition-all duration-300 ${
-        columns === 1 ? "max-w-md" : columns === 2 ? "max-w-3xl" : "max-w-5xl"
-      }`}
+      className="
+        mx-auto w-full p-6 bg-white rounded-lg space-y-4 transition-all duration-300
+       md:max-w-2xl lg:max-w-3xl
+      "
     >
-      <div
-        className={`grid gap-4 ${
-          columns === 1 ? "grid-cols-1" : "grid-cols-2"
-        }`}
-      >
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-4 lg:grid-cols-4">
         <div>
           <label htmlFor="avatar" className="block font-medium text-gray-700">
             {t("avatar")}
           </label>
           <input
+            id="avatar"
             type="file"
             accept="image/*"
             onChange={handleFileChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="birthDate"
+            className="block font-medium text-gray-700"
+          >
+            {t("birth_date")}
+          </label>
+          <input
+            id="birthDate"
+            name="birthDate"
+            type="date"
+            value={form.birthDate}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <label htmlFor="address" className="block font-medium text-gray-700">
+            {t("address")}
+          </label>
+          <textarea
+            id="address"
+            name="address"
+            value={form.address}
+            onChange={handleChange}
+            rows={3}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="emergencyContactNumber"
+            className="block font-medium text-gray-700"
+          >
+            {t("emergency_contact")}
+          </label>
+          <input
+            id="emergencyContactNumber"
+            name="emergencyContactNumber"
+            type="tel"
+            inputMode="tel"
+            pattern="^[0-9+\\s()-]{7,}$"
+            value={form.emergencyContactNumber}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="contactNumber"
+            className="block font-medium text-gray-700"
+          >
+            {t("contact_number")}
+          </label>
+          <input
+            id="contactNumber"
+            name="contactNumber"
+            type="tel"
+            inputMode="tel"
+            pattern="^[0-9+\\s()-]{7,}$"
+            value={form.contactNumber}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="peselNumber"
+            className="block font-medium text-gray-700"
+          >
+            {t("pesel_number")}
+          </label>
+          <input
+            id="peselNumber"
+            name="peselNumber"
+            type="text"
+            inputMode="numeric"
+            pattern="^\\d{11}$"
+            maxLength={11}
+            value={form.peselNumber}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
           />
         </div>
@@ -154,6 +227,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             {t("is_student")}
           </label>
         </div>
+
         <div className="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -167,6 +241,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             {t("lives_independently")}
           </label>
         </div>
+
         <div className="flex items-center space-x-2">
           <input
             type="checkbox"

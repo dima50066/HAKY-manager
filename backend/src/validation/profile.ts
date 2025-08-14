@@ -11,6 +11,7 @@ export const createProfileSchema = Joi.object({
   peselNumber: Joi.string().max(11).optional(),
   address: Joi.string().max(200).optional(),
   emergencyContactNumber: Joi.string().max(15).optional(),
+  ContactNumber: Joi.string().max(15).optional(),
   language: Joi.string().valid("en", "uk", "pl", "ru").default("en"),
 });
 
@@ -25,6 +26,7 @@ export const updateProfileSchema = Joi.object({
   peselNumber: Joi.string().max(11).optional(),
   address: Joi.string().max(200).optional(),
   emergencyContactNumber: Joi.string().max(15).optional(),
+  ContactNumber: Joi.string().max(15).optional(),
   language: Joi.string().valid("en", "uk", "pl", "ru").optional(),
 });
 
