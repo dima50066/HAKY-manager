@@ -206,7 +206,6 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({ onClose }) => {
             name="peselNumber"
             type="text"
             inputMode="numeric"
-            pattern="^\\d{11}$"
             maxLength={11}
             value={form.peselNumber}
             onChange={handleChange}
