@@ -35,6 +35,7 @@ export const calculateUserSalary = async ({ userId }: CalculateSalaryInput) => {
     const month = `${record.date.getFullYear()}-${String(
       record.date.getMonth() + 1
     ).padStart(2, "0")}`;
+
     monthlyRecords[month] = (monthlyRecords[month] || 0) + record.totalEarnings;
   });
 
@@ -55,7 +56,7 @@ export const calculateUserSalary = async ({ userId }: CalculateSalaryInput) => {
     }
 
     if (profile.livesIndependently && salaryRecord) {
-      totalSalary += salaryRecord.hoursWorked;
+      totalSalary += salaryRecord.hoursWorked * 2;
     }
 
     if (salaryRecord) {

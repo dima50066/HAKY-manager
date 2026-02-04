@@ -44,6 +44,6 @@ export const UserRole = {
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
-export const Accommodation: number = 600;
+export const Accommodation: number = 700;
 
-export const Transportation: number = 150;
+export const Transportation: number = 200;
